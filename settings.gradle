@@ -5,4 +5,5 @@ include 'ExMCL Hooks'
 include 'ExMCL Extract Libs'
 include 'ExMCL API'
 include 'ExMCL Echo'
+include 'ExMCL Cleaner'
 
