@@ -1,0 +1,8 @@
+rootProject.name = 'ExMCL'
+include 'ExMCL Launcher'
+include 'ExMCL BootstrapMaker'
+include 'ExMCL Hooks'
+include 'ExMCL Extract Libs'
+include 'ExMCL API'
+include 'ExMCL Echo'
+

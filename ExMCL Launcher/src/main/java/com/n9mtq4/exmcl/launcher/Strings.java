@@ -1,0 +1,17 @@
+package com.n9mtq4.exmcl.launcher;
+
+/**
+ * Created by will on 1/6/16 at 4:44 PM.
+ *
+ * @author Will "n9Mtq4" Bresnahan
+ */
+public final class Strings {
+	
+	public static final String NO_MINECRAFT = "There is no Minecraft Launcher! Please download the launcher jar files from \n" +
+			"minecraft.net under 'Download it here' -> 'Show all platforms' -> 'Minecraft for Linux / Other'";
+	
+	public static final String UNKNOWN_ERROR = "There was an unknown error when starting the launcher.";
+	
+	public static final String LIBRARY_ERROR = "There was an error loading libraries. Please try again.";
+	
+}

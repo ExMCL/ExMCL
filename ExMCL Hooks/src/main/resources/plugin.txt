@@ -1,0 +1,27 @@
+com.n9mtq4.exmcl.hooks.BottomBarPanelHook
+com.n9mtq4.exmcl.hooks.LauncherPanelHook
+com.n9mtq4.exmcl.hooks.PlayButtonHook
+com.n9mtq4.exmcl.hooks.PlayButtonPanelHook
+com.n9mtq4.exmcl.hooks.SwingUserInterfaceHook
+com.n9mtq4.exmcl.hooks.TabPanelHook
+
+# This listener tries to replace the SwingUserInterface
+# with a proxied one, although this can be dangerous and 
+# breaks some things.
+#com.n9mtq4.exmcl.hooks.MinecraftUserInterfaceProxy
+
+# This is the unsafe game launch hook
+# It allows for us to capture the event first,
+# and if necessary stop mojang from receiving it
+com.n9mtq4.exmcl.hooks.GameLaunchHookUnsafe
+
+# This listener is the safe version.
+# It works, but the unsafe version works too,
+# and has more support for advanced things.
+# It is NOT compatible with the unsafe version
+# com.n9mtq4.exmcl.hooks.GameLaunchHookSafe
+
+# This listener pushes all swing objects it can get its hands on.
+# Enabled for now, but can be a lot to handle for other listeners and
+# the BaseConsole pushing everything to everywhere.
+com.n9mtq4.exmcl.hooks.SwingComponentHook
