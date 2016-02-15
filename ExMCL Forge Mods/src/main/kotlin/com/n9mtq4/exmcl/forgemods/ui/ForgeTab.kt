@@ -3,7 +3,6 @@ package com.n9mtq4.exmcl.forgemods.ui
 import com.n9mtq4.exmcl.forgemods.data.ModData
 import com.n9mtq4.exmcl.forgemods.data.ModProfile
 import com.n9mtq4.exmcl.forgemods.utils.browseForMods
-import com.n9mtq4.exmcl.tab.forgemods.ui.FModsTable
 import com.n9mtq4.logwindow.BaseConsole
 import java.awt.Dimension
 import java.awt.GridLayout
@@ -90,11 +89,13 @@ class ForgeTab(val baseConsole: BaseConsole) :
 		
 //		set up split pane
 		this.sideSplitPane = JSplitPane(VERTICAL_SPLIT)
-		sideSplitPane.topComponent = listScroll
-		sideSplitPane.bottomComponent = buttonPanel
-		sideSplitPane.resizeWeight = 1.0
-		sideSplitPane.setDividerLocation(1.0)
-		sideSplitPane.isEnabled = false
+		sideSplitPane.apply {
+			topComponent = listScroll
+			bottomComponent = buttonPanel
+			resizeWeight = 1.0
+			setDividerLocation(1.0)
+			isEnabled = false
+		}
 		
 		this.tableScroll = JScrollPane(table)
 		

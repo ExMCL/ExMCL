@@ -1,8 +1,6 @@
-package com.n9mtq4.exmcl.tab.forgemods.ui
+package com.n9mtq4.exmcl.forgemods.ui
 
 import com.n9mtq4.exmcl.forgemods.data.ModData
-import com.n9mtq4.exmcl.forgemods.ui.FModsTableModel
-import com.n9mtq4.exmcl.forgemods.ui.ForgeTab
 import com.n9mtq4.exmcl.forgemods.ui.utils.FileDrop
 import java.io.File
 import javax.swing.JTable
@@ -13,7 +11,7 @@ import javax.swing.ListSelectionModel
  *
  * @author Will "n9Mtq4" Bresnahan
  */
-public final class FModsTable(modData: ModData, forgeTab: ForgeTab) : JTable() {
+class FModsTable(modData: ModData, forgeTab: ForgeTab) : JTable() {
 	
 	var modData: ModData
 	val forgeTab: ForgeTab
