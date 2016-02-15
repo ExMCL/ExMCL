@@ -12,7 +12,6 @@ import javax.swing.JFrame
 import javax.swing.JOptionPane
 import javax.swing.JScrollPane
 import javax.swing.JTable
-import javax.swing.table.DefaultTableModel
 
 /**
  * Created by will on 2/14/16 at 10:39 PM.
@@ -38,9 +37,11 @@ class InstallForgeDialog(val forgeTab: ForgeTab) {
 		
 		this.frame = JFrame("Select Forge Version")
 		
-		val model = object : DefaultTableModel(getListOfForges(), arrayOf("MC Versions", "Forge Versions", "URL")) {
+//		TODO: why does this not work?
+/*		val model = object : DefaultTableModel(getListOfForges(), arrayOf("MC Versions", "Forge Versions", "URL")) {
 			override fun isCellEditable(row: Int, column: Int) = false
-		}
+		}*/
+		val model = ImmutableTableModel(getListOfForges(), arrayOf("MC Versions", "Forge Versions", "URL"))
 		
 		this.table = JTable(model)
 		table.tableHeader.reorderingAllowed = false
@@ -139,9 +140,10 @@ class InstallForgeDialog(val forgeTab: ForgeTab) {
 						versions.add(arrayOf(tokens[0], tokens[1], link))
 					}
 					
-				}catch (e: Exception) {
+				}catch (ignored: Exception) {
 //					prevent a bad formatting on an older version to mess with things
-					e.printStackTrace()
+//					This is expected behavior and there are not downsides
+//					e.printStackTrace()
 				}
 				
 			}
