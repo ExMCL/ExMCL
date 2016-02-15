@@ -6,4 +6,5 @@ include 'ExMCL Extract Libs'
 include 'ExMCL API'
 include 'ExMCL Echo'
 include 'ExMCL Cleaner'
+include 'ExMCL Game Output Manager'
 
