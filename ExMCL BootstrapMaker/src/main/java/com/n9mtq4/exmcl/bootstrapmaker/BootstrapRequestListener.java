@@ -23,7 +23,7 @@ public final class BootstrapRequestListener implements ObjectListener {
 //		we should make a new Bootstrap
 		try {
 			BootstrapUtils.makeABootstrap(new String[] {}, baseConsole); // TODO: add arg support
-			baseConsole.loadPlugins("post");
+			baseConsole.loadPlugins();
 		}catch (IOException e) {
 			e.printStackTrace();
 		}

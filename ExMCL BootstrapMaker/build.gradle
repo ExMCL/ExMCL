@@ -22,7 +22,7 @@ gradle.taskGraph.afterTask { Task task, TaskState state ->
 //        copy the jar into the distro directory
         copy {
             from('build/libs/' + project.getName() + '.jar')
-            into('../runmehere/pre')
+            into('../runmehere/pre-plugins')
         }
     }
 }

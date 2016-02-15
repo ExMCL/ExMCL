@@ -31,7 +31,7 @@ public final class BootstrapLauncher {
 		}
 		
 //		baseConsole.loadPlugins();
-		baseConsole.loadPlugins("pre");
+		baseConsole.loadPlugins("pre-plugins");
 		
 		System.out.println("Success - calling for a bootstrap");
 		
