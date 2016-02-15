@@ -17,7 +17,8 @@ import java.util.List;
  *
  * @author Will "n9Mtq4" Bresnahan
  */
-public final class Cleaner implements RemovalListener, GenericListener {
+@Deprecated
+public final class CleanerOld implements RemovalListener, GenericListener {
 	
 //	TODO: port to kotlin
 	

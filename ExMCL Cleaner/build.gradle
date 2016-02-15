@@ -2,6 +2,7 @@ group 'ExMCL'
 version 'unspecified'
 
 apply plugin: 'java'
+apply plugin: 'kotlin'
 
 sourceCompatibility = 1.5
 
@@ -14,6 +15,7 @@ dependencies {
     compile fileTree(dir: '../runmehere/libs/', include: ['*.jar', "*.zip"])
     compile fileTree(dir: '../providedlibs/', include: ['*.jar', "*.zip"])
     compile project(":ExMCL API")
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
 
 gradle.taskGraph.afterTask { Task task, TaskState state ->
@@ -25,4 +27,17 @@ gradle.taskGraph.afterTask { Task task, TaskState state ->
             into('../runmehere/post')
         }
     }
+}
+
+buildscript {
+    ext.kotlin_version = '1.0.0-rc-1036'
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
 }
