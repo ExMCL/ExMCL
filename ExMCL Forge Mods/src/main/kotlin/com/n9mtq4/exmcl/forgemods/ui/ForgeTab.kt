@@ -46,6 +46,7 @@ class ForgeTab(val baseConsole: BaseConsole) :
 	val installForge: JButton
 	val addProfile: JButton
 	val removeProfile: JButton
+	val dupProfile: JButton
 	val addMod: JButton
 	val removeMod: JButton
 	
@@ -56,7 +57,7 @@ class ForgeTab(val baseConsole: BaseConsole) :
 		isEnabled = false
 		
 //		set up table and scrolling
-		this.buttonPanel = JPanel(GridLayout(5, 1))
+		this.buttonPanel = JPanel(GridLayout(6, 1))
 		this.list = JList<String>(modData.getProfileNames().toTypedArray())
 		list.selectionMode = ListSelectionModel.SINGLE_SELECTION
 		list.addListSelectionListener(this)
@@ -68,6 +69,7 @@ class ForgeTab(val baseConsole: BaseConsole) :
 		this.installForge = JButton("Install Forge")
 		this.addProfile = JButton("New Profile")
 		this.removeProfile = JButton("Delete Profile")
+		this.dupProfile = JButton("Duplicate Profile")
 		this.addMod = JButton("Add Mod")
 		this.removeMod = JButton("Remove Mod")
 		addMod.toolTipText = "Add mods the the current profile.\nYou can also drag and drop mods into the table."
@@ -75,12 +77,14 @@ class ForgeTab(val baseConsole: BaseConsole) :
 			add(installForge)
 			add(addProfile)
 			add(removeProfile)
+			add(dupProfile)
 			add(addMod)
 			add(removeMod)
 		}
 		installForge.addActionListener(this)
 		addProfile.addActionListener(this)
 		removeProfile.addActionListener(this)
+		dupProfile.addActionListener(this)
 		addMod.addActionListener(this)
 		removeMod.addActionListener(this)
 		
@@ -133,50 +137,65 @@ class ForgeTab(val baseConsole: BaseConsole) :
 	override fun actionPerformed(e: ActionEvent) {
 		
 		val button = e.source as JButton
-		val text = button.text
+		val text = button.text.toLowerCase()
 		
-		if (text.equals("dev", true)) {
-			println("This is a placeholder for testing.")
-		}else if (text.equals("install forge", true)) {
-			InstallForgeDialog(this)
-		}else if (text.equals("new profile", true)) {
-			val profileName: String? = JOptionPane.showInputDialog(this, "What should the profile be called?")
-			if (profileName == null ||profileName.isNullOrBlank()) return
-			val profile: ModProfile = ModProfile(profileName)
-			modData.profiles.add(profile)
-			refresh()
-		}else if (text.equals("delete profile", true)) {
-			if (modData.profiles[modData.selectedProfileIndex].profileName.equals("default", true)) {
-				JOptionPane.showMessageDialog(this, "You can't delete the default profile.", "Error", JOptionPane.ERROR_MESSAGE)
-				return
-			}
-			val sure = JOptionPane.showConfirmDialog(this,
-					"Are you sure you want to delete\nthe profile ${modData.getProfileNames()[modData.selectedProfileIndex]}?",
-					"Delete?", JOptionPane.YES_NO_OPTION)
-			if (sure == 1) {
-				modData.profiles.removeAt(modData.selectedProfileIndex)
-				modData.selectedProfileIndex = 0;
-				refreshList()
-			}
-		}else if (text.equals("add mod", true)) {
-//			val mods = FileBrowseUtils.promptOpen(this)
-			val mods = browseForMods(this)
-			if (mods.size == 0) return
-			for (mod in mods) {
-				modData.profiles[modData.selectedProfileIndex].addMod(mod)
-			}
-			table.refreshModel()
-		}else if (text.equals("remove mod", true)) {
-			val row = table.selectedRow
-			val selectedProfile = modData.profiles[modData.selectedProfileIndex]
-			if (row < 0) {
-				JOptionPane.showMessageDialog(this, "You haven't selected a mod to remove!", "Error", JOptionPane.ERROR_MESSAGE)
-				return
-			}
-			selectedProfile.modList.removeAt(row)
-			table.refreshModel()
+		when (text) {
+			"install forge" -> installForge()
+			"new profile" -> newProfile()
+			"delete profile" -> deleteProfile()
+			"duplicate profile" -> dupProfile()
+			"add mod" -> addMod()
+			"remove mod" -> removeMod()
 		}
 		
+	}
+	
+	private fun installForge() = InstallForgeDialog(this)
+	
+	private fun newProfile() {
+		val profileName: String? = JOptionPane.showInputDialog(this, "What should the profile be called?")
+		if (profileName == null ||profileName.isNullOrBlank()) return
+		val profile = ModProfile(profileName)
+		modData.addProfile(profile)
+		refreshList()
+	}
+	
+	private fun deleteProfile() {
+		if (modData.getSelectedProfile().profileName.equals("default", true)) {
+			JOptionPane.showMessageDialog(this, "You can't delete the default profile.", "Error", JOptionPane.ERROR_MESSAGE)
+			return
+		}
+		val sure = JOptionPane.showConfirmDialog(this,
+				"Are you sure you want to delete\nthe profile ${modData.getSelectedProfile().profileName}?",
+				"Delete?", JOptionPane.YES_NO_OPTION)
+//		TODO: yes is 0 and no is 1? WHAT THE FUCK!?!?!?!?!?!?!?!?!?!?
+		if (sure != 0) return
+		modData.removeProfile(modData.selectedProfileIndex)
+		modData.selectedProfileIndex = modData.selectedProfileIndex - 1; // move up one, this will never be -1, cause being at 0 is default profile
+		refresh()
+	}
+	
+	private fun dupProfile() {
+		val profileName: String? = JOptionPane.showInputDialog(this, "What should the profile be called?")
+		if (profileName == null ||profileName.isNullOrBlank()) return
+		modData.addProfile(modData.getSelectedProfile().copy(profileName))
+		refreshList()
+	}
+	
+	private fun addMod() {
+		val mods = browseForMods(this)
+		mods.forEach { modData.getSelectedProfile().addMod(it) }
+		table.refreshModel()
+	}
+	
+	private fun removeMod() {
+		val row = table.selectedRow
+		if (row < 0) {
+			JOptionPane.showMessageDialog(this, "You haven't selected a mod to remove!", "Error", JOptionPane.ERROR_MESSAGE)
+			return
+		}
+		modData.getSelectedProfile().removeMod(row)
+		table.refreshModel()
 	}
 	
 	override fun valueChanged(e: ListSelectionEvent) {

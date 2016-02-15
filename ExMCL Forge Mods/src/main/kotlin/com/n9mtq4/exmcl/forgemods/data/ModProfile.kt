@@ -20,4 +20,5 @@ data class ModProfile(var profileName: String, var modList: ArrayList<ModEntry>)
 	fun addMod(file: File, enabled: Boolean) = modList.add(ModEntry(file, enabled))
 	fun addMod(file: File) = addMod(file, true)
 	
+	fun removeMod(index: Int) = modList.removeAt(index)
 }

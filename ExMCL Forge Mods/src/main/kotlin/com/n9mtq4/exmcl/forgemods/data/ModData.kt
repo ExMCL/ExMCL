@@ -60,5 +60,6 @@ class ModData(val profiles: ArrayList<ModProfile>, var selectedProfileIndex: Int
 	fun addProfile(profile: ModProfile) = profiles.add(profile)
 	fun getProfileByName(name: String) = profiles.find { it.profileName == name }
 	fun getProfileNames() = profiles.map { it.profileName }
+	fun removeProfile(profileIndex: Int) = profiles.removeAt(profileIndex)
 	
 }
