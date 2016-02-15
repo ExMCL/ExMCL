@@ -21,7 +21,7 @@ import java.util.Collection;
  * It takes any String or Object that is pushed to the
  * BaseConsole and prints it out so I can see it.
  */
-public class EchoListener implements EnableListener, ObjectListener, GenericListener {
+public class EchoListenerOld implements EnableListener, ObjectListener, GenericListener {
 	
 	/**
 	 * It is important that Echoer is the first listener, so use ReflectionHelper to 
