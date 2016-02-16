@@ -14,4 +14,6 @@ data class ModEntry(var file: File, var enabled: Boolean) : Serializable {
 		private val serialVersionUID = 4972165914163468102L;
 	}
 	
+	fun getName() = file.name
+	
 }

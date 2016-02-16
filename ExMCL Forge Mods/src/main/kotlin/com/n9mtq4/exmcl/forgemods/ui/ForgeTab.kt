@@ -4,6 +4,7 @@ import com.n9mtq4.exmcl.forgemods.GameStartHook
 import com.n9mtq4.exmcl.forgemods.data.ModData
 import com.n9mtq4.exmcl.forgemods.data.ModProfile
 import com.n9mtq4.exmcl.forgemods.utils.browseForMods
+import com.n9mtq4.exmcl.forgemods.utils.firstRunCleanup
 import com.n9mtq4.logwindow.BaseConsole
 import net.minecraft.launcher.Launcher
 import java.awt.Dimension
@@ -113,14 +114,12 @@ class ForgeTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) :
 		sideSplitPane.setDividerLocation(.9)
 		
 		try {
-//			TODO: commented
-//			ForgeModManager.firstRunCleanup(parent.minecraftLauncher, modData, this)
+			firstRunCleanup(minecraftLauncher, modData, this)
 			modData.save()
 			refresh()
 		} catch (e: IOException) {
 			e.printStackTrace()
 		}
-//		TODO: commented
 		baseConsole.addListenerAttribute(GameStartHook(minecraftLauncher, modData))
 		
 	}
