@@ -1,11 +1,11 @@
-package com.n9mtq4.exmcl.api.hooks.events;
+package com.n9mtq4.exmcl.api.hooks.events
 
 /**
- * Created by will on 2/13/16 at 1:09 AM.
+ * Created by will on 2/16/16 at 5:55 PM.
  *
  * @author Will "n9Mtq4" Bresnahan
  */
-public enum PreDefinedSwingComponent {
+enum class PreDefinedSwingComponent {
 	
 	BOTTOM_BAR_PANEL,
 	LAUNCHER_PANEL,
