@@ -1,4 +1,5 @@
 com.n9mtq4.exmcl.hooks.BottomBarPanelHook
+com.n9mtq4.exmcl.hooks.MinecraftLauncherHook
 com.n9mtq4.exmcl.hooks.LauncherPanelHook
 com.n9mtq4.exmcl.hooks.PlayButtonHook
 com.n9mtq4.exmcl.hooks.PlayButtonPanelHook
