@@ -8,4 +8,5 @@ include 'ExMCL Echo'
 include 'ExMCL Cleaner'
 include 'ExMCL Game Output Manager'
 include 'ExMCL Forge Mods'
+include 'ExMCL Updater'
 

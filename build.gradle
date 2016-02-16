@@ -11,3 +11,28 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
+
+/*http://www.tikalk.com/devops/increment-version-numbers-in-gradle/*/
+task buildnumberplusone {
+    Properties props = new Properties()
+    File propsFile = new File('gradle.properties')
+    props.load(propsFile.newDataInputStream())
+    Integer nextbuildnum = ( ((props.getProperty('artifactBuildNumber')) as BigDecimal) + 1 )
+    props.setProperty('artifactBuildNumber', nextbuildnum.toString())
+    props.store(propsFile.newWriter(), null)
+    props.load(propsFile.newDataInputStream())
+    System.out.println("Build Number: $artifactBuildNumber")
+}
+
+task generateVersion {
+    File outputFile = new File("ExMCL Updater/src/main/kotlin/com/n9mtq4/exmcl/updater/GenereratedVersion.kt")
+    PrintWriter writer = new PrintWriter(outputFile)
+    writer.println("package com.n9mtq4.exmcl.updater")
+    writer.println("/*AUTO GENERATED FILE*/")
+    writer.println("const val BUILD_NUMBER = $artifactBuildNumber")
+    writer.close()
+    System.out.println("Generated Version File")
+}
+
+build.dependsOn buildnumberplusone
+build.dependsOn generateVersion
