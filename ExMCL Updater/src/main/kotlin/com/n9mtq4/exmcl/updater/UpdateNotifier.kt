@@ -1,5 +1,6 @@
 package com.n9mtq4.exmcl.updater
 
+import com.n9mtq4.exmcl.api.BUILD_NUMBER
 import com.n9mtq4.logwindow.annotation.Async
 import com.n9mtq4.logwindow.events.EnableEvent
 import com.n9mtq4.logwindow.listener.EnableListener
