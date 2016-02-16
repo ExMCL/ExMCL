@@ -1,9 +1,11 @@
 package com.n9mtq4.exmcl.forgemods.ui
 
+import com.n9mtq4.exmcl.forgemods.GameStartHook
 import com.n9mtq4.exmcl.forgemods.data.ModData
 import com.n9mtq4.exmcl.forgemods.data.ModProfile
 import com.n9mtq4.exmcl.forgemods.utils.browseForMods
 import com.n9mtq4.logwindow.BaseConsole
+import net.minecraft.launcher.Launcher
 import java.awt.Dimension
 import java.awt.GridLayout
 import java.awt.event.ActionEvent
@@ -25,7 +27,7 @@ import javax.swing.event.ListSelectionListener
  *
  * @author Will "n9Mtq4" Bresnahan
  */
-class ForgeTab(val baseConsole: BaseConsole) :
+class ForgeTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) :
 		JSplitPane(JSplitPane.HORIZONTAL_SPLIT), ListSelectionListener, ActionListener {
 	
 	companion object static {
@@ -119,7 +121,7 @@ class ForgeTab(val baseConsole: BaseConsole) :
 			e.printStackTrace()
 		}
 //		TODO: commented
-//		baseConsole.addListenerAttribute(GameStartHook(parent.minecraftLauncher, modData))
+		baseConsole.addListenerAttribute(GameStartHook(minecraftLauncher, modData))
 		
 	}
 	
