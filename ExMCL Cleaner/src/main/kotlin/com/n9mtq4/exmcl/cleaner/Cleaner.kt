@@ -41,17 +41,17 @@ class Cleaner : GenericListener, RemovalListener {
 	
 	private fun deleteFiles(files: ArrayList<File>) {
 		
-		for (file in files) {
+		files.forEach { 
 			
 			try {
 				
-				if (!file.exists()) continue
+				if (!it.exists()) return@forEach
 				
-				val success = file.delete()
-				println("${if (success) "Deleted" else "Failed to delete"} the file: ${file.absolutePath}")
+				val success = it.delete()
+				println("${if (success) "Deleted" else "Failed to delete"} the file: ${it.absolutePath}")
 				
 				if (!success) {
-					file.deleteOnExit()
+					it.deleteOnExit()
 					println("Set the file to delete when the program exits.")
 				}
 				
