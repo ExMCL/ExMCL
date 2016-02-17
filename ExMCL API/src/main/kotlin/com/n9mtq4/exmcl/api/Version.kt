@@ -1,3 +1,4 @@
-package com.n9mtq4.exmcl.api
 /*AUTO GENERATED FILE*/
-val BUILD_NUMBER = 32
+@file:JvmName("Version")
+package com.n9mtq4.exmcl.api
+val BUILD_NUMBER = 37
