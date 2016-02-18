@@ -1,7 +1,7 @@
-package com.n9mtq4.exmcl.forgemods.ui
+package com.n9mtq4.exmcl.modinstaller.ui
 
-import com.n9mtq4.exmcl.forgemods.data.ModData
-import com.n9mtq4.exmcl.forgemods.ui.utils.FileDrop
+import com.n9mtq4.exmcl.modinstaller.data.ModData
+import com.n9mtq4.exmcl.modinstaller.utils.FileDrop
 import java.io.File
 import javax.swing.JTable
 import javax.swing.ListSelectionModel
@@ -11,13 +11,13 @@ import javax.swing.ListSelectionModel
  *
  * @author Will "n9Mtq4" Bresnahan
  */
-class FModsTable(var modData: ModData, val forgeTab: ForgeTab) : JTable() {
+class ModsTable(var modData: ModData, val modsTab: ModsTab) : JTable() {
 	
 	val forgeModel: FModsTableModel
 	
 	init {
 		
-		this.forgeModel = FModsTableModel(modData, forgeTab, this)
+		this.forgeModel = FModsTableModel(modData, modsTab, this)
 		
 		model = forgeModel
 		
@@ -39,7 +39,7 @@ class FModsTable(var modData: ModData, val forgeTab: ForgeTab) : JTable() {
 	}
 	
 	fun refreshTab() {
-		forgeTab.refresh()
+		modsTab.refresh()
 	}
 	
 	private fun initFileDrop() {

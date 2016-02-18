@@ -1,4 +1,4 @@
-package com.n9mtq4.exmcl.forgemods.utils
+package com.n9mtq4.exmcl.modinstaller.utils
 
 import java.awt.Component
 import java.io.File
