@@ -9,6 +9,5 @@ import java.awt.event.ActionEvent
  *
  * @author Will "n9Mtq4" Bresnahan
  */
-class GameLaunchEvent(val actionEvent: ActionEvent, initiatingBaseConsole: BaseConsole) : DefaultGenericEvent(initiatingBaseConsole) {
-	
-}
+@Suppress("unused", "UNUSED_PARAMETER")
+class GameLaunchEvent(val actionEvent: ActionEvent, initiatingBaseConsole: BaseConsole) : DefaultGenericEvent(initiatingBaseConsole)

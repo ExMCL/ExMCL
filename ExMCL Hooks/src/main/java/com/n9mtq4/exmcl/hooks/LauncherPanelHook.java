@@ -2,6 +2,7 @@ package com.n9mtq4.exmcl.hooks;
 
 import com.n9mtq4.exmcl.api.hooks.events.PreDefinedSwingComponent;
 import com.n9mtq4.exmcl.api.hooks.events.PreDefinedSwingHookEvent;
+import com.n9mtq4.exmcl.api.hooks.events.SwingUserInterfaceEvent;
 import com.n9mtq4.logwindow.BaseConsole;
 import com.n9mtq4.logwindow.annotation.ListensFor;
 import com.n9mtq4.logwindow.listener.GenericListener;
@@ -15,12 +16,10 @@ import net.minecraft.launcher.ui.LauncherPanel;
 public final class LauncherPanelHook implements GenericListener {
 	
 	@SuppressWarnings("unused")
-	@ListensFor(PreDefinedSwingHookEvent.class)
-	public final void ListensForSwingEvent(PreDefinedSwingHookEvent e, BaseConsole baseConsole) {
+	@ListensFor(SwingUserInterfaceEvent.class)
+	public final void ListensForSwingEvent(SwingUserInterfaceEvent e, BaseConsole baseConsole) {
 		
-		if (e.getType() != PreDefinedSwingComponent.SWING_USER_INTERFACE) return;
-		
-		SwingUserInterface ui = (SwingUserInterface) e.getComponent();
+		SwingUserInterface ui = e.getSwingUserInterface();
 		LauncherPanel launcherPanel = ReflectionHelper.getObject("launcherPanel", ui);
 		
 		baseConsole.pushEvent(new PreDefinedSwingHookEvent(launcherPanel, PreDefinedSwingComponent.LAUNCHER_PANEL, baseConsole));

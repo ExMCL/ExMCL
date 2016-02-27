@@ -57,7 +57,7 @@ class EchoListener : EnableListener, ObjectListener, GenericListener {
 		
 	}
 	
-	@Suppress("unused")
+	@Suppress("unused", "UNUSED_PARAMETER")
 	@ListensFor(GenericEvent::class)
 	fun listenForAllGenericEvents(event: GenericEvent, baseConsole: BaseConsole) {
 		baseConsole.println(event.toString())

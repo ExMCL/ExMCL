@@ -1,24 +1,46 @@
+@file:Suppress("unused", "UNUSED_PARAMETER")
 package com.n9mtq4.exmcl.updater
 
 import com.n9mtq4.exmcl.api.BUILD_NUMBER
-import com.n9mtq4.logwindow.annotation.Async
+import com.n9mtq4.exmcl.api.tabs.events.SafeForTabCreationEvent
+import com.n9mtq4.exmcl.api.updater.UpdateAvailable
+import com.n9mtq4.logwindow.BaseConsole
+import com.n9mtq4.logwindow.annotation.ListensFor
 import com.n9mtq4.logwindow.events.EnableEvent
 import com.n9mtq4.logwindow.listener.EnableListener
+import com.n9mtq4.logwindow.listener.GenericListener
 import org.json.simple.JSONArray
 import org.json.simple.parser.JSONParser
 import org.jsoup.Jsoup
 import java.util.HashMap
-import javax.swing.JOptionPane
 
 /**
  * Created by will on 2/16/16 at 2:41 PM.
  *
  * @author Will "n9Mtq4" Bresnahan
  */
-class UpdateNotifier : EnableListener {
+@Suppress("unused", "UNUSED_PARAMETER")
+class UpdateFinder : EnableListener, GenericListener {
 	
-	@Async
+	override fun onEnable(p0: EnableEvent?) {}
+	
+	@Suppress("unused", "UNUSED_PARAMETER")
+	@ListensFor
+	fun listenForTabReady(e: SafeForTabCreationEvent, baseConsole: BaseConsole) {
+		
+		checkForUpdate(e.initiatingBaseConsole)
+		
+	}
+	
+/*	@Async
 	override fun onEnable(e: EnableEvent) {
+		checkForUpdate(e.baseConsole)
+	}
+	*/
+	
+	private fun checkForUpdate(baseConsole: BaseConsole) {
+		
+//		baseConsole.pushEvent(UpdateAvailable(baseConsole, 100)) //TODO: remove me
 		
 		try {
 			
@@ -36,9 +58,8 @@ class UpdateNotifier : EnableListener {
 			val tagName = latestVersion["tag_name"] as String
 			val targetBuildNumber = tagName.split("-")[2].toInt() // get the build number
 			
-			if (BUILD_NUMBER < targetBuildNumber) {
-				JOptionPane.showMessageDialog(null, "There is an update available")
-			}
+//			TODO: uncomment me
+			if (BUILD_NUMBER < targetBuildNumber) baseConsole.pushEvent(UpdateAvailable(baseConsole, targetBuildNumber))
 			
 		}catch (e: Exception) {
 			System.err.println("Failed to get update status")

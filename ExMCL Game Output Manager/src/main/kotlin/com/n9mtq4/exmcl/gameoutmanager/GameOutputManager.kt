@@ -34,17 +34,17 @@ class GameOutputManager : EnableListener, GenericListener {
 		this.parent = e.baseConsole
 	}
 	
-	@Suppress("unused")
+	@Suppress("unused", "UNUSED_PARAMETER")
 	@ListensFor(SUIShowGameOutputTab::class)
 	fun listenForShowGameOutputTab(e: SUIShowGameOutputTab, baseConsole: BaseConsole) = fireNewGameOutputTab()
 	
-	@Suppress("unused")
+	@Suppress("unused", "UNUSED_PARAMETER")
 	@ListensFor(SafeForLowLevelTabCreationEvent::class)
 	fun listenForTabSafe(e: SafeForLowLevelTabCreationEvent, baseConsole: BaseConsole) {
 		this.tabSafe = true
 	}
 	
-	@Suppress("unused")
+	@Suppress("unused", "UNUSED_PARAMETER")
 	@ListensFor(PreDefinedSwingHookEvent::class)
 	fun listenForLauncherTabPanel(e: PreDefinedSwingHookEvent, baseConsole: BaseConsole) {
 		if (e.type == PreDefinedSwingComponent.LAUNCHER_TAB_PANEL) launcherTabPanel = e.component as LauncherTabPanel

@@ -1,7 +1,6 @@
 package com.n9mtq4.exmcl.hooks;
 
-import com.n9mtq4.exmcl.api.hooks.events.PreDefinedSwingComponent;
-import com.n9mtq4.exmcl.api.hooks.events.PreDefinedSwingHookEvent;
+import com.n9mtq4.exmcl.api.hooks.events.SwingUserInterfaceEvent;
 import com.n9mtq4.exmcl.hooks.override.HookedSwingUserInterface;
 import com.n9mtq4.logwindow.BaseConsole;
 import com.n9mtq4.logwindow.events.ObjectEvent;
@@ -39,8 +38,7 @@ public final class SwingUserInterfaceHook implements ObjectListener {
 			}
 		}
 		
-//		e.getInitiatingBaseConsole().push(ui, "swinguserinterface");
-		e.getInitiatingBaseConsole().pushEvent(new PreDefinedSwingHookEvent(ui, PreDefinedSwingComponent.SWING_USER_INTERFACE, baseConsole));
+		e.getInitiatingBaseConsole().pushEvent(new SwingUserInterfaceEvent(baseConsole, ui));
 		
 	}
 	

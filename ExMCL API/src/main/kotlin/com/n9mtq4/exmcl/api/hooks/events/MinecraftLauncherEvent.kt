@@ -9,6 +9,6 @@ import net.minecraft.launcher.Launcher
  *
  * @author Will "n9Mtq4" Bresnahan
  */
+@Suppress("unused", "UNUSED_PARAMETER")
 class MinecraftLauncherEvent(val minecraftLauncher: Launcher, initiatingBaseConsole: BaseConsole) : 
-		DefaultGenericEvent(initiatingBaseConsole) {
-}
+		DefaultGenericEvent(initiatingBaseConsole)

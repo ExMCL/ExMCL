@@ -1,1 +1,2 @@
-com.n9mtq4.exmcl.updater.UpdateNotifier
+com.n9mtq4.exmcl.updater.UpdateFinder
+com.n9mtq4.exmcl.updater.UpdateAlerter

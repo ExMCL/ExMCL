@@ -4,24 +4,31 @@ package com.n9mtq4.exmcl.cleaner
 import com.n9mtq4.exmcl.api.cleaner.AddToDelete
 import com.n9mtq4.logwindow.BaseConsole
 import com.n9mtq4.logwindow.annotation.ListensFor
+import com.n9mtq4.logwindow.events.EnableEvent
 import com.n9mtq4.logwindow.events.RemovalEvent
+import com.n9mtq4.logwindow.listener.EnableListener
 import com.n9mtq4.logwindow.listener.GenericListener
 import com.n9mtq4.logwindow.listener.RemovalListener
 import java.io.File
 import java.util.ArrayList
-import java.util.Comparator
 
 /**
  * Created by will on 2/14/16 at 6:51 PM.
  *
  * @author Will "n9Mtq4" Bresnahan
  */
-class Cleaner : GenericListener, RemovalListener {
+class Cleaner : GenericListener, RemovalListener, EnableListener {
 	
 	private val toDelete: ArrayList<File> = ArrayList();
 	
-	@Suppress("unused")
-	@ListensFor()
+	override fun onEnable(e: EnableEvent) {
+		val workingDir: File = File(System.getProperty("user.dir"))
+		val children: Array<File> = workingDir.listFiles()
+		children.filter { it.name.contains("hs", true) && it.name.endsWith(".log", true) }.forEach { addToDelete(it) }
+	}
+	
+	@Suppress("unused", "UNUSED_PARAMETER")
+	@ListensFor(AddToDelete::class)
 	fun listenForAddToDelete(event: AddToDelete, baseConsole: BaseConsole) {
 		
 		baseConsole.println("Added ${event.file.absolutePath} to be deleted")
@@ -76,11 +83,11 @@ class Cleaner : GenericListener, RemovalListener {
 			}
 		}
 //		directories have to be last
-		files.sort(Comparator<File> { o1, o2 ->
-			if (o1.isDirectory) return@Comparator 1
-			if (o2.isDirectory) return@Comparator -1
-			0
-		})
+		files.sort { o1, o2 ->
+			if (o1.isDirectory) return@sort 1
+			if (o2.isDirectory) return@sort -1
+			return@sort 0
+		}
 		return files
 	}
 	

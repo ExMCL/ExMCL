@@ -19,27 +19,27 @@ import javax.swing.JFrame
  *
  * @author Will "n9Mtq4" Bresnahan
  */
-open class SwingUserInterfaceEvent(baseConsole: BaseConsole, val swingUserInterface: SwingUserInterface) : DefaultGenericEvent(baseConsole) {
+open class SUIEvent(baseConsole: BaseConsole, val swingUserInterface: SwingUserInterface) : DefaultGenericEvent(baseConsole) {
 	var stopMojangsCode: Boolean = false
 }
 
-class SUIUpdatePlayState(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface) : SwingUserInterfaceEvent(baseConsole, swingUserInterface)
-class SUIShutdownLauncher(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface) : SwingUserInterfaceEvent(baseConsole, swingUserInterface)
-class SUIShowOutdatedNotice(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface) : SwingUserInterfaceEvent(baseConsole, swingUserInterface)
-class SUIShowLoginPromptCallback(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface, val minecraftLauncher: Launcher, val callBack: LogInPopup.Callback) : SwingUserInterfaceEvent(baseConsole, swingUserInterface)
-class SUIShowLoginPrompt(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface) : SwingUserInterfaceEvent(baseConsole, swingUserInterface)
-class SUIShowGameOutputTab(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface, val minecraftGameRunner: MinecraftGameRunner) : SwingUserInterfaceEvent(baseConsole, swingUserInterface) {
+class SUIUpdatePlayState(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface) : SUIEvent(baseConsole, swingUserInterface)
+class SUIShutdownLauncher(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface) : SUIEvent(baseConsole, swingUserInterface)
+class SUIShowOutdatedNotice(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface) : SUIEvent(baseConsole, swingUserInterface)
+class SUIShowLoginPromptCallback(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface, val minecraftLauncher: Launcher, val callBack: LogInPopup.Callback) : SUIEvent(baseConsole, swingUserInterface)
+class SUIShowLoginPrompt(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface) : SUIEvent(baseConsole, swingUserInterface)
+class SUIShowGameOutputTab(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface, val minecraftGameRunner: MinecraftGameRunner) : SUIEvent(baseConsole, swingUserInterface) {
 	var gameOutputLogProcessor: GameOutputLogProcessor? = null
 }
-class SUIShowCrashReport(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface, val version: CompleteVersion, val crashReportFile: File, val crashReport: String) : SwingUserInterfaceEvent(baseConsole, swingUserInterface)
-class SUISetVisible(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface, val visible: Boolean) : SwingUserInterfaceEvent(baseConsole, swingUserInterface)
-class SUISetDownloadProgress(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface, val downloadProgress: DownloadProgress) : SwingUserInterfaceEvent(baseConsole, swingUserInterface)
-class SUIInitializeFrame(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface) : SwingUserInterfaceEvent(baseConsole, swingUserInterface)
-class SUIHideDownloadProgress(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface) : SwingUserInterfaceEvent(baseConsole, swingUserInterface)
-class SUIGetTitle(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface) : SwingUserInterfaceEvent(baseConsole, swingUserInterface) {
+class SUIShowCrashReport(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface, val version: CompleteVersion, val crashReportFile: File, val crashReport: String) : SUIEvent(baseConsole, swingUserInterface)
+class SUISetVisible(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface, val visible: Boolean) : SUIEvent(baseConsole, swingUserInterface)
+class SUISetDownloadProgress(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface, val downloadProgress: DownloadProgress) : SUIEvent(baseConsole, swingUserInterface)
+class SUIInitializeFrame(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface) : SUIEvent(baseConsole, swingUserInterface)
+class SUIHideDownloadProgress(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface) : SUIEvent(baseConsole, swingUserInterface)
+class SUIGetTitle(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface) : SUIEvent(baseConsole, swingUserInterface) {
 	var title: String? = null
 }
-class SUIGetFrame(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface) : SwingUserInterfaceEvent(baseConsole, swingUserInterface) {
+class SUIGetFrame(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface) : SUIEvent(baseConsole, swingUserInterface) {
 	var frame: JFrame? = null
 }
-class SUIGameLaunchFailure(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface, val reason: String) : SwingUserInterfaceEvent(baseConsole, swingUserInterface)
+class SUIGameLaunchFailure(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface, val reason: String) : SUIEvent(baseConsole, swingUserInterface)
