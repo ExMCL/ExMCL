@@ -1,3 +1,4 @@
+@file:Suppress("unused", "UNUSED_PARAMETER")
 package com.n9mtq4.exmcl.forgemods
 
 import com.n9mtq4.exmcl.api.cleaner.AddToDelete
@@ -37,9 +38,11 @@ class InitForgeMods : GenericListener, EnableListener {
 		
 	}
 	
+	@Suppress("unused", "UNUSED_PARAMETER")
 	@ListensFor
 	fun listenForMinecraftLauncher(e: MinecraftLauncherEvent, baseConsole: BaseConsole) {
 		
+		System.out.println("HELLO WORLD")
 		this.minecraftLauncher = e.minecraftLauncher
 		
 	}

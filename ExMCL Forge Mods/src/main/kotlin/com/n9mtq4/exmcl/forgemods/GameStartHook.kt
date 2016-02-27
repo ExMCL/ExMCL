@@ -1,3 +1,4 @@
+@file:Suppress("unused", "UNUSED_PARAMETER")
 package com.n9mtq4.exmcl.forgemods
 
 import com.n9mtq4.exmcl.api.hooks.events.GameLaunchEvent
@@ -16,7 +17,7 @@ import net.minecraft.launcher.Launcher
  */
 class GameStartHook(val minecraftLauncher: Launcher, val modData: ModData) : GenericListener {
 	
-	@Suppress("unused")
+	@Suppress("unused", "UNUSED_PARAMETER")
 	@ListensFor
 	fun listenForGameLaunch(e: GameLaunchEvent, baseConsole: BaseConsole) {
 		

@@ -1,3 +1,4 @@
+@file:Suppress("unused", "UNUSED_PARAMETER")
 package com.n9mtq4.exmcl.modinstaller
 
 import com.n9mtq4.exmcl.api.hooks.events.MinecraftLauncherEvent
@@ -20,7 +21,7 @@ class InitModInstaller : GenericListener {
 	
 	private lateinit var minecraftLauncher: Launcher
 	
-	@Suppress("unused")
+	@Suppress("unused", "UNUSED_PARAMETER")
 	@ListensFor
 	fun listenForMinecraftLauncher(e: MinecraftLauncherEvent, baseConsole: BaseConsole) {
 		

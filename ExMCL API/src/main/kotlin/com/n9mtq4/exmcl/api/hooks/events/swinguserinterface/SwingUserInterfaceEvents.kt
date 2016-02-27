@@ -1,3 +1,5 @@
+@file:Suppress("unused", "UNUSED_PARAMETER")
+
 package com.n9mtq4.exmcl.api.hooks.events.swinguserinterface
 
 import com.mojang.launcher.events.GameOutputLogProcessor
