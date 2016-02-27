@@ -1,7 +1,7 @@
 package com.n9mtq4.exmcl.forgemods.ui
 
 import com.n9mtq4.exmcl.forgemods.data.ModData
-import com.n9mtq4.exmcl.forgemods.ui.utils.FileDrop
+import com.n9mtq4.filedrop.FileDrop
 import java.io.File
 import javax.swing.JTable
 import javax.swing.ListSelectionModel

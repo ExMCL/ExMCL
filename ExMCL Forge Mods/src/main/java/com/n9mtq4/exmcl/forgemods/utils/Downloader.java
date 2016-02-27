@@ -1,4 +1,4 @@
-package com.n9mtq4.exmcl.forgemods.ui.utils;
+package com.n9mtq4.exmcl.forgemods.utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
