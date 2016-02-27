@@ -191,14 +191,4 @@ class ModsTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) : J
 		table.refreshModel()
 	}
 	
-//	TODO: file drop
-/*	private fun initFileDrop() {
-		
-		FileDrop(this, FileDrop.Listener { files: Array<File> ->
-			files.forEach { modData.profiles[modData.selectedProfileIndex].addMod(it) }
-			refreshModel()
-		})
-		
-	}*/
-	
 }

@@ -1,7 +1,7 @@
 package com.n9mtq4.exmcl.modinstaller.ui
 
 import com.n9mtq4.exmcl.modinstaller.data.ModData
-import com.n9mtq4.exmcl.modinstaller.utils.FileDrop
+import com.n9mtq4.filedrop.FileDrop
 import java.io.File
 import javax.swing.JTable
 import javax.swing.ListSelectionModel
