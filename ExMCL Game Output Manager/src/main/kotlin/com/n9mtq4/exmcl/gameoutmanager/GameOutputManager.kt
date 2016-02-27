@@ -3,7 +3,7 @@ package com.n9mtq4.exmcl.gameoutmanager
 
 import com.n9mtq4.exmcl.api.hooks.events.PreDefinedSwingComponent
 import com.n9mtq4.exmcl.api.hooks.events.PreDefinedSwingHookEvent
-import com.n9mtq4.exmcl.api.hooks.events.swinguserinterface.SUIShowGameOutputTabEvent
+import com.n9mtq4.exmcl.api.hooks.events.swinguserinterface.SUIShowGameOutputTab
 import com.n9mtq4.exmcl.api.tabs.events.LowLevelCreateTabEvent
 import com.n9mtq4.exmcl.api.tabs.events.SafeForLowLevelTabCreationEvent
 import com.n9mtq4.logwindow.BaseConsole
@@ -35,8 +35,8 @@ class GameOutputManager : EnableListener, GenericListener {
 	}
 	
 	@Suppress("unused")
-	@ListensFor(SUIShowGameOutputTabEvent::class)
-	fun listenForShowGameOutputTab(e: SUIShowGameOutputTabEvent, baseConsole: BaseConsole) = fireNewGameOutputTab()
+	@ListensFor(SUIShowGameOutputTab::class)
+	fun listenForShowGameOutputTab(e: SUIShowGameOutputTab, baseConsole: BaseConsole) = fireNewGameOutputTab()
 	
 	@Suppress("unused")
 	@ListensFor(SafeForLowLevelTabCreationEvent::class)

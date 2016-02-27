@@ -1,5 +1,6 @@
 package com.n9mtq4.exmcl.api.hooks.events.swinguserinterface
 
+import com.mojang.launcher.events.GameOutputLogProcessor
 import com.n9mtq4.logwindow.BaseConsole
 import net.minecraft.launcher.SwingUserInterface
 import net.minecraft.launcher.game.MinecraftGameRunner
@@ -9,8 +10,9 @@ import net.minecraft.launcher.game.MinecraftGameRunner
  *
  * @author Will "n9Mtq4" Bresnahan
  */
-class SUIShowGameOutputTabEvent(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface, val minecraftGameRunner: MinecraftGameRunner) : 
+class SUIShowGameOutputTab(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface, val minecraftGameRunner: MinecraftGameRunner) : 
 		SwingUserInterfaceEvent(baseConsole, swingUserInterface) {
 	
+	var gameOutputLogProcessor: GameOutputLogProcessor? = null
 	
 }

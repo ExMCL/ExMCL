@@ -11,4 +11,6 @@ import net.minecraft.launcher.SwingUserInterface
  */
 open class SwingUserInterfaceEvent(baseConsole: BaseConsole, val swingUserInterface: SwingUserInterface) : DefaultGenericEvent(baseConsole) {
 	
+	var stopMojangsCode: Boolean = false
+	
 }

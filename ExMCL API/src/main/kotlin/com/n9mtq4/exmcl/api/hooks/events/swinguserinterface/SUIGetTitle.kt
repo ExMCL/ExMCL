@@ -10,4 +10,7 @@ import net.minecraft.launcher.SwingUserInterface
  */
 class SUIGetTitle(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface) : 
 		SwingUserInterfaceEvent(baseConsole, swingUserInterface) {
+	
+	var title: String? = null
+	
 }

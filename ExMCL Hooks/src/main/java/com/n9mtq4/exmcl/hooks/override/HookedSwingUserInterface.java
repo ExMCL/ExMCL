@@ -11,7 +11,7 @@ import com.n9mtq4.exmcl.api.hooks.events.swinguserinterface.SUIInitializeFrame;
 import com.n9mtq4.exmcl.api.hooks.events.swinguserinterface.SUISetDownloadProgress;
 import com.n9mtq4.exmcl.api.hooks.events.swinguserinterface.SUISetVisible;
 import com.n9mtq4.exmcl.api.hooks.events.swinguserinterface.SUIShowCrashReport;
-import com.n9mtq4.exmcl.api.hooks.events.swinguserinterface.SUIShowGameOutputTabEvent;
+import com.n9mtq4.exmcl.api.hooks.events.swinguserinterface.SUIShowGameOutputTab;
 import com.n9mtq4.exmcl.api.hooks.events.swinguserinterface.SUIShowLoginPrompt;
 import com.n9mtq4.exmcl.api.hooks.events.swinguserinterface.SUIShowLoginPromptCallback;
 import com.n9mtq4.exmcl.api.hooks.events.swinguserinterface.SUIShowOutdatedNotice;
@@ -35,9 +35,9 @@ import java.io.File;
  */
 public class HookedSwingUserInterface extends SwingUserInterface {
 	
-	private BaseConsole baseConsole;
-	private ReflectionWrapper thisWrapper;
-	private ReflectionWrapper parentWrapper;
+	private final BaseConsole baseConsole;
+	private final ReflectionWrapper thisWrapper;
+	private final ReflectionWrapper parentWrapper;
 	
 	public HookedSwingUserInterface(SwingUserInterface parent, BaseConsole baseConsole) {
 		super((Launcher) ReflectionHelper.getObject("minecraftLauncher", parent), parent.getFrame());
@@ -49,103 +49,103 @@ public class HookedSwingUserInterface extends SwingUserInterface {
 	
 	@Override
 	public void showLoginPrompt(Launcher minecraftLauncher, LogInPopup.Callback callback) {
-		super.showLoginPrompt(minecraftLauncher, callback);
-//		baseConsole.push(new Object[]{this, minecraftLauncher, callback}, "swinguserinterface showLoginPrompt");
-		baseConsole.pushEvent(new SUIShowLoginPromptCallback(baseConsole, this, minecraftLauncher, callback));
+		SUIShowLoginPromptCallback event = new SUIShowLoginPromptCallback(baseConsole, this, minecraftLauncher, callback);
+		baseConsole.pushEvent(event);
+		if (!event.getStopMojangsCode()) super.showLoginPrompt(minecraftLauncher, callback);
 	}
 	
 	@Override
 	public void initializeFrame() {
-		super.initializeFrame();
-//		baseConsole.push(new Object[] {this}, "swinguserinterface initializeFrame");
-		baseConsole.pushEvent(new SUIInitializeFrame(baseConsole, this));
+		SUIInitializeFrame event = new SUIInitializeFrame(baseConsole, this);
+		baseConsole.pushEvent(event);
+		if (!event.getStopMojangsCode()) super.initializeFrame();
 	}
 	
 	@Override
 	public void showOutdatedNotice() {
-		super.showOutdatedNotice();
-//		baseConsole.push(new Object[] {this}, "swinguserinterface showOutdatedNotice");
-		baseConsole.pushEvent(new SUIShowOutdatedNotice(baseConsole, this));
+		SUIShowOutdatedNotice event = new SUIShowOutdatedNotice(baseConsole, this);
+		baseConsole.pushEvent(event);
+		if (!event.getStopMojangsCode()) super.showOutdatedNotice();
 	}
 	
 	@Override
 	public void showLoginPrompt() {
-		super.showLoginPrompt();
-//		baseConsole.push(new Object[] {this}, "swinguserinterface showLoginPrompt");
-		baseConsole.pushEvent(new SUIShowLoginPrompt(baseConsole, this));
+		SUIShowLoginPrompt event = new SUIShowLoginPrompt(baseConsole, this);
+		baseConsole.pushEvent(event);
+		if (!event.getStopMojangsCode()) super.showLoginPrompt();
 	}
 	
 	@Override
 	public void setVisible(boolean visible) {
-		super.setVisible(visible);
-//		baseConsole.push(new Object[] {this, visible}, "swinguserinterface setVisible");
-		baseConsole.pushEvent(new SUISetVisible(baseConsole, this, visible));
+		SUISetVisible event = new SUISetVisible(baseConsole, this, visible);
+		baseConsole.pushEvent(event);
+		if (!event.getStopMojangsCode()) super.setVisible(visible);
 	}
 	
 	@Override
 	public void shutdownLauncher() {
-		super.shutdownLauncher();
-//		baseConsole.push(new Object[] {this}, "swinguserinterface shutdownLauncher");
-		baseConsole.pushEvent(new SUIShutdownLauncher(baseConsole, this));
+		SUIShutdownLauncher event = new SUIShutdownLauncher(baseConsole, this);
+		baseConsole.pushEvent(event);
+		if (!event.getStopMojangsCode()) super.shutdownLauncher();
 	}
 	
 	@Override
 	public void setDownloadProgress(DownloadProgress downloadProgress) {
-		super.setDownloadProgress(downloadProgress);
-//		baseConsole.push(new Object[] {this, downloadProgress}, "swinguserinterface setDownloadProgress");
-		baseConsole.pushEvent(new SUISetDownloadProgress(baseConsole, this, downloadProgress));
+		SUISetDownloadProgress event = new SUISetDownloadProgress(baseConsole, this, downloadProgress);
+		baseConsole.pushEvent(event);
+		if (!event.getStopMojangsCode()) super.setDownloadProgress(downloadProgress);
 	}
 	
 	@Override
 	public void hideDownloadProgress() {
-		super.hideDownloadProgress();
-//		baseConsole.push(new Object[] {this}, "swinguserinterface hideDownloadProgress");
-		baseConsole.pushEvent(new SUIHideDownloadProgress(baseConsole, this));
+		SUIHideDownloadProgress event = new SUIHideDownloadProgress(baseConsole, this);
+		baseConsole.pushEvent(event);
+		if (!event.getStopMojangsCode()) super.hideDownloadProgress();
 	}
 	
 	@Override
 	public void showCrashReport(CompleteVersion version, File crashReportFile, String crashReport) {
-		super.showCrashReport(version, crashReportFile, crashReport);
-//		baseConsole.push(new Object[]{this, version, crashReportFile, crashReport}, "swinguserinterface showCrashReport");
-		baseConsole.pushEvent(new SUIShowCrashReport(baseConsole, this, version, crashReportFile, crashReport));
+		SUIShowCrashReport event = new SUIShowCrashReport(baseConsole, this, version, crashReportFile, crashReport);
+		baseConsole.pushEvent(event);
+		if (!event.getStopMojangsCode()) super.showCrashReport(version, crashReportFile, crashReport);
 	}
 	
 	@Override
 	public void gameLaunchFailure(String reason) {
-		super.gameLaunchFailure(reason);
-//		baseConsole.push(reason, "swinguserinterface gameLaunchFailure");
-		baseConsole.pushEvent(new SUIGameLaunchFailure(baseConsole, this, reason));
+		SUIGameLaunchFailure event = new SUIGameLaunchFailure(baseConsole, this, reason);
+		baseConsole.pushEvent(event);
+		if (!event.getStopMojangsCode()) super.gameLaunchFailure(reason);
 	}
 	
 	@Override
 	public void updatePlayState() {
-		super.updatePlayState();
-//		baseConsole.push(new Object[] {this}, "swinguserinterface updatePlayState");
-		baseConsole.pushEvent(new SUIUpdatePlayState(baseConsole, this));
+		SUIUpdatePlayState event = new SUIUpdatePlayState(baseConsole, this);
+		baseConsole.pushEvent(event);
+		if (!event.getStopMojangsCode()) super.updatePlayState();
 	}
 	
 	@Override
 	public GameOutputLogProcessor showGameOutputTab(MinecraftGameRunner gameRunner) {
-		GameOutputLogProcessor gameOutputLogProcessor = super.showGameOutputTab(gameRunner);
-//		baseConsole.push(new Object[] {this, gameRunner}, "swinguserinterface showGameOutputTab");
-		baseConsole.pushEvent(new SUIShowGameOutputTabEvent(baseConsole, this, gameRunner));
-		return gameOutputLogProcessor;
+		SUIShowGameOutputTab event = new SUIShowGameOutputTab(baseConsole, this, gameRunner);
+		baseConsole.pushEvent(event);
+		if (!event.getStopMojangsCode()) return super.showGameOutputTab(gameRunner);
+		else return event.getGameOutputLogProcessor();
 	}
 	
 	@Override
 	public String getTitle() {
-		String title = super.getTitle();
-//		baseConsole.push(new Object[] {this}, "swinguserinterface getTitle");
-		baseConsole.pushEvent(new SUIGetTitle(baseConsole, this));
-		return title;
+		SUIGetTitle event = new SUIGetTitle(baseConsole, this);
+		baseConsole.pushEvent(event);
+		if (!event.getStopMojangsCode()) return super.getTitle();
+		else return event.getTitle();
 	}
 	
 	@Override
 	public JFrame getFrame() {
-		JFrame frame =  super.getFrame();
-//		baseConsole.push(new Object[] {this}, "swinguserinterface getFrame");
-		baseConsole.pushEvent(new SUIGetFrame(baseConsole, this));
-		return frame;
+		SUIGetFrame event = new SUIGetFrame(baseConsole, this);
+		baseConsole.pushEvent(event);
+		if (!event.getStopMojangsCode()) return super.getFrame();
+		else return event.getFrame();
 	}
 	
 }
