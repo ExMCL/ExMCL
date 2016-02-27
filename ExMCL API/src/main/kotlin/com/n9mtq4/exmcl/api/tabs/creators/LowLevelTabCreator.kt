@@ -19,13 +19,13 @@ class LowLevelTabCreator : GenericListener, TabCreator {
 	
 	private var tabPanel: Any? = null
 	
-	@Suppress("unused")
+	@Suppress("unused", "UNUSED_PARAMETER")
 	@ListensFor(LowLevelCreateTabEvent::class)
 	fun listenForLLTabCreation(e: LowLevelCreateTabEvent, baseConsole: BaseConsole) {
 		tryCreatingTab(e, baseConsole)
 	}
 	
-	@Suppress("unused")
+	@Suppress("unused", "UNUSED_PARAMETER")
 	@ListensFor(PreDefinedSwingHookEvent::class)
 	fun listenForSwingHook(e: PreDefinedSwingHookEvent, baseConsole: BaseConsole) {
 		if (e.type == PreDefinedSwingComponent.LAUNCHER_TAB_PANEL) {
