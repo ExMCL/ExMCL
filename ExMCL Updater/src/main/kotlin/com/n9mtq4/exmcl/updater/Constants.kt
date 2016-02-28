@@ -5,4 +5,5 @@ package com.n9mtq4.exmcl.updater
  *
  * @author Will "n9Mtq4" Bresnahan
  */
-const val UPDATE_URL = "https://api.github.com/repos/ExMCL/ExMCL/releases"
+const val API_UPDATE_URL = "https://api.github.com/repos/ExMCL/ExMCL/releases"
+const val UPDATE_URL = "https://github.com/ExMCL/ExMCL/releases/latest"

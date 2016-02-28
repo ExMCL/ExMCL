@@ -9,6 +9,7 @@ import com.n9mtq4.logwindow.listener.GenericListener
 import com.n9mtq4.reflection.ReflectionWrapper
 import net.minecraft.launcher.SwingUserInterface
 import net.minecraft.launcher.ui.LauncherPanel
+import javax.swing.SwingUtilities
 
 /**
  * Created by will on 2/27/16 at 4:20 PM.
@@ -34,9 +35,14 @@ class UpdateAlerter : GenericListener {
 	@ListensFor
 	fun listenForUpdateEvent(e: UpdateAvailable, baseConsole: BaseConsole) {
 		
-		System.out.println("Got")
-		
-		launcherPanel.setCard("login", UpdatePanel(ReflectionWrapper.attachToObject(launcherPanel)))
+		SwingUtilities.invokeLater {
+			try {
+				val updatePanel = UpdatePanel(launcherPanel, e)
+				updatePanel.addThisCard()
+			}catch (e: Exception) {
+				e.printStackTrace()
+			}
+		}
 		
 	}
 	

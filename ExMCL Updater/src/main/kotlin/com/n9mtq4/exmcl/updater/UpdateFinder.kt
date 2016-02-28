@@ -5,6 +5,7 @@ import com.n9mtq4.exmcl.api.BUILD_NUMBER
 import com.n9mtq4.exmcl.api.tabs.events.SafeForTabCreationEvent
 import com.n9mtq4.exmcl.api.updater.UpdateAvailable
 import com.n9mtq4.logwindow.BaseConsole
+import com.n9mtq4.logwindow.annotation.Async
 import com.n9mtq4.logwindow.annotation.ListensFor
 import com.n9mtq4.logwindow.events.EnableEvent
 import com.n9mtq4.logwindow.listener.EnableListener
@@ -24,6 +25,7 @@ class UpdateFinder : EnableListener, GenericListener {
 	
 	override fun onEnable(p0: EnableEvent?) {}
 	
+	@Async
 	@Suppress("unused", "UNUSED_PARAMETER")
 	@ListensFor
 	fun listenForTabReady(e: SafeForTabCreationEvent, baseConsole: BaseConsole) {
@@ -40,12 +42,10 @@ class UpdateFinder : EnableListener, GenericListener {
 	
 	private fun checkForUpdate(baseConsole: BaseConsole) {
 		
-//		baseConsole.pushEvent(UpdateAvailable(baseConsole, 100)) //TODO: remove me
-		
 		try {
 			
 //			Download the json data
-			val jsonRaw = Jsoup.connect(UPDATE_URL).ignoreContentType(true).execute().body()
+			val jsonRaw = Jsoup.connect(API_UPDATE_URL).ignoreContentType(true).execute().body()
 			
 //			parse it
 			val parser = JSONParser()
@@ -54,12 +54,12 @@ class UpdateFinder : EnableListener, GenericListener {
 //			get the latest version
 			val latestVersion = json[0] as HashMap<*, *>
 			
-//			get the tag name
+//			get the tag name 
 			val tagName = latestVersion["tag_name"] as String
 			val targetBuildNumber = tagName.split("-")[2].toInt() // get the build number
+//			val targetBuildNumber = Integer.MAX_VALUE // testing value
 			
-//			TODO: uncomment me
-			if (BUILD_NUMBER < targetBuildNumber) baseConsole.pushEvent(UpdateAvailable(baseConsole, targetBuildNumber))
+			if (BUILD_NUMBER < targetBuildNumber) baseConsole.pushEvent(UpdateAvailable(baseConsole, latestVersion, targetBuildNumber))
 			
 		}catch (e: Exception) {
 			System.err.println("Failed to get update status")
