@@ -5,6 +5,7 @@ import com.n9mtq4.exmcl.api.card.LauncherCard
 import com.n9mtq4.exmcl.api.updater.UpdateAvailable
 import net.minecraft.launcher.ui.LauncherPanel
 import java.awt.BorderLayout
+import java.awt.Dimension
 import java.awt.GridLayout
 import java.net.URI
 import javax.swing.JButton
@@ -33,10 +34,14 @@ class UpdatePanel(launcherPanel: LauncherPanel, val updateAvailable: UpdateAvail
 		buttonPanel.add(ignore)
 		
 		val body = JTextArea()
+		body.lineWrap = true
+		body.wrapStyleWord = true
+		body.preferredSize = Dimension(400, 200)
+		body.isEditable = false
 		body.text = (updateAvailable.updateInfo["body"] ?: "Error getting changelog!") as String
 		val scroll = JScrollPane(body)
 		
-		add(JLabel("There is an update for ExMCL available!"), BorderLayout.NORTH)
+		add(JLabel("<html><h2>There is an update for ExMCL available!</h2></html>"), BorderLayout.NORTH)
 		add(scroll, BorderLayout.CENTER)
 		add(buttonPanel, BorderLayout.SOUTH)
 		
