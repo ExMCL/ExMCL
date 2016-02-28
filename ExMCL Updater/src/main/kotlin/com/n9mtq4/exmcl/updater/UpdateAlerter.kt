@@ -33,17 +33,13 @@ class UpdateAlerter : GenericListener {
 	
 	@Suppress("unused", "UNUSED_PARAMETER")
 	@ListensFor
-	fun listenForUpdateEvent(e: UpdateAvailable, baseConsole: BaseConsole) {
-		
-		SwingUtilities.invokeLater {
-			try {
-				val updatePanel = UpdatePanel(launcherPanel, e)
-				updatePanel.addThisCard()
-			}catch (e: Exception) {
-				e.printStackTrace()
-			}
+	fun listenForUpdateEvent(e: UpdateAvailable, baseConsole: BaseConsole) = SwingUtilities.invokeLater {
+		try {
+			val updatePanel = UpdatePanel(launcherPanel, e)
+			updatePanel.addThisCard()
+		}catch (e: Exception) {
+			e.printStackTrace()
 		}
-		
 	}
 	
 }

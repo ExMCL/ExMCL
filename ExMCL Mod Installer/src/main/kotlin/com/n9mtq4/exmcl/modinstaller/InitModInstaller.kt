@@ -35,8 +35,12 @@ class InitModInstaller : GenericListener {
 	fun listenForTabSafe(e: SafeForTabCreationEvent, baseConsole: BaseConsole) {
 		
 		SwingUtilities.invokeLater {
-			val modsTab = ModsTab(minecraftLauncher, baseConsole)
-			baseConsole.pushEvent(CreateTabEvent("Jar Mods", modsTab, baseConsole))
+			try {
+				val modsTab = ModsTab(minecraftLauncher, baseConsole)
+				baseConsole.pushEvent(CreateTabEvent("Jar Mods", modsTab, baseConsole))
+			}catch (e: Exception) {
+				e.printStackTrace()
+			}
 		}
 		
 		baseConsole.disableListenerAttribute(this)

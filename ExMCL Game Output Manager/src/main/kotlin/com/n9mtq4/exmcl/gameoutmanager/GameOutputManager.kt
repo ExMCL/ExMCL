@@ -66,7 +66,11 @@ class GameOutputManager : EnableListener, GenericListener {
 	}
 	
 	private fun addGameOutputTabs() = SwingUtilities.invokeLater {
-		parent.pushEvent(LowLevelCreateTabEvent("Game Output", gameOutputTabs, parent))
+		try {
+			parent.pushEvent(LowLevelCreateTabEvent("Game Output", gameOutputTabs, parent))
+		}catch (e: Exception) {
+			e.printStackTrace()
+		}
 	}
 	
 	private fun cropTabName(title: String) = title.substring(title.indexOf("(") + 1, title.indexOf(")"))

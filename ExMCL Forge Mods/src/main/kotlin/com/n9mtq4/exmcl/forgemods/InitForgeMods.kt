@@ -53,8 +53,12 @@ class InitForgeMods : GenericListener, EnableListener {
 	fun listenForTabSafe(e: SafeForTabCreationEvent, baseConsole: BaseConsole) {
 		
 		SwingUtilities.invokeLater { 
-			val forgeTab = ForgeTab(minecraftLauncher, baseConsole)
-			baseConsole.pushEvent(CreateTabEvent("Forge Mods", forgeTab, baseConsole))
+			try {
+				val forgeTab = ForgeTab(minecraftLauncher, baseConsole)
+				baseConsole.pushEvent(CreateTabEvent("Forge Mods", forgeTab, baseConsole))
+			}catch (e: Exception) {
+				e.printStackTrace()
+			}
 		}
 		
 		baseConsole.disableListenerAttribute(this)
