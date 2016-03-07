@@ -21,12 +21,7 @@ open class LauncherCard(protected val launcherPanel: LauncherPanel, layout: Layo
 	constructor(launcherPanel: LauncherPanel, isDoubleBuffered: Boolean) : this(launcherPanel, FlowLayout(), isDoubleBuffered)
 	constructor(launcherPanel: LauncherPanel, layout: LayoutManager) : this(launcherPanel, layout, true)
 	
-	fun addThisCard() {
-		launcherPanel.setCard("login", this)
-	}
-	
-	fun removeThisCard() {
-		cardLayout.show(launcherPanel, "launcher")
-	}
+	fun addThisCard() = launcherPanel.setCard("login", this)
+	fun removeThisCard() = cardLayout.show(launcherPanel, "launcher")
 	
 }

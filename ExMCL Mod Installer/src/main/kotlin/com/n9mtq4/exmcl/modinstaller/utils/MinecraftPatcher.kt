@@ -1,8 +1,12 @@
 package com.n9mtq4.exmcl.modinstaller.utils
 
-import com.n9mtq4.exmcl.modinstaller.data.ModData
+import com.n9mtq4.exmcl.modinstaller.data.ModProfile
 import net.minecraft.launcher.Launcher
-import net.minecraft.launcher.profile.Profile
+import org.json.simple.JSONArray
+import org.json.simple.JSONObject
+import org.json.simple.parser.JSONParser
+import java.io.BufferedInputStream
+import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -11,74 +15,77 @@ import java.util.ArrayList
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
+import javax.swing.JOptionPane
 
 /**
- * Created by will on 7/28/15 at 5:02 PM.
- * TODO: this code is an ungodly mess - most of it was converted from java
+ * Created by will on 2/28/16 at 3:26 PM.
+ *
+ * @author Will "n9Mtq4" Bresnahan
  */
-object MinecraftPatcher {
+class MinecraftPatcher(val minecraftLauncher: Launcher, val modProfile: ModProfile) {
 	
-	fun duplicate(launcher: Launcher) {
-		val dir = getVersionJarFile(launcher).parentFile
-		val destDir = File(getVersionJarFile(launcher).parentFile.parentFile, getMinecraftVersion(launcher) + "_exmcl")
-		buildFileTree(dir).forEach { copyFile(it, File(destDir, it.absolutePath.substring(destDir.absolutePath.length))) }
-	}
+	val mojangLauncher = minecraftLauncher.launcher
+	val workingDir = mojangLauncher.workingDirectory
 	
-	fun copyMods(launcher: Launcher, modData: ModData) {
-		modData.getSelectedProfile().modList.forEach { 
-			val file = File(getVersionJarFile(launcher).parent, "/tmp/${it.file.name}")
-			unzip(it.file, file.absolutePath)
-			val fileTree = buildFileTree(file)
-			fileTree.forEach { 
-				val file1 = File(File(getVersionJarFile(launcher).parent, "/tmp/" + getMinecraftVersion(launcher)), it.absolutePath.substring(file.absolutePath.length))
-//				println(file1.absolutePath)
-				copyFile(it, file1)
-			}
+	val version = findVersion()
+	
+	val oldVersion = if (version.endsWith("_exmcl")) version.substring(0, version.length - "_exmcl".length) else version
+	val oldVersionDir = File(workingDir, "versions/$oldVersion")
+	val oldVersionJarFile = File(oldVersionDir, "$oldVersion.jar")
+	
+	val newVersion = oldVersion + "_exmcl"
+	val newVersionDir = File(workingDir, "versions/$newVersion")
+	val newVersionJarFile = File(newVersionDir, "$newVersion.jar")
+	
+	
+	fun patch() {
+//		clean up from past runs
+		if (newVersionDir.exists()) newVersionDir.deleteRecursively()
+//		create the new version directory
+		newVersionDir.mkdirs()
+//		copy all files from the old version to the new version
+		oldVersionDir.copyRecursively(newVersionDir)
+//		make a tmp directory
+		val tmp = File(newVersionDir, "tmp")
+		tmp.mkdirs()
+//		extract the old jar to the tmp directory
+		val oldInNewPlace = File(newVersionDir, "$oldVersion.jar")
+		val jarDir = File(tmp, "ejar")
+		unzip(oldInNewPlace, jarDir)
+//		extract the mods
+		val modsDir = File(tmp, "mods")
+		modProfile.modList.filter { it.enabled }.map { it.file }.forEach { 
+			val toExtractTo = File(modsDir, it.name)
+			unzip(it, toExtractTo)
 		}
-	}
-	
-	fun getVersionJarPath(launcher: Launcher): String {
-		return getVersionJarFile(launcher).absolutePath
-	}
-	
-	fun getVersionJarFile(launcher: Launcher): File {
-		
-		val launcher1 = launcher.launcher
-		val workingDir = launcher1.workingDirectory
-		
-		val jarLocation = File(workingDir, "versions/" + getMinecraftVersion(launcher) + "/" + getMinecraftVersion(launcher) + ".jar")
-		return jarLocation
-		
-	}
-	
-	@Throws(IOException::class)
-	fun backupJar(launcher: Launcher) {
-		
-		val source = getVersionJarFile(launcher)
-		var dest = source.parentFile
-		dest = File(dest, source.name + ".bak")
-		copyFile(source, dest)
-		
-	}
-	
-	@Throws(IOException::class)
-	fun unzip(launcher: Launcher) {
-		
-		val jarFile = getVersionJarFile(launcher)
-		val outputDir = File(jarFile.parent, "/tmp/" + getMinecraftVersion(launcher)).absolutePath
-		
-		unzip(jarFile, outputDir)
-		
+//		create the mix folder
+		val mix = File(tmp, "mix")
+		mix.mkdirs()
+//		copy the jar into it
+		jarDir.copyRecursively(mix)
+//		copy each mod into it
+		val mods = modsDir.listFiles()
+		mods.forEach { it.copyRecursively(mix, overwrite = true) }
+//		delete META-INF
+		File(mix, "META-INF").deleteRecursively()
+//		zip up the mix
+		val newJar = File(tmp, "new.jar")
+		zip(buildFileTree(mix).filterNot { it.name.startsWith(".") }.toTypedArray(), newJar, mix)
+//		copy the zipped jar back to the profile
+		newJar.copyTo(newVersionJarFile)
+//		rename the profile in the json file
+		modifyJson()
+//		delete the tmp directory
+		tmp.deleteRecursively()
 	}
 	
 	/**
 	 * http://www.mkyong.com/java/how-to-decompress-files-from-a-zip-file/
 	 */
 	@Throws(IOException::class)
-	private fun unzip(file: File, outputDir: String) {
+	private fun unzip(file: File, outDir: File) {
 		
 		val buffer = ByteArray(1024)
-		val outDir = File(outputDir)
 		if (!outDir.exists()) outDir.mkdirs()
 		
 		val zipInputStream = ZipInputStream(FileInputStream(file))
@@ -87,7 +94,7 @@ object MinecraftPatcher {
 		while (ze != null) {
 			
 			val fileName = ze.name
-			val newFile = File(outputDir + File.separator + fileName)
+			val newFile = File(outDir, fileName)
 			//noinspection ResultOfMethodCallIgnored
 			File(newFile.parent).mkdirs()
 			
@@ -109,59 +116,67 @@ object MinecraftPatcher {
 		
 	}
 	
-	fun zip(launcher: Launcher) {
-		val sourceFile = File(getVersionJarFile(launcher).parent, "/tmp/" + getMinecraftVersion(launcher))
-		zip(buildFileTree(sourceFile).toTypedArray(), File(sourceFile.parent, "new.jar"), sourceFile)
-	}
-	
 	@Throws(IOException::class)
-	fun zip(files: Array<File>, out: File, sourceDir: File) {
-		
+	private fun zip(files: Array<File>, out: File, sourceDir: File) {
 		val fileNames = Array<String>(files.size) {i -> files[i].absolutePath}
-		
-/*		val fileNames = arrayOfNulls<String>(files.size)
-		for (i in files.indices) {
-			fileNames[i] = files[i].absolutePath
-		}
-		zip(fileNames, out, sourceDir)*/
 		zip(fileNames, out, sourceDir)
-		
 	}
 	
 	/**
 	 * http://www.mkyong.com/java/how-to-compress-files-in-zip-format/
 	 */
 	@Throws(IOException::class)
-	fun zip(files: Array<String>, out: File, sourceDir: File) {
+	private fun zip(files: Array<String>, out: File, sourceDir: File) {
 		
 		val buffer = ByteArray(1024)
 		
 		val fos = FileOutputStream(out)
-		val zos = ZipOutputStream(fos)
+		val bfos = BufferedOutputStream(fos)
+		val zos = ZipOutputStream(bfos)
 		
-		val subIndex = sourceDir.absolutePath.length
+		val subIndex = sourceDir.absolutePath.length + 1
 		
 		for (file in files) {
 			
-			//			ZipEntry ze = new ZipEntry(file);
 			val ze = ZipEntry(file.substring(subIndex, file.length))
 			zos.putNextEntry(ze)
 			
-			val `in` = FileInputStream(file)
+			val fins = FileInputStream(File(file))
+			val inputStream = BufferedInputStream(fins)
 			
-			var len = `in`.read(buffer)
+			var len = inputStream.read(buffer)
 			while (len > 0) {
 				zos.write(buffer, 0, len)
-				len = `in`.read(buffer)
+				len = inputStream.read(buffer)
 			}
 			
-			`in`.close()
+			inputStream.close()
+			zos.closeEntry()
 			
 		}
 		
-		zos.closeEntry()
 		zos.close()
+		fos.close()
 		
+	}
+	
+	private fun modifyJson() {
+		val oldJsonFile = open(File(newVersionDir, "$oldVersion.json"), "r")
+		val oldJsonText = oldJsonFile.readAll()
+		oldJsonFile.close()
+		val parser = JSONParser()
+		val json = parser.parse(oldJsonText) as JSONObject
+		json["id"] = newVersion
+		json.remove("downloads")
+		json.remove("assetIndex")
+		val libs = json["libraries"] as JSONArray
+		libs.map { it as JSONObject }.forEach { 
+			it.remove("downloads")
+		}
+		val newJsonText = json.toJSONString().replace("\\/", "/") // for some reason the JsonParser changes "/" to "\/", so we undo it
+		val newJsonFile = open(File(newVersionDir, "$newVersion.json"), "w")
+		newJsonFile.write(newJsonText)
+		newJsonFile.close()
 	}
 	
 	private fun buildFileTree(file: File): ArrayList<File> {
@@ -169,9 +184,7 @@ object MinecraftPatcher {
 		val files = ArrayList<File>()
 		if (file.isDirectory) {
 			val children = file.listFiles() ?: return files
-			for (child in children) {
-				files.addAll(buildFileTree(child))
-			}
+			children.forEach { files.addAll(buildFileTree(it)) }
 		}else {
 			files.add(file)
 		}
@@ -179,16 +192,21 @@ object MinecraftPatcher {
 		
 	}
 	
-	fun getMinecraftVersion(launcher: Launcher): String {
+	private fun findVersion() = minecraftLauncher.profileManager.selectedProfile.lastVersionId ?: getLatestVersion()
+	private fun getLatestVersion() = askForVersion() //TODO: we can't get the latest version yet :(
+	private fun askForVersion(): String {
+		val allVersions = getAllVersions()
+		val version = JOptionPane.showInputDialog(null, 
+				"We don't have support for 'Latest Version' profiles yet.\nChange the profile to a specific version\nor select the version here.", 
+				"Version?", 
+				JOptionPane.QUESTION_MESSAGE, 
+				null, 
+				allVersions.toTypedArray(), 
+				allVersions[0]) //TODO: possibility of index out of bounds if there are no versions
 		
-		return getMinecraftVersion(launcher.profileManager.selectedProfile)
+		return (version ?: allVersions[0]) as String
 		
 	}
-	
-	fun getMinecraftVersion(profile: Profile): String {
-		
-		return profile.lastVersionId
-		
-	}
+	private fun getAllVersions() = File(workingDir, "versions/").listFiles().map { it.name }.filterNot { it.startsWith(".") }
 	
 }

@@ -42,7 +42,6 @@ class InitForgeMods : GenericListener, EnableListener {
 	@ListensFor
 	fun listenForMinecraftLauncher(e: MinecraftLauncherEvent, baseConsole: BaseConsole) {
 		
-		System.out.println("HELLO WORLD")
 		this.minecraftLauncher = e.minecraftLauncher
 		
 	}

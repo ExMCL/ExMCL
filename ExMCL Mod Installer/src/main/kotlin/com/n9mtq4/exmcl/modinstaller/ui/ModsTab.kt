@@ -1,7 +1,7 @@
 package com.n9mtq4.exmcl.modinstaller.ui
 
 import com.n9mtq4.exmcl.modinstaller.data.ModData
-import com.n9mtq4.exmcl.modinstaller.utils.browseForMods
+import com.n9mtq4.exmcl.modinstaller.utils.MinecraftPatcher
 import com.n9mtq4.logwindow.BaseConsole
 import net.minecraft.launcher.Launcher
 import net.minecraft.launcher.profile.ProfileManager
@@ -138,7 +138,7 @@ class ModsTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) : J
 	fun refreshList() {
 		//		list.setListData(modData.getProfileNames())
 		list.setListData(modData.getProfileNames().toTypedArray())
-		val profileNameToSet = minecraftLauncher.profileManager.selectedProfile.name
+		val profileNameToSet = minecraftLauncher.profileManager?.selectedProfile?.name ?: return
 		list.setSelectedValue(profileNameToSet, true)
 //		list.selectedIndex = modData.selectedProfileIndex
 		modData.selectedProfileIndex = list.selectedIndex
@@ -176,9 +176,15 @@ class ModsTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) : J
 		MinecraftPatcher.copyMods(minecraftLauncher, modData)
 		MinecraftPatcher.zip(minecraftLauncher)
 		return*/
-		val mods = browseForMods(this)
-		mods.forEach { modData.getSelectedProfile().addMod(it) }
-		table.refreshModel()
+		try {
+			val mcPatcher = MinecraftPatcher(minecraftLauncher, modData.getSelectedProfile())
+			mcPatcher.patch()
+//			val mods = browseForMods(this)
+//			mods.forEach { modData.getSelectedProfile().addMod(it) }
+//			table.refreshModel()
+		}catch (e: Exception) {
+			e.printStackTrace()
+		}
 	}
 	
 	private fun removeMod() {
