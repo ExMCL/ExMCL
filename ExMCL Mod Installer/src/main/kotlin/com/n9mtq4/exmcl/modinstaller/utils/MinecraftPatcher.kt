@@ -77,6 +77,14 @@ class MinecraftPatcher(val minecraftLauncher: Launcher, val modProfile: ModProfi
 		modifyJson()
 //		delete the tmp directory
 		tmp.deleteRecursively()
+//		delete any other files
+		File(newVersionDir, "$oldVersion.jar").delete()
+		File(newVersionDir, "$oldVersion.json").delete()
+//		set the profile to use this version
+		val pm = minecraftLauncher.profileManager
+		pm.selectedProfile.lastVersionId = newVersion
+		pm.saveProfiles()
+		pm.fireRefreshEvent()
 	}
 	
 	/**

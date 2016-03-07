@@ -22,7 +22,7 @@ import javax.swing.table.DefaultTableModel
  *
  * @author Will "n9Mtq4" Bresnahan
  */
-class FModsTableModel(val modData: ModData, val modsTab: ModsTab, val table: ModsTable) : 
+class ModsTableModel(val modData: ModData, val modsTab: ModsTab, val table: ModsTable) : 
 		DefaultTableModel(), TableModelListener, TableColumnModelListener, ComponentListener {
 	
 	companion object {

@@ -1,7 +1,8 @@
 package com.n9mtq4.exmcl.modinstaller.ui
 
+import com.n9mtq4.exmcl.modinstaller.GameStartHook
 import com.n9mtq4.exmcl.modinstaller.data.ModData
-import com.n9mtq4.exmcl.modinstaller.utils.MinecraftPatcher
+import com.n9mtq4.exmcl.modinstaller.utils.browseForMods
 import com.n9mtq4.logwindow.BaseConsole
 import net.minecraft.launcher.Launcher
 import net.minecraft.launcher.profile.ProfileManager
@@ -18,7 +19,6 @@ import javax.swing.JOptionPane
 import javax.swing.JPanel
 import javax.swing.JScrollPane
 import javax.swing.JSplitPane
-import javax.swing.JTextArea
 import javax.swing.ListSelectionModel
 import javax.swing.event.ListSelectionEvent
 import javax.swing.event.ListSelectionListener
@@ -90,23 +90,7 @@ class ModsTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) : J
 			isEnabled = false
 		}
 		
-//		TODO: NOT YET DONE MESSAGE
-		val label = JTextArea("This mod tab is NOT finished. Please use the forge mod tab instead.\n" +
-				"This mod tab is 80% done in developer builds, but isn't stable enough yet and can't run on its own.\n" +
-				"Current Progress:\n" +
-				"[x] Mod managing\n" +
-				"[x] Receiving play button push\n" +
-				"[x] Copying profile data\n" +
-				"[ ] Configuring the profile\n" +
-				"[x] Unzipping version.jar\n" +
-				"[x] Unzipping the mods\n" +
-				"[x] Copying files\n" +
-				"[x] Zipping version\n" +
-				"[ ] Renaming version");
-		label.isEditable = false;
-		
 		this.tableScroll = JScrollPane(table)
-//		this.tableScroll = JScrollPane(label)
 		
 		setLeftComponent(sideSplitPane)
 		setRightComponent(tableScroll)
@@ -120,13 +104,12 @@ class ModsTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) : J
 		sideSplitPane.setDividerLocation(.9)
 		
 		try {
-//			firstRunCleanup(minecraftLauncher, modData, this)
 			modData.save()
 			refresh()
 		} catch (e: IOException) {
 			e.printStackTrace()
 		}
-//		baseConsole.addListenerAttribute(GameStartHook(minecraftLauncher, modData))
+		baseConsole.addListenerAttribute(GameStartHook(minecraftLauncher, modData))
 		
 	}
 	
@@ -148,11 +131,10 @@ class ModsTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) : J
 	override fun actionPerformed(e: ActionEvent) {
 		
 		val button = e.source as JButton
-		val text = button.text.toLowerCase()
 		
-		when (text) {
-			"add mod" -> addMod()
-			"remove mod" -> removeMod()
+		when (button) {
+			addMod -> addMod()
+			removeMod -> removeMod()
 		}
 		
 	}
@@ -170,18 +152,10 @@ class ModsTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) : J
 	}
 	
 	private fun addMod() {
-/*		MinecraftPatcher.duplicate(minecraftLauncher)
-		MinecraftPatcher.backupJar(minecraftLauncher)
-		MinecraftPatcher.unzip(minecraftLauncher)
-		MinecraftPatcher.copyMods(minecraftLauncher, modData)
-		MinecraftPatcher.zip(minecraftLauncher)
-		return*/
 		try {
-			val mcPatcher = MinecraftPatcher(minecraftLauncher, modData.getSelectedProfile())
-			mcPatcher.patch()
-//			val mods = browseForMods(this)
-//			mods.forEach { modData.getSelectedProfile().addMod(it) }
-//			table.refreshModel()
+			val mods = browseForMods(this)
+			mods.forEach { modData.getSelectedProfile().addMod(it) }
+			table.refreshModel()
 		}catch (e: Exception) {
 			e.printStackTrace()
 		}

@@ -13,15 +13,15 @@ import javax.swing.ListSelectionModel
  */
 class ModsTable(var modData: ModData, val modsTab: ModsTab) : JTable() {
 	
-	val forgeModel: FModsTableModel
+	val tableModel: ModsTableModel
 	
 	init {
 		
-		this.forgeModel = FModsTableModel(modData, modsTab, this)
+		this.tableModel = ModsTableModel(modData, modsTab, this)
 		
-		model = forgeModel
+		model = tableModel
 		
-		forgeModel.fireSet()
+		tableModel.fireSet()
 		
 		tableHeader.reorderingAllowed = false
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION)
@@ -31,11 +31,11 @@ class ModsTable(var modData: ModData, val modsTab: ModsTab) : JTable() {
 	}
 	
 	fun fireModDataSync() {
-		forgeModel.fireModDataSync()
+		tableModel.fireModDataSync()
 	}
 	
 	fun refreshModel() {
-		forgeModel.refresh()
+		tableModel.refresh()
 	}
 	
 	fun refreshTab() {
