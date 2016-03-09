@@ -37,7 +37,6 @@ class ModsTableModel(val modData: ModData, val modsTab: ModsTab, val table: Mods
 		setBefore = true
 		refresh()
 		addTableModelListener(this)
-//		table.getColumnModel().addColumnModelListener(this)
 		table.getColumnModel().addColumnModelListener(this)
 		table.addComponentListener(this)
 	}
@@ -46,7 +45,7 @@ class ModsTableModel(val modData: ModData, val modsTab: ModsTab, val table: Mods
 		val selectedProfileIndex = if (modData.selectedProfileIndex == -1) 0 else modData.selectedProfileIndex
 		val selectedProfile = modData.profiles[selectedProfileIndex] // use the old method for selected profile
 		val t = Array<Array<out Any>>(selectedProfile.modList.size) { i -> 
-			arrayOf(selectedProfile.modList[i].enabled, selectedProfile.modList[i].file.absolutePath) 
+			arrayOf(selectedProfile.modList[i].enabled, selectedProfile.modList[i].file.absolutePath)
 		}
 		setDataVector(t, TABLE_TITLES)
 	}
@@ -70,7 +69,7 @@ class ModsTableModel(val modData: ModData, val modsTab: ModsTab, val table: Mods
 			println("Selected Profile is -1, so canceling mod data save")
 			return
 		}
-		println("Saving the jar mods ModData")
+		println("Saving the jar ModData")
 		
 		val selectedProfile = modData.getSelectedProfile()
 		selectedProfile.modList = ArrayList<ModEntry>()

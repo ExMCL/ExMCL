@@ -142,6 +142,11 @@ class ModsTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) : J
 	override fun valueChanged(e: ListSelectionEvent) {
 		val newProfileName = list.selectedValue ?: return
 		minecraftLauncher.profileManager.setSelectedProfile(newProfileName)
+		
+		if (list.selectedIndex < 0) return
+		modData.selectedProfileIndex = list.selectedIndex
+		table.refreshModel()
+		
 	}
 	
 	override fun onProfilesRefreshed(profileManager: ProfileManager) {
