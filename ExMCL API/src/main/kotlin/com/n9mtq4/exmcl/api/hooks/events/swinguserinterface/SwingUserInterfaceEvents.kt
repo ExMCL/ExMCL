@@ -16,7 +16,9 @@ import javax.swing.JFrame
 
 /**
  * Created by will on 2/27/16 at 2:22 PM.
- *
+ * 
+ * Too many classes in very dense code
+ * 
  * @author Will "n9Mtq4" Bresnahan
  */
 open class SUIEvent(baseConsole: BaseConsole, val swingUserInterface: SwingUserInterface) : DefaultGenericEvent(baseConsole) {
@@ -43,3 +45,19 @@ class SUIGetFrame(baseConsole: BaseConsole, swingUserInterface: SwingUserInterfa
 	var frame: JFrame? = null
 }
 class SUIGameLaunchFailure(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface, val reason: String) : SUIEvent(baseConsole, swingUserInterface)
+
+open class PostSUIEvent(baseConsole: BaseConsole, val swingUserInterface: SwingUserInterface) : DefaultGenericEvent(baseConsole)
+class PostSUIUpdatePlayState(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface) : PostSUIEvent(baseConsole, swingUserInterface)
+class PostSUIShutdownLauncher(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface) : PostSUIEvent(baseConsole, swingUserInterface)
+class PostSUIShowOutdatedNotice(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface) : PostSUIEvent(baseConsole, swingUserInterface)
+class PostSUIShowLoginPromptCallback(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface, val minecraftLauncher: Launcher, val callBack: LogInPopup.Callback) : PostSUIEvent(baseConsole, swingUserInterface)
+class PostSUIShowLoginPrompt(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface) : PostSUIEvent(baseConsole, swingUserInterface)
+class PostSUIShowGameOutputTab(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface, val minecraftGameRunner: MinecraftGameRunner) : PostSUIEvent(baseConsole, swingUserInterface)
+class PostSUIShowCrashReport(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface, val version: CompleteVersion, val crashReportFile: File, val crashReport: String) : PostSUIEvent(baseConsole, swingUserInterface)
+class PostSUISetVisible(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface, val visible: Boolean) : PostSUIEvent(baseConsole, swingUserInterface)
+class PostSUISetDownloadProgress(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface, val downloadProgress: DownloadProgress) : PostSUIEvent(baseConsole, swingUserInterface)
+class PostSUIInitializeFrame(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface) : PostSUIEvent(baseConsole, swingUserInterface)
+class PostSUIHideDownloadProgress(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface) : PostSUIEvent(baseConsole, swingUserInterface)
+class PostSUIGetTitle(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface) : PostSUIEvent(baseConsole, swingUserInterface)
+class PostSUIGetFrame(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface) : PostSUIEvent(baseConsole, swingUserInterface)
+class PostSUIGameLaunchFailure(baseConsole: BaseConsole, swingUserInterface: SwingUserInterface, val reason: String) : PostSUIEvent(baseConsole, swingUserInterface)
