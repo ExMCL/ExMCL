@@ -37,7 +37,7 @@ class MinecraftPatcher(val minecraftLauncher: Launcher, val modProfile: ModProfi
 	val newVersionDir = File(workingDir, "versions/$newVersion")
 	val newVersionJarFile = File(newVersionDir, "$newVersion.jar")
 	
-	
+	@Throws(Exception::class)
 	fun patch(progressCallback: (Int, Int, String) -> Unit) {
 //		clean up from past runs
 		if (newVersionDir.exists()) newVersionDir.deleteRecursively()

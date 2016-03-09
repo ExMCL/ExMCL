@@ -11,6 +11,7 @@ import com.n9mtq4.logwindow.annotation.ListensFor
 import com.n9mtq4.logwindow.listener.GenericListener
 import net.minecraft.launcher.Launcher
 import java.awt.Component
+import javax.swing.JOptionPane
 import kotlin.concurrent.thread
 
 /**
@@ -39,8 +40,12 @@ class GameStartHook(val minecraftLauncher: Launcher, val modData: ModData) : Gen
 			thread(start = true) {
 				
 				println("Patching")
-				mcPatcher.patch() { step, total, task -> 
-					minecraftLauncher.userInterface.setDownloadProgress(DownloadProgress(step.toLong(), total.toLong(), "Patching mods into Minecraft: $task"))
+				try {
+					mcPatcher.patch() { step, total, task ->
+						minecraftLauncher.userInterface.setDownloadProgress(DownloadProgress(step.toLong(), total.toLong(), "Patching mods into Minecraft: $task"))
+					}
+				}catch (e1: Exception) {
+					JOptionPane.showMessageDialog(e.actionEvent.source as Component, "${e1.cause}\n${e1.message}", "Error Patching", JOptionPane.ERROR_MESSAGE)
 				}
 				println("Patched")
 				
@@ -58,7 +63,11 @@ class GameStartHook(val minecraftLauncher: Launcher, val modData: ModData) : Gen
 			val pw = PatchingWindow(e.actionEvent.source as Component)
 			
 			println("Patching")
-			mcPatcher.patch() { i, i1, task -> /*do nothing*/ }
+			try {
+				mcPatcher.patch() { i, i1, task -> /*do nothing*/ }
+			}catch (e1: Exception) {
+				JOptionPane.showMessageDialog(e.actionEvent.source as Component, "${e1.cause}\n${e1.message}", "Error Patching", JOptionPane.ERROR_MESSAGE)
+			}
 			println("Patched")
 //			
 			pw.dispose()
