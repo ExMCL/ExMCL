@@ -63,7 +63,8 @@ class ModsTableModel(val modData: ModData, val modsTab: ModsTab, val table: Mods
 				preferredWidth = table.width - ENABLED_COLUMN_WIDTH
 			}
 		}catch (e: ArrayIndexOutOfBoundsException) {
-			error("Resizing Columns, but they haven't been created yet!")
+			System.err.println("Resizing Columns, but they haven't been created yet!")
+			e.printStackTrace()
 		}
 	}
 	

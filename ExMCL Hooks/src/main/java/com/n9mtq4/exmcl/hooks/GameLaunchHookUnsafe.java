@@ -1,5 +1,6 @@
 package com.n9mtq4.exmcl.hooks;
 
+import com.n9mtq4.exmcl.api.hooks.events.DefaultGameLaunchEvent;
 import com.n9mtq4.exmcl.api.hooks.events.GameLaunchEvent;
 import com.n9mtq4.exmcl.api.hooks.events.PreDefinedSwingComponent;
 import com.n9mtq4.exmcl.api.hooks.events.PreDefinedSwingHookEvent;
@@ -53,6 +54,10 @@ public final class GameLaunchHookUnsafe implements ActionListener, GenericListen
 			playButton.removeActionListener(listener);
 		}
 		
+//		add them into the DefaultActionListenerDispatcher
+		DefaultMinecraftGameRunner defaultGameRunner = new DefaultMinecraftGameRunner(listeners);
+		baseConsole.addListenerAttribute(defaultGameRunner);
+		
 //		now add us as the only action listener
 		playButton.addActionListener(this);
 		
@@ -71,8 +76,27 @@ public final class GameLaunchHookUnsafe implements ActionListener, GenericListen
 		baseConsole.pushEvent(gameLaunchEvent);
 		
 		if (!gameLaunchEvent.isCanceled()) {
-			for (ActionListener listener : listeners) {
+/*			for (ActionListener listener : listeners) {
 				listener.actionPerformed(e);
+			}*/
+			baseConsole.pushEvent(new DefaultGameLaunchEvent(e, baseConsole));
+		}
+		
+	}
+	
+	private class DefaultMinecraftGameRunner implements GenericListener {
+		
+		private ActionListener[] listeners;
+		
+		public DefaultMinecraftGameRunner(ActionListener[] listeners) {
+			this.listeners = listeners;
+		}
+		
+		@SuppressWarnings("unused")
+		@ListensFor
+		public void onDefaultGameLaunch(DefaultGameLaunchEvent event, BaseConsole baseConsole) {
+			for (ActionListener listener : listeners) {
+				listener.actionPerformed(event.getActionEvent());
 			}
 		}
 		

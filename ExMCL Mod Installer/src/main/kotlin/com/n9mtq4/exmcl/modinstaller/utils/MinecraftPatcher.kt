@@ -38,9 +38,12 @@ class MinecraftPatcher(val minecraftLauncher: Launcher, val modProfile: ModProfi
 	val newVersionJarFile = File(newVersionDir, "$newVersion.jar")
 	
 	
-	fun patch() {
+	fun patch(progressCallback: (Int, Int, String) -> Unit) {
 //		clean up from past runs
 		if (newVersionDir.exists()) newVersionDir.deleteRecursively()
+//		calculate total jobs
+		val modJobs = modProfile.modList.size
+		val totalJobs = modJobs + 3 // plus 3 for extracting minecraft; re-zipping; copying
 //		create the new version directory
 		newVersionDir.mkdirs()
 //		copy all files from the old version to the new version
@@ -48,20 +51,28 @@ class MinecraftPatcher(val minecraftLauncher: Launcher, val modProfile: ModProfi
 //		make a tmp directory
 		val tmp = File(newVersionDir, "tmp")
 		tmp.mkdirs()
+//		step 0 callback
+		progressCallback.invoke(0, totalJobs, "Extracting")
 //		extract the old jar to the tmp directory
 		val oldInNewPlace = File(newVersionDir, "$oldVersion.jar")
 		val jarDir = File(tmp, "ejar")
 		unzip(oldInNewPlace, jarDir)
 //		extract the mods into the ejar
-		modProfile.modList.filter { it.enabled }.map { it.file }.forEach { 
+		modProfile.modList.filter { it.enabled }.map { it.file }.forEachIndexed { i, it ->
 //			val toExtractTo = File(jarDir, it.name)
+//			mod progress callback
+			progressCallback.invoke(i + 1, totalJobs, it.name) // plus one cause we completed extracting minecraft jar
 			unzip(it, jarDir)
 		}
 //		delete META-INF
 		File(jarDir, "META-INF").deleteRecursively()
+//		step modJobs + 2 callback
+		progressCallback.invoke(modJobs + 2, totalJobs, "Zipping")
 //		zip up the ejar
 		val newJar = File(tmp, "new.jar")
 		zip(buildFileTree(jarDir).filterNot { it.name.startsWith(".") }.toTypedArray(), newJar, jarDir)
+//		step modJobs + 2 callback
+		progressCallback.invoke(modJobs + 3, totalJobs, "Moving")
 //		copy the zipped jar back to the profile
 		newJar.copyTo(newVersionJarFile)
 //		rename the profile in the json file
@@ -92,21 +103,33 @@ class MinecraftPatcher(val minecraftLauncher: Launcher, val modProfile: ModProfi
 		
 		while (ze != null) {
 			
-			val fileName = ze.name
-			val newFile = File(outDir, fileName)
-			//noinspection ResultOfMethodCallIgnored
-			File(newFile.parent).mkdirs()
-			
-			val fos = FileOutputStream(newFile, false) // overwrite
-			
-			var len = zipInputStream.read(buffer)
-			while (len > 0) {
-				fos.write(buffer, 0, len)
-				len = zipInputStream.read(buffer)
+			try {
+				val fileName = ze.name
+				val newFile = File(outDir, fileName)
+				//noinspection ResultOfMethodCallIgnored
+				File(newFile.parent).mkdirs()
+				
+				if (ze.isDirectory) {
+					ze = zipInputStream.nextEntry
+					continue
+				}
+				
+				val fos = FileOutputStream(newFile, false) // overwrite
+				
+				var len = zipInputStream.read(buffer)
+				while (len > 0) {
+					fos.write(buffer, 0, len)
+					len = zipInputStream.read(buffer)
+				}
+				fos.close()
+				
+				ze = zipInputStream.nextEntry
+				
+			}catch (e: Exception) {
+				System.err.println("Error extracting ${ze.name}")
+				e.printStackTrace()
+				ze = zipInputStream.nextEntry
 			}
-			fos.close()
-			
-			ze = zipInputStream.nextEntry
 			
 		}
 		
@@ -191,12 +214,13 @@ class MinecraftPatcher(val minecraftLauncher: Launcher, val modProfile: ModProfi
 		
 	}
 	
-	private fun findVersion() = minecraftLauncher.profileManager.selectedProfile.lastVersionId ?: getLatestVersion()
+//	private fun findVersion() = minecraftLauncher.profileManager.selectedProfile.lastVersionId ?: getLatestVersion()
+	private fun findVersion() = askForVersion()
 	private fun getLatestVersion() = askForVersion() //TODO: we can't get the latest version yet :(
 	private fun askForVersion(): String {
 		val allVersions = getAllVersions()
 		val version = JOptionPane.showInputDialog(null, 
-				"We don't have support for 'Latest Version' profiles yet.\nChange the profile to a specific version\nor select the version here.", 
+				"What version of minecraft should we patch the mods into?", 
 				"Version?", 
 				JOptionPane.QUESTION_MESSAGE, 
 				null, 
