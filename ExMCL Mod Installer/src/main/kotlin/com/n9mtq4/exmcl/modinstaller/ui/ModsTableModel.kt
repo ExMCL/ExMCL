@@ -51,15 +51,19 @@ class ModsTableModel(val modData: ModData, val modsTab: ModsTab, val table: Mods
 	}
 	
 	private fun resizeColumns() {
-		table.getColumnModel().getColumn(0).apply {
-			minWidth = ENABLED_COLUMN_WIDTH
-			maxWidth = ENABLED_COLUMN_WIDTH
-			preferredWidth = ENABLED_COLUMN_WIDTH
-		}
-		table.getColumnModel().getColumn(1).apply {
-			minWidth = table.width - ENABLED_COLUMN_WIDTH
-			maxWidth = table.width - ENABLED_COLUMN_WIDTH
-			preferredWidth = table.width - ENABLED_COLUMN_WIDTH
+		try {
+			table.getColumnModel().getColumn(0).apply {
+				minWidth = ENABLED_COLUMN_WIDTH
+				maxWidth = ENABLED_COLUMN_WIDTH
+				preferredWidth = ENABLED_COLUMN_WIDTH
+			}
+			table.getColumnModel().getColumn(1).apply {
+				minWidth = table.width - ENABLED_COLUMN_WIDTH
+				maxWidth = table.width - ENABLED_COLUMN_WIDTH
+				preferredWidth = table.width - ENABLED_COLUMN_WIDTH
+			}
+		}catch (e: ArrayIndexOutOfBoundsException) {
+			error("Resizing Columns, but they haven't been created yet!")
 		}
 	}
 	

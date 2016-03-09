@@ -1,40 +1,38 @@
 package com.n9mtq4.exmcl.modinstaller.ui
 
-import java.awt.BorderLayout
 import java.awt.Component
-import javax.swing.JFrame
+import javax.swing.JDialog
 import javax.swing.JProgressBar
-import javax.swing.WindowConstants
 
 /**
  * Created by will on 3/8/16 at 2:46 PM.
  *
  * @author Will "n9Mtq4" Bresnahan
  */
-class PatchingWindow(val parent: Component) {
+class PatchingWindow(val parent: Component) : JDialog() {
 	
-	private val frame: JFrame
 	private val progress: JProgressBar
 	
 	init {
-		this.frame = JFrame("Patching Minecraft")
-		frame.defaultCloseOperation = WindowConstants.DO_NOTHING_ON_CLOSE
 		
-		this.progress = JProgressBar()
+		title = "Patching Minecraft"
+		defaultCloseOperation = DO_NOTHING_ON_CLOSE
+		
+		this.progress = JProgressBar(0, 100)
 		progress.isIndeterminate = true
 		
-		frame.add(progress, BorderLayout.CENTER)
+		add(progress)
 		
-		frame.isAlwaysOnTop = true
-		frame.pack()
-		frame.isVisible = true
-		frame.setSize(300, frame.size.height)
-		frame.isResizable = false
-		frame.setLocationRelativeTo(parent)
+		forceUpdate()
+		
 	}
 	
-	fun dispose() {
-		frame.dispose()
+	internal fun forceUpdate() {
+		pack()
+		isVisible = true
+		setSize(300, size.height)
+		isResizable = false
+		setLocationRelativeTo(parent)
 	}
 	
 }

@@ -52,25 +52,16 @@ class MinecraftPatcher(val minecraftLauncher: Launcher, val modProfile: ModProfi
 		val oldInNewPlace = File(newVersionDir, "$oldVersion.jar")
 		val jarDir = File(tmp, "ejar")
 		unzip(oldInNewPlace, jarDir)
-//		extract the mods
-		val modsDir = File(tmp, "mods")
+//		extract the mods into the ejar
 		modProfile.modList.filter { it.enabled }.map { it.file }.forEach { 
-			val toExtractTo = File(modsDir, it.name)
-			unzip(it, toExtractTo)
+//			val toExtractTo = File(jarDir, it.name)
+			unzip(it, jarDir)
 		}
-//		create the mix folder
-		val mix = File(tmp, "mix")
-		mix.mkdirs()
-//		copy the jar into it
-		jarDir.copyRecursively(mix)
-//		copy each mod into it
-		val mods = modsDir.listFiles()
-		mods.forEach { it.copyRecursively(mix, overwrite = true) }
 //		delete META-INF
-		File(mix, "META-INF").deleteRecursively()
-//		zip up the mix
+		File(jarDir, "META-INF").deleteRecursively()
+//		zip up the ejar
 		val newJar = File(tmp, "new.jar")
-		zip(buildFileTree(mix).filterNot { it.name.startsWith(".") }.toTypedArray(), newJar, mix)
+		zip(buildFileTree(jarDir).filterNot { it.name.startsWith(".") }.toTypedArray(), newJar, jarDir)
 //		copy the zipped jar back to the profile
 		newJar.copyTo(newVersionJarFile)
 //		rename the profile in the json file
@@ -106,7 +97,7 @@ class MinecraftPatcher(val minecraftLauncher: Launcher, val modProfile: ModProfi
 			//noinspection ResultOfMethodCallIgnored
 			File(newFile.parent).mkdirs()
 			
-			val fos = FileOutputStream(newFile)
+			val fos = FileOutputStream(newFile, false) // overwrite
 			
 			var len = zipInputStream.read(buffer)
 			while (len > 0) {
