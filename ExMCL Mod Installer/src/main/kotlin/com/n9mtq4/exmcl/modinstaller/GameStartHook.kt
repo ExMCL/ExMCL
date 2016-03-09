@@ -26,7 +26,7 @@ class GameStartHook(val minecraftLauncher: Launcher, val modData: ModData) : Gen
 	@ListensFor
 	fun listenForGameLaunch(e: GameLaunchEvent, baseConsole: BaseConsole) {
 		
-		if (modData.getSelectedProfile().modList.size == 0) return // don't patch when there are no mods
+		if (modData.getSelectedProfile().modList.filter { it.enabled }.size == 0) return // don't patch when there are no mods
 		
 		val mcPatcher = MinecraftPatcher(minecraftLauncher, modData.getSelectedProfile())
 		
