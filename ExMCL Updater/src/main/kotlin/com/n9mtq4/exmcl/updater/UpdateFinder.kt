@@ -25,6 +25,11 @@ class UpdateFinder : EnableListener, GenericListener {
 	
 	override fun onEnable(p0: EnableEvent?) {}
 	
+	/**
+	 * Having it wait for the tab ready instead of the enabled
+	 * gives us the ability to modify the launcher rather than
+	 * displaying a popup
+	 * */
 	@Async
 	@Suppress("unused", "UNUSED_PARAMETER")
 	@ListensFor
@@ -56,7 +61,8 @@ class UpdateFinder : EnableListener, GenericListener {
 			
 //			get the tag name 
 			val tagName = latestVersion["tag_name"] as String
-			val targetBuildNumber = tagName.split("-")[2].toInt() // get the build number
+			val tokens = tagName.split("-")
+			val targetBuildNumber = tokens[tokens.size - 1].toInt() // get the build number
 //			val targetBuildNumber = Integer.MAX_VALUE // testing value
 			
 			if (BUILD_NUMBER < targetBuildNumber) baseConsole.pushEvent(UpdateAvailable(baseConsole, latestVersion, targetBuildNumber))

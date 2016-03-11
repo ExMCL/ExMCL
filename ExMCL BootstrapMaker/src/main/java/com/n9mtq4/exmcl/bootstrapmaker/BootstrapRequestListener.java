@@ -13,8 +13,26 @@ import java.io.IOException;
  */
 public final class BootstrapRequestListener implements ObjectListener {
 	
+	private String[] args = new String[] {};
+	
 	@Override
 	public void objectReceived(ObjectEvent objectEvent, BaseConsole baseConsole) {
+		
+		tryForArgs(objectEvent, baseConsole);
+		tryForBootstrap(objectEvent, baseConsole);
+		
+	}
+	
+	private void tryForArgs(ObjectEvent objectEvent, BaseConsole baseConsole) {
+		
+		if (!objectEvent.getMessage().equals("args")) return;
+		if (!(objectEvent.getObj() instanceof String[])) return;
+		
+		args = (String[]) objectEvent.getObj();
+		
+	}
+	
+	private void tryForBootstrap(ObjectEvent objectEvent, BaseConsole baseConsole) {
 		
 		if (!objectEvent.getMessage().equals("request")) return;
 		if (!(objectEvent.getObj() instanceof String)) return;
@@ -22,7 +40,7 @@ public final class BootstrapRequestListener implements ObjectListener {
 		
 //		we should make a new Bootstrap
 		try {
-			BootstrapUtils.makeABootstrap(new String[] {}, baseConsole); // TODO: add arg support
+			BootstrapUtils.makeABootstrap(args, baseConsole);
 			baseConsole.loadPlugins();
 		}catch (IOException e) {
 			e.printStackTrace();

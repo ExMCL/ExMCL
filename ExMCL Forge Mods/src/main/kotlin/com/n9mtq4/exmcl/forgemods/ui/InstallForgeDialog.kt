@@ -1,6 +1,6 @@
 package com.n9mtq4.exmcl.forgemods.ui
 
-import com.n9mtq4.exmcl.forgemods.utils.Downloader
+import com.n9mtq4.exmcl.forgemods.utils.downloadFile
 import com.n9mtq4.logwindow.utils.StringParser
 import org.jsoup.Jsoup
 import java.awt.BorderLayout
@@ -37,10 +37,6 @@ class InstallForgeDialog(val forgeTab: ForgeTab) {
 		
 		this.frame = JFrame("Select Forge Version")
 		
-//		TODO: why does this not work?
-/*		val model = object : DefaultTableModel(getListOfForges(), arrayOf("MC Versions", "Forge Versions", "URL")) {
-			override fun isCellEditable(row: Int, column: Int) = false
-		}*/
 		val model = ImmutableTableModel(getListOfForges(), arrayOf("MC Versions", "Forge Versions", "URL"))
 		
 		this.table = JTable(model)
@@ -77,7 +73,7 @@ class InstallForgeDialog(val forgeTab: ForgeTab) {
 		val tmpDir = File("tmp/")
 		tmpDir.mkdirs()
 		val file = File(tmpDir, "forge_$forgeVersion.jar")
-		Downloader.downloadFile(url, file)
+		downloadFile(url, file)
 		return file
 		
 	}

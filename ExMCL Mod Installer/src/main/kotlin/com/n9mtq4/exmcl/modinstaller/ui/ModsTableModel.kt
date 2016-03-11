@@ -2,7 +2,6 @@ package com.n9mtq4.exmcl.modinstaller.ui
 
 import com.n9mtq4.exmcl.modinstaller.data.ModData
 import com.n9mtq4.exmcl.modinstaller.data.ModEntry
-import com.n9mtq4.exmcl.modinstaller.utils.KotlinWorkAround
 import java.awt.event.ComponentEvent
 import java.awt.event.ComponentListener
 import java.io.File
@@ -69,7 +68,6 @@ class ModsTableModel(val modData: ModData, val modsTab: ModsTab, val table: Mods
 	}
 	
 	internal fun fireModDataSync() {
-//		TODO: I have no idea what this code does. WTF was I thinking when I wrote it?
 		if (modData.selectedProfileIndex == -1) {
 			println("Selected Profile is -1, so canceling mod data save")
 			return
@@ -95,8 +93,8 @@ class ModsTableModel(val modData: ModData, val modsTab: ModsTab, val table: Mods
 		
 	}
 	
-//	TODO: FIND A BETTER WAY OF DOING THIS (getColumnClass w/ KotlinWorkAround)
-	override fun getColumnClass(columnIndex: Int) = if (columnIndex == 0) KotlinWorkAround.BOOLEAN_CLASS else super.getColumnClass(columnIndex)
+	@Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
+	override fun getColumnClass(columnIndex: Int) = if (columnIndex == 0) java.lang.Boolean::class.java else super.getColumnClass(columnIndex)
 	override fun isCellEditable(row: Int, column: Int) = column == 0
 	override fun tableChanged(e: TableModelEvent) = fireModDataSync()
 	override fun columnSelectionChanged(e: ListSelectionEvent) {}

@@ -170,8 +170,7 @@ class ForgeTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) :
 		val sure = JOptionPane.showConfirmDialog(this,
 				"Are you sure you want to delete\nthe profile ${modData.getSelectedProfile().profileName}?",
 				"Delete?", JOptionPane.YES_NO_OPTION)
-//		TODO: yes is 0 and no is 1? WHAT THE FUCK!?!?!?!?!?!?!?!?!?!?
-		if (sure != 0) return
+		if (sure != JOptionPane.YES_NO_OPTION) return
 		modData.removeProfile(modData.selectedProfileIndex)
 		modData.selectedProfileIndex = modData.selectedProfileIndex - 1; // move up one, this will never be -1, cause being at 0 is default profile
 		refresh()

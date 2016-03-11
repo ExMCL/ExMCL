@@ -18,6 +18,7 @@ import java.io.PrintStream;
 import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
 import java.net.Proxy;
+import java.util.Arrays;
 import java.util.List;
 
 /**

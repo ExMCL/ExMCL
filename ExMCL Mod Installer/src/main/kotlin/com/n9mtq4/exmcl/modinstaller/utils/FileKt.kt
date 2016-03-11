@@ -3,6 +3,7 @@ package com.n9mtq4.exmcl.modinstaller.utils;
 
 import java.io.BufferedReader
 import java.io.BufferedWriter
+import java.io.Closeable
 import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
@@ -22,7 +23,7 @@ fun open(fPath: String, t: String) = open(File(fPath), t)
 fun open(f: File, canRead: Boolean = false, canWrite: Boolean = false, append: Boolean = false) = FileKt(f, canRead, canWrite, append)
 fun open(fPath: String , canRead: Boolean = false, canWrite: Boolean = false, append: Boolean = false) = FileKt(File(fPath), canRead, canWrite, append)
 
-open class FileKt(val file: File, val canRead: Boolean = false, val canWrite: Boolean = false, val append: Boolean = false) : AutoCloseable {
+open class FileKt(val file: File, val canRead: Boolean = false, val canWrite: Boolean = false, val append: Boolean = false) : Closeable {
 	
 	private val bufferedReader: BufferedReader?
 	private val bufferedWriter: BufferedWriter?
@@ -49,8 +50,6 @@ open class FileKt(val file: File, val canRead: Boolean = false, val canWrite: Bo
 			str += line + "\n"
 			line = read()
 		}
-//		TODO: reset the reader
-//		bufferedReader?.reset()
 		return str
 	}
 	
