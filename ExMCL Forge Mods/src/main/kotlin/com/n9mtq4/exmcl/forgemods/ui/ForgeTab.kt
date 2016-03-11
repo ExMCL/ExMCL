@@ -72,9 +72,8 @@ class ForgeTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) :
 		this.addProfile = JButton("New Profile")
 		this.removeProfile = JButton("Delete Profile")
 		this.dupProfile = JButton("Duplicate Profile")
-		this.addMod = JButton("Add Mod")
+		this.addMod = JButton("Add Mod").apply { toolTipText = "Add mods the the current profile.\nYou can also drag and drop mods into the table." }
 		this.removeMod = JButton("Remove Mod")
-		addMod.toolTipText = "Add mods the the current profile.\nYou can also drag and drop mods into the table."
 		buttonPanel.apply {
 			add(installForge)
 			add(addProfile)
@@ -139,15 +138,14 @@ class ForgeTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) :
 	override fun actionPerformed(e: ActionEvent) {
 		
 		val button = e.source as JButton
-		val text = button.text.toLowerCase()
 		
-		when (text) {
-			"install forge" -> installForge()
-			"new profile" -> newProfile()
-			"delete profile" -> deleteProfile()
-			"duplicate profile" -> dupProfile()
-			"add mod" -> addMod()
-			"remove mod" -> removeMod()
+		when (button) {
+			installForge -> installForge()
+			addProfile -> newProfile()
+			removeProfile -> deleteProfile()
+			dupProfile -> dupProfile()
+			addMod -> addMod()
+			removeMod -> removeMod()
 		}
 		
 	}
