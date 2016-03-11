@@ -1,6 +1,7 @@
 package com.n9mtq4.exmcl.forgemods.ui
 
 import com.n9mtq4.exmcl.forgemods.data.ModData
+import com.n9mtq4.exmcl.forgemods.utils.isMod
 import com.n9mtq4.filedrop.FileDrop
 import java.io.File
 import javax.swing.JTable
@@ -45,7 +46,7 @@ class FModsTable(var modData: ModData, val forgeTab: ForgeTab) : JTable() {
 	private fun initFileDrop() {
 		
 		FileDrop(this, FileDrop.Listener { files: Array<File> ->
-			files.forEach { modData.profiles[modData.selectedProfileIndex].addMod(it) }
+			files.filter { it.isMod() }.forEach { modData.profiles[modData.selectedProfileIndex].addMod(it) }
 			refreshModel()
 		})
 		

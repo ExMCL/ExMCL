@@ -17,8 +17,6 @@ import kotlin.concurrent.thread
 /**
  * Created by will on 3/6/16 at 11:49 PM.
  * 
- * FIXME: the PatchingWindow doesn't init its progress bar!?
- * 
  * @author Will "n9Mtq4" Bresnahan
  */
 class GameStartHook(val minecraftLauncher: Launcher, val modData: ModData) : GenericListener {

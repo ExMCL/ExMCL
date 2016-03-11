@@ -1,6 +1,7 @@
 package com.n9mtq4.exmcl.modinstaller.ui
 
 import com.n9mtq4.exmcl.modinstaller.data.ModData
+import com.n9mtq4.exmcl.modinstaller.utils.isMod
 import com.n9mtq4.filedrop.FileDrop
 import java.io.File
 import javax.swing.JTable
@@ -45,7 +46,7 @@ class ModsTable(var modData: ModData, val modsTab: ModsTab) : JTable() {
 	private fun initFileDrop() {
 		
 		FileDrop(this, FileDrop.Listener { files: Array<File> ->
-			files.forEach { modData.profiles[modData.selectedProfileIndex].addMod(it) }
+			files.filter { it.isMod() }.forEach { modData.profiles[modData.selectedProfileIndex].addMod(it) }
 			refreshModel()
 		})
 		

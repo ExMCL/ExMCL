@@ -46,6 +46,8 @@ class ModsTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) : J
 	
 	val addMod: JButton
 	val removeMod: JButton
+	val up: JButton
+	val down: JButton
 	
 	init {
 		
@@ -60,8 +62,8 @@ class ModsTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) : J
 		
 		isEnabled = false
 		
-		//		set up table and scrolling
-		this.buttonPanel = JPanel(GridLayout(2, 1))
+//		set up table and scrolling
+		this.buttonPanel = JPanel(GridLayout(4, 1))
 		this.list = JList<String>(modData.getProfileNames().toTypedArray())
 		list.selectionMode = ListSelectionModel.SINGLE_SELECTION
 		list.addListSelectionListener(this)
@@ -69,18 +71,23 @@ class ModsTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) : J
 		listScroll.setColumnHeaderView(JLabel(HEADER_HTML))
 		this.table = ModsTable(modData, this)
 		
-		//		buttons
-		this.addMod = JButton("Add Mod")
+//		buttons
+		this.addMod = JButton("Add Mod").apply { toolTipText = "Add mods the the current profile.\nYou can also drag and drop mods into the table." }
 		this.removeMod = JButton("Remove Mod")
-		addMod.toolTipText = "Add mods the the current profile.\nYou can also drag and drop mods into the table."
+		this.up = JButton("Up").apply { toolTipText = "Mods nearer the top are loaded before\nmods nearer the bottom." }
+		this.down = JButton("Down").apply { toolTipText = "Mods nearer the top are loaded before\nmods nearer the bottom." }
 		buttonPanel.apply {
 			add(addMod)
 			add(removeMod)
+			add(up)
+			add(down)
 		}
 		addMod.addActionListener(this)
 		removeMod.addActionListener(this)
+		up.addActionListener(this)
+		down.addActionListener(this)
 		
-		//		set up split pane
+//		set up split pane
 		this.sideSplitPane = JSplitPane(VERTICAL_SPLIT)
 		sideSplitPane.apply {
 			topComponent = listScroll
@@ -119,7 +126,7 @@ class ModsTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) : J
 	}
 	
 	fun refreshList() {
-		//		list.setListData(modData.getProfileNames())
+//		list.setListData(modData.getProfileNames())
 		list.setListData(modData.getProfileNames().toTypedArray())
 		val profileNameToSet = minecraftLauncher.profileManager?.selectedProfile?.name ?: return
 		list.setSelectedValue(profileNameToSet, true)
@@ -135,6 +142,8 @@ class ModsTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) : J
 		when (button) {
 			addMod -> addMod()
 			removeMod -> removeMod()
+			up -> moveMod(-1)
+			down -> moveMod(1)
 		}
 		
 	}
@@ -174,6 +183,23 @@ class ModsTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) : J
 		}
 		modData.getSelectedProfile().removeMod(row)
 		table.refreshModel()
+		if (row - 1 > 0) table.setRowSelectionInterval(row - 1, row - 1) // select next mod
+	}
+	
+	private fun moveMod(i: Int) {
+		val row = table.selectedRow
+		if (row < 0) {
+			JOptionPane.showMessageDialog(this, "You haven't selected a mod to remove!", "Error", JOptionPane.ERROR_MESSAGE)
+			return
+		}
+		val ml = modData.getSelectedProfile().modList
+		val desiredPos = row + i
+		if (desiredPos !in 0..ml.size - 1) return // make sure in range
+		val currentMod = ml[row] // tmp copy
+		ml.removeAt(row) // remove
+		ml.add(desiredPos, currentMod) // re-add
+		table.refreshModel() // refresh
+		table.setRowSelectionInterval(desiredPos, desiredPos) // select moved mod
 	}
 	
 }
