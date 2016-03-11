@@ -160,7 +160,8 @@ class MinecraftPatcher(val minecraftLauncher: Launcher, val modProfile: ModProfi
 		
 		for (file in files) {
 			
-			val ze = ZipEntry(file.substring(subIndex, file.length))
+			val zeName = file.substring(subIndex, file.length).replace("\\", "/") // windows support
+			val ze = ZipEntry(zeName)
 			zos.putNextEntry(ze)
 			
 			val fins = FileInputStream(File(file))
