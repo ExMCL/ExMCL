@@ -40,6 +40,7 @@ class UpdatePanel(launcherPanel: LauncherPanel, val updateAvailable: UpdateAvail
 		body.isEditable = false
 		body.text = (updateAvailable.updateInfo["body"] ?: "Error getting changelog!") as String
 		val scroll = JScrollPane(body)
+		scroll.verticalScrollBarPolicy = JScrollPane.VERTICAL_SCROLLBAR_ALWAYS
 		
 		add(JLabel("<html><h2>There is an update for ExMCL available!</h2></html>"), BorderLayout.NORTH)
 		add(scroll, BorderLayout.CENTER)
