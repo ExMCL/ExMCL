@@ -2,6 +2,7 @@ group 'ExMCL'
 version 'unspecified'
 
 apply plugin: 'java'
+apply plugin: 'kotlin'
 
 sourceCompatibility = 1.5
 
@@ -18,7 +19,7 @@ dependencies {
 }
 
 buildscript {
-    ext.kotlin_version = '1.0.0'
+    ext.kotlin_version = '1.0.1'
     repositories {
         mavenCentral()
     }
