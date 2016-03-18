@@ -18,7 +18,7 @@ class ModData(val profiles: ArrayList<ModProfile>, var selectedProfileIndex: Int
 	
 	companion object {
 		private val serialVersionUID = 6369787388893016352L;
-		private val MOD_LOCATION = "data/jarmods.dat"
+		private const val MOD_LOCATION = "data/jarmods.dat"
 	}
 	
 	object Loader {

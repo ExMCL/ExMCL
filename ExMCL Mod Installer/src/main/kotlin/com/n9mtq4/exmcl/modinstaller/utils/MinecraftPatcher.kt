@@ -158,8 +158,8 @@ class MinecraftPatcher(val minecraftLauncher: Launcher, val modProfile: ModProfi
 		
 		val subIndex = sourceDir.absolutePath.length + 1
 		
-		for (file in files) {
-			
+		files.forEach { file ->
+		
 			val zeName = file.substring(subIndex, file.length).replace("\\", "/") // windows support
 			val ze = ZipEntry(zeName)
 			zos.putNextEntry(ze)

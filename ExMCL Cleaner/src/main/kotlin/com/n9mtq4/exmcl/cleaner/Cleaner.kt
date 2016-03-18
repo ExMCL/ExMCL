@@ -59,7 +59,7 @@ class Cleaner : GenericListener, RemovalListener, EnableListener {
 				
 				if (!success) {
 					it.deleteOnExit()
-					println("Set the file to delete when the program exits.")
+					println("Set the ${it.absolutePath} to delete when the program exits.")
 				}
 				
 			}catch (e: Exception) {

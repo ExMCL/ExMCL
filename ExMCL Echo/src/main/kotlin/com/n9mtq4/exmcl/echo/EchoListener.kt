@@ -49,9 +49,9 @@ class EchoListener : EnableListener, ObjectListener, GenericListener {
 			return
 		}
 		
-		when {
-			e.obj is Array<*> -> baseConsole.println("Object: ${e.message} | (${Arrays.toString(e.obj as Array<*>)})")
-			e.obj is Collection<*> -> baseConsole.println("Object: ${e.message} | (${Arrays.toString((e.obj as Collection<*>).toTypedArray())})")
+		when(e.obj) {
+			is Array<*> -> baseConsole.println("Object: ${e.message} | (${Arrays.toString(e.obj as Array<*>)})")
+			is Collection<*> -> baseConsole.println("Object: ${e.message} | (${Arrays.toString((e.obj as Collection<*>).toTypedArray())})")
 			else -> baseConsole.println("Object: " + e.message + " | (" + e.obj.toString() + ")")
 		}
 		
