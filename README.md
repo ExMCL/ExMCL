@@ -1,4 +1,15 @@
 ## How To Build
+### With shell script
+Linux / Mac / Windows (when bash finally arrives).
+
+Open terminal and type:
+```bash
+git clone https://github.com/ExMCL/ExMCL.git
+cd ExMCL
+sh fullbuild.sh
+```
+To start ExMCL, run ```ExMCL/runmehere/ExMCL Launcher.jar```
+### Without shell script
 (These steps are designed for linux/mac. They following instructions will be
 similar on windows)
  1. cd to a workspace
@@ -14,12 +25,12 @@ similar on windows)
   4. Copy ```launcher.jar``` to ```ExMCL/providedlibs```
  5. Make a folder called ```ExMCL/runmehere/```
   * Also add another copy of the "Minecraft.jar" from step 4. To ```ExMCL/runmehere``` [Download here](https://s3.amazonaws.com/Minecraft.Download/launcher/Minecraft.jar)
- 6. Make a folder called ```ExMCL/runmehere/libs```
-  1. Download this file [here](https://drive.google.com/file/d/0B7Dty1HqMYtYcXBRY1FFZWVwMTA/view?usp=sharing)
-  2. Extract the libraries and copy them to ```ExMCL/runmehere/libs```
-  3. Make sure you have these files in ```ExMCL/runmehere/libs```
-    * ```FileDrop.jar```
-    * ```LogWindowFramework-5.1.jar```
-    * ```ReflectionHelper.jar```
- 7. Run ```gradlew build```
- 8. To start ExMCL, run ```ExMCL/runmehere/ExMCL Launcher.jar```
+  1. Git clone all these repos
+    * https://github.com/n9Mtq4/LogWindow
+    * https://github.com/n9Mtq4/KotlinExtLib
+    * https://github.com/n9Mtq4/ReflectionHelper
+    * https://github.com/n9Mtq4/FileDrop
+  2. cd into and ```./gradlew build``` on all the repos
+  3. Copy all the builds (located in ```reponame/build/libs/```) and copy them into ```ExMCL/runmehere/libs```
+ 6. Run ```./gradlew build``` on the ExMCL project
+ 7. To start ExMCL, run ```ExMCL/runmehere/ExMCL Launcher.jar```
