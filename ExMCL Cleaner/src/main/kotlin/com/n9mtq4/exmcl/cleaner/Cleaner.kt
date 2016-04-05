@@ -43,7 +43,7 @@ class Cleaner : GenericListener, RemovalListener, EnableListener {
 	}
 	
 	private fun clean() {
-		deleteFiles(buildToDeleteTree())
+		deleteFiles(toDelete)
 	}
 	
 	private fun deleteFiles(files: ArrayList<File>) {
@@ -54,7 +54,7 @@ class Cleaner : GenericListener, RemovalListener, EnableListener {
 				
 				if (!it.exists()) return@forEach
 				
-				val success = it.delete()
+				val success = it.deleteRecursively()
 				println("${if (success) "Deleted" else "Failed to delete"} the file: ${it.absolutePath}")
 				
 				if (!success) {
@@ -70,39 +70,6 @@ class Cleaner : GenericListener, RemovalListener, EnableListener {
 			}
 			
 		}
-		
-	}
-	
-	private fun buildToDeleteTree(): ArrayList<File> {
-//		change directories into children files
-		val files = ArrayList<File>()
-		for (file in toDelete) {
-			files.add(file)
-			if (file.isDirectory) {
-				files.addAll(buildFileTree(file))
-			}
-		}
-//		directories have to be last
-		files.sort { o1, o2 ->
-			if (o1.isDirectory) return@sort 1
-			if (o2.isDirectory) return@sort -1
-			return@sort 0
-		}
-		return files
-	}
-	
-	private fun buildFileTree(file: File): ArrayList<File> {
-		
-		val files = ArrayList<File>()
-		if (file.isDirectory) {
-			val children = file.listFiles() ?: return files
-			for (child in children) {
-				files.addAll(buildFileTree(child))
-			}
-		}else {
-			files.add(file)
-		}
-		return files
 		
 	}
 	
