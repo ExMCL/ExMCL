@@ -58,7 +58,7 @@ class Cleaner : GenericListener, RemovalListener, EnableListener {
 				println("${if (success) "Deleted" else "Failed to delete"} the file: ${it.absolutePath}")
 				
 				if (!success) {
-					it.deleteOnExit()
+					it.walkBottomUp().forEach { it.deleteOnExit() }
 					println("Set the ${it.absolutePath} to delete when the program exits.")
 				}
 				
