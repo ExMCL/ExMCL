@@ -3,11 +3,9 @@
 Linux / Mac / Windows (when bash finally arrives).
 
 Open terminal and type:
-```bash
-git clone https://github.com/ExMCL/ExMCL.git
-cd ExMCL
-sh fullbuild.sh
-```
+
+```git clone https://github.com/ExMCL/ExMCL.git && cd ExMCL && sh fullbuild.sh```
+
 To start ExMCL, run ```ExMCL/runmehere/ExMCL Launcher.jar```
 ### Without shell script
 (These steps are designed for linux/mac. They following instructions will be
