@@ -1,6 +1,7 @@
 package com.n9mtq4.exmcl.modinstaller.utils
 
 import com.n9mtq4.exmcl.modinstaller.data.ModProfile
+import com.n9mtq4.kotlin.extlib.io.open
 import net.minecraft.launcher.Launcher
 import org.json.simple.JSONArray
 import org.json.simple.JSONObject
@@ -185,7 +186,7 @@ class MinecraftPatcher(val minecraftLauncher: Launcher, val modProfile: ModProfi
 	
 	private fun modifyJson() {
 		val oldJsonFile = open(File(newVersionDir, "$oldVersion.json"), "r")
-		val oldJsonText = oldJsonFile.readAll()
+		val oldJsonText = oldJsonFile.readText()
 		oldJsonFile.close()
 		val parser = JSONParser()
 		val json = parser.parse(oldJsonText) as JSONObject
