@@ -26,6 +26,7 @@ import java.io.Serializable
 fun <E> readSerializable(file: File): E {
 	val fileInputStream = FileInputStream(file)
 	val objectInputStream = ObjectInputStream(fileInputStream)
+	@Suppress("UNCHECKED_CAST")
 	val o = objectInputStream.readObject() as E
 	objectInputStream.close()
 	return o

@@ -29,7 +29,7 @@ class EchoListener : EnableListener, ObjectListener, GenericListener {
 	 */
 	override fun onEnable(e: EnableEvent) {
 //		gets the listeners
-		val l = ReflectionHelper.getObject<ArrayList<ListenerContainer>>("listenerContainers", e.baseConsole)
+		val l: ArrayList<ListenerContainer> = ReflectionHelper.getObject("listenerContainers", e.baseConsole)
 //		gets the listener container that is handling the methods for this listener
 		val container = e.baseConsole.getContainerFromAttribute(this)
 //		removes the container from the list
@@ -50,6 +50,7 @@ class EchoListener : EnableListener, ObjectListener, GenericListener {
 		}
 		
 		when(e.obj) {
+//			null -> baseConsole.println("Object: ${e.message} | (null)") // TODO: does this work, or NPE?
 			is Array<*> -> baseConsole.println("Object: ${e.message} | (${Arrays.toString(e.obj as Array<*>)})")
 			is Collection<*> -> baseConsole.println("Object: ${e.message} | (${Arrays.toString((e.obj as Collection<*>).toTypedArray())})")
 			else -> baseConsole.println("Object: " + e.message + " | (" + e.obj.toString() + ")")
