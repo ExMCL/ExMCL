@@ -9,7 +9,11 @@ import java.awt.Component
  *
  * @author Will "n9Mtq4" Bresnahan
  */
-class CreateTabEvent(val title: String, val component: Component, baseConsole: BaseConsole) : DefaultGenericEvent(baseConsole)
-class LowLevelCreateTabEvent(val title: String, val component: Component, baseConsole: BaseConsole) : DefaultGenericEvent(baseConsole)
+class CreateTabEvent(val title: String, val component: Component, baseConsole: BaseConsole) : DefaultGenericEvent(baseConsole) {
+	override fun toString() = "${this.javaClass.name}{title=$title, component=$component}"
+}
+class LowLevelCreateTabEvent(val title: String, val component: Component, baseConsole: BaseConsole) : DefaultGenericEvent(baseConsole) {
+	override fun toString() = "${this.javaClass.name}{title=$title, component=$component}"
+}
 class SafeForLowLevelTabCreationEvent(initiatingBaseConsole: BaseConsole) : DefaultGenericEvent(initiatingBaseConsole)
 class SafeForTabCreationEvent(initiatingBaseConsole: BaseConsole) : DefaultGenericEvent(initiatingBaseConsole)

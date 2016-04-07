@@ -12,7 +12,5 @@ import java.io.File
  */
 @Suppress("unused", "UNUSED_PARAMETER")
 class AddToDelete(val file: File, initiatingBaseConsole: BaseConsole?) : DefaultGenericEvent(initiatingBaseConsole) {
-	
-	override fun toString() = "${AddToDelete::class.java.name}: ${file.absolutePath}"
-	
+	override fun toString() = "${this.javaClass.name}{file=${file.absolutePath}}"
 }

@@ -10,4 +10,6 @@ import net.minecraft.launcher.SwingUserInterface
  * @author Will "n9Mtq4" Bresnahan
  */
 @Suppress("unused", "UNUSED_PARAMETER")
-class SwingUserInterfaceEvent(initiatingBaseConsole: BaseConsole, val swingUserInterface: SwingUserInterface) : DefaultGenericEvent(initiatingBaseConsole)
+class SwingUserInterfaceEvent(initiatingBaseConsole: BaseConsole, val swingUserInterface: SwingUserInterface) : DefaultGenericEvent(initiatingBaseConsole) {
+	override fun toString() = "${this.javaClass.name}{swingUserInterface=$swingUserInterface}"
+}

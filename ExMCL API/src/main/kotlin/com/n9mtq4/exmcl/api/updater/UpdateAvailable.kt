@@ -11,7 +11,5 @@ import java.util.HashMap
  */
 @Suppress("unused", "UNUSED_PARAMETER")
 class UpdateAvailable(initiatingBaseConsole: BaseConsole, val updateInfo: HashMap<*, *>, val targetBuildNumber: Int) : DefaultGenericEvent(initiatingBaseConsole) {
-	
-	override fun toString() = "UpdateEvent{targetBuildNumber=$targetBuildNumber, updateInfo=${updateInfo.toString()}}"
-	
+	override fun toString() = "${this.javaClass.name}{targetBuildNumber=$targetBuildNumber, updateInfo=${updateInfo.toString()}}"
 }

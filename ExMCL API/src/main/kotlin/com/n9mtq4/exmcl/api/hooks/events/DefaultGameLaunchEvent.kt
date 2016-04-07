@@ -9,4 +9,6 @@ import java.awt.event.ActionEvent
  *
  * @author Will "n9Mtq4" Bresnahan
  */
-class DefaultGameLaunchEvent(val actionEvent: ActionEvent, initiatingBaseConsole: BaseConsole) : DefaultGenericEvent(initiatingBaseConsole)
+class DefaultGameLaunchEvent(val actionEvent: ActionEvent, initiatingBaseConsole: BaseConsole) : DefaultGenericEvent(initiatingBaseConsole) {
+	override fun toString() = "${this.javaClass.name}{actionEvent=$actionEvent}"
+}

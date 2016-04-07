@@ -11,7 +11,5 @@ import com.n9mtq4.logwindow.events.DefaultGenericEvent
 @Suppress("unused", "UNUSED_PARAMETER")
 class PreDefinedSwingHookEvent(val component: Any, val type: PreDefinedSwingComponent, initiatingBaseConsole: BaseConsole) :
 		DefaultGenericEvent(initiatingBaseConsole) {
-	
 	override fun toString() = "${this.javaClass.name} carrying type: ${type.name} with value ${component.toString()}"
-	
 }

@@ -11,4 +11,6 @@ import net.minecraft.launcher.Launcher
  */
 @Suppress("unused", "UNUSED_PARAMETER")
 class MinecraftLauncherEvent(val minecraftLauncher: Launcher, initiatingBaseConsole: BaseConsole) : 
-		DefaultGenericEvent(initiatingBaseConsole)
+		DefaultGenericEvent(initiatingBaseConsole) {
+	override fun toString() = "${this.javaClass.name}{minecraftLauncher=$minecraftLauncher}"
+}

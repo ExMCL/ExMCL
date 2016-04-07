@@ -10,4 +10,6 @@ import java.awt.event.ActionEvent
  * @author Will "n9Mtq4" Bresnahan
  */
 @Suppress("unused", "UNUSED_PARAMETER")
-class GameLaunchEvent(val actionEvent: ActionEvent, initiatingBaseConsole: BaseConsole) : DefaultGenericEvent(initiatingBaseConsole)
+class GameLaunchEvent(val actionEvent: ActionEvent, initiatingBaseConsole: BaseConsole) : DefaultGenericEvent(initiatingBaseConsole) {
+	override fun toString() = "${this.javaClass.name}{actionEvent=$actionEvent}"
+}
