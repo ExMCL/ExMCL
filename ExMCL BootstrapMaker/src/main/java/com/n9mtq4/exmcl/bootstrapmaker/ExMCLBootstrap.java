@@ -23,7 +23,7 @@ import static com.n9mtq4.reflection.ReflectionHelper.getObject;
  */
 public final class ExMCLBootstrap extends Bootstrap {
 	
-	public static final int EMULATED_BOOTSTRAP_VERSION = 30;
+	public static final int EMULATED_BOOTSTRAP_VERSION = 5;
 	
 	private final BaseConsole baseConsole;
 	private transient Launcher launcher;

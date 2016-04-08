@@ -29,7 +29,6 @@ gradle.taskGraph.afterTask { Task task, TaskState state ->
     }
 }
 buildscript {
-    ext.kotlin_version = '1.0.1'
     repositories {
         mavenCentral()
     }
