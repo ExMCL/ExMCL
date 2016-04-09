@@ -58,7 +58,7 @@ public class HookedSwingUserInterface extends SwingUserInterface {
 		this.baseConsole = baseConsole;
 		thisWrapper = ReflectionWrapper.attachToObject(this);
 		parentWrapper = ReflectionWrapper.attachToObject(parent);
-		thisWrapper.setField("launcherPanel", parentWrapper.getField("launcherPanel"));
+		thisWrapper.set("launcherPanel", parentWrapper.get("launcherPanel"));
 	}
 	
 	@Override

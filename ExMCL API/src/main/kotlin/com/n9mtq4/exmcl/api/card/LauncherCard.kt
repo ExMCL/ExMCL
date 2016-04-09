@@ -15,7 +15,7 @@ import javax.swing.JPanel
 open class LauncherCard(protected val launcherPanel: LauncherPanel, layout: LayoutManager, isDoubleBuffered: Boolean) : JPanel(layout, isDoubleBuffered) {
 	
 	private val launcherPanelRR = ReflectionWrapper.attachToObject(launcherPanel)
-	private val cardLayout: CardLayout = launcherPanelRR.getField("cardLayout")
+	private val cardLayout: CardLayout = launcherPanelRR["cardLayout"]
 	
 	constructor(launcherPanel: LauncherPanel) : this(launcherPanel, true)
 	constructor(launcherPanel: LauncherPanel, isDoubleBuffered: Boolean) : this(launcherPanel, FlowLayout(), isDoubleBuffered)

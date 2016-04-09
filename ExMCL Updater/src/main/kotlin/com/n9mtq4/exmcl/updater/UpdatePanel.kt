@@ -49,6 +49,11 @@ class UpdatePanel(launcherPanel: LauncherPanel, val updateAvailable: UpdateAvail
 		update.addActionListener { OperatingSystem.openLink(URI.create(UPDATE_URL)) }
 		ignore.addActionListener { removeThisCard() }
 		
+		val panelSize = launcherPanel.preferredSize
+		val width = (panelSize.width * .75).toInt()
+		val height = (panelSize.height * .75).toInt()
+		this.preferredSize = Dimension(width, height)
+		
 	}
 	
 }

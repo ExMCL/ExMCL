@@ -28,7 +28,7 @@ class UpdateAlerter : GenericListener {
 	fun listenForSwingUserInterface(e: SwingUserInterfaceEvent, baseConsole: BaseConsole) {
 		this.swingUserInterface = e.swingUserInterface
 		this.swingUserInterfaceRR = ReflectionWrapper.attachToObject(swingUserInterface)
-		this.launcherPanel = swingUserInterfaceRR.getField("launcherPanel")
+		this.launcherPanel = swingUserInterfaceRR["launcherPanel"]
 	}
 	
 	@Suppress("unused", "UNUSED_PARAMETER")

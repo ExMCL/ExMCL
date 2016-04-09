@@ -15,10 +15,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.net.Authenticator;
 import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
 import java.net.Proxy;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -69,6 +69,16 @@ public final class BootstrapUtils {
 		String proxyUser = (String) optionSet.valueOf(proxyUserOption);
 		String proxyPass = (String) optionSet.valueOf(proxyPassOption);
 		PasswordAuthentication passwordAuthentication = null;
+		if(!proxy.equals(Proxy.NO_PROXY) && stringHasValue(proxyUser) && stringHasValue(proxyPass)) {
+			passwordAuthentication = new PasswordAuthentication(proxyUser, proxyPass.toCharArray());
+			final PasswordAuthentication finalPasswordAuthentication = passwordAuthentication;
+			Authenticator.setDefault(new Authenticator() {
+				protected PasswordAuthentication getPasswordAuthentication() {
+					return finalPasswordAuthentication;
+				}
+			});
+		}
+		
 		
 		File workingDirectory = (File) optionSet.valueOf(workingDirectoryOption);
 		if ((workingDirectory.exists()) && (!workingDirectory.isDirectory()))
@@ -98,12 +108,16 @@ public final class BootstrapUtils {
 				HopperService.submitReport(proxy, report.toString(), "Minecraft.Bootstrap", "5");
 			}catch (Throwable ignored) {
 			}
-			frame.println(new StringBuilder().append("FATAL ERROR: ").append(stracktrace.toString()).toString());
+			frame.println("FATAL ERROR: " + stracktrace.toString());
 			frame.println("\nPlease fix the error and restart.");
 		}
 		
 		return frame;
 		
+	}
+	
+	private static boolean stringHasValue(String string) {
+		return string != null && !string.isEmpty();
 	}
 	
 }

@@ -7,8 +7,6 @@ import com.n9mtq4.exmcl.api.updater.UpdateAvailable
 import com.n9mtq4.logwindow.BaseConsole
 import com.n9mtq4.logwindow.annotation.Async
 import com.n9mtq4.logwindow.annotation.ListensFor
-import com.n9mtq4.logwindow.events.EnableEvent
-import com.n9mtq4.logwindow.listener.EnableListener
 import com.n9mtq4.logwindow.listener.GenericListener
 import org.json.simple.JSONArray
 import org.json.simple.parser.JSONParser
@@ -21,9 +19,11 @@ import java.util.HashMap
  * @author Will "n9Mtq4" Bresnahan
  */
 @Suppress("unused", "UNUSED_PARAMETER")
-class UpdateFinder : EnableListener, GenericListener {
+class UpdateFinder : GenericListener {
 	
-	override fun onEnable(p0: EnableEvent?) {}
+	companion object {
+		private const val FORCE_UPDATE = false
+	}
 	
 	/**
 	 * Having it wait for the tab ready instead of the enabled
@@ -38,12 +38,6 @@ class UpdateFinder : EnableListener, GenericListener {
 		checkForUpdate(e.initiatingBaseConsole)
 		
 	}
-	
-/*	@Async
-	override fun onEnable(e: EnableEvent) {
-		checkForUpdate(e.baseConsole)
-	}
-	*/
 	
 	private fun checkForUpdate(baseConsole: BaseConsole) {
 		
@@ -65,7 +59,7 @@ class UpdateFinder : EnableListener, GenericListener {
 			val targetBuildNumber = tokens[tokens.size - 1].toInt() // get the build number
 //			val targetBuildNumber = Integer.MAX_VALUE // testing value
 			
-			if (BUILD_NUMBER < targetBuildNumber) baseConsole.pushEvent(UpdateAvailable(baseConsole, latestVersion, targetBuildNumber))
+			if (FORCE_UPDATE || BUILD_NUMBER < targetBuildNumber) baseConsole.pushEvent(UpdateAvailable(baseConsole, latestVersion, targetBuildNumber))
 			
 		}catch (e: Exception) {
 			System.err.println("Failed to get update status")
