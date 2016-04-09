@@ -54,22 +54,22 @@ cp -R build/libs/. ../../runmehere/libs/
 echo FileDrop done!
 cd ..
 
-echo Building Minecraft Launcher Extractor
-git clone https://github.com/ExMCL/MinecraftLauncherExtractor.git
-cd MinecraftLauncherExtractor
+echo Building Minecraft Launcher Unpacker
+git clone https://github.com/ExMCL/MinecraftLauncherUnpacker.git
+cd MinecraftLauncherUnpacker
 cp ../../providedlibs/Minecraft.jar Minecraft.jar
 chmod +x ./gradlew # just to make sure
 bash ./gradlew build
-echo Minecraft Launcher Extractor done!
+echo Minecraft Launcher Unpacker done!
 cd ..
 
 echo finished all dependancy builds
 
-echo Extracting Minecraft Launcher
-cd MinecraftLauncherExtractor
+echo Unpacking Minecraft Launcher
+cd MinecraftLauncherUnpacker
 curl https://s3.amazonaws.com/Minecraft.Download/launcher/launcher.pack.lzma --output launcher.pack.lzma
-java -jar build/libs/MinecraftLauncherExtractor.jar Minecraft.jar launcher.pack.lzma ../../providedlibs/laucher.jar
-echo Done extracting minecraft launcher
+java -jar build/libs/MinecraftLauncherUnpacker.jar Minecraft.jar launcher.pack.lzma ../../providedlibs/laucher.jar
+echo Done unpacking minecraft launcher
 cd ..
 
 cd ..
