@@ -1,8 +1,15 @@
 package com.n9mtq4.exmcl.launcher;
 
 import javax.swing.JOptionPane;
+import java.awt.Desktop;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 
 /**
  * Created by will on 2/12/16 at 11:37 PM.
@@ -30,16 +37,37 @@ public final class ExMCL {
 		initStartUp();
 	}
 	
-	private void initStartUp() {
+	private void initStartUp() throws IOException {
 		
 		try {
 			verifyBootstrap();
 			addBootstrap();
 			System.out.println("Successfully added the minecraft launcher to the class path");
-		}catch (RuntimeException e) {
-			JOptionPane.showMessageDialog(null, Strings.NO_MINECRAFT, "Error", JOptionPane.ERROR_MESSAGE);
-		}catch (IOException e) {
-			JOptionPane.showMessageDialog(null, Strings.NO_MINECRAFT, "Error", JOptionPane.ERROR_MESSAGE);
+		}catch (Exception e) {
+			
+			Object[] buttons = {"Auto", "Manual", "Quit"};
+			int result = JOptionPane.showOptionDialog(null, Strings.NO_MINECRAFT, "Mnecraft.jar?", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, buttons, buttons[0]);
+			if (result == JOptionPane.YES_OPTION) {
+//				download it
+				URL url = new URL(Strings.DOWNLOAD_URL);
+				ReadableByteChannel rbc = Channels.newChannel(url.openStream());
+				FileOutputStream fos = new FileOutputStream(mcLauncherFile);
+				fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+				
+				addBootstrap();
+				
+			}else if (result == JOptionPane.NO_OPTION) {
+//				open minecraft.net
+				openWebpage(new URL("http://minecraft.net"));
+				System.exit(0);
+			}else if (result == JOptionPane.CANCEL_OPTION) {
+//				quit
+				System.exit(1);
+			}else {
+//				Error
+//				eh fuck it - just exit. no time for error messages
+				System.exit(2);
+			}
 		}
 		
 		try {
@@ -76,22 +104,25 @@ public final class ExMCL {
 	}
 	
 	/*
-	* getters that don't really serve a purpose
+	* http://stackoverflow.com/a/10967469
 	* */
-	
-	@Deprecated
-	public String[] getArgs() {
-		return args;
+	private static void openWebpage(URI uri) {
+		Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+		if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+			try {
+				desktop.browse(uri);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
-	@Deprecated
-	public File getMcLauncherFile() {
-		return mcLauncherFile;
-	}
-	
-	@Deprecated
-	public BootstrapLauncher getBootstrapLauncher() {
-		return bootstrapLauncher;
+	private static void openWebpage(URL url) {
+		try {
+			openWebpage(url.toURI());
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }
