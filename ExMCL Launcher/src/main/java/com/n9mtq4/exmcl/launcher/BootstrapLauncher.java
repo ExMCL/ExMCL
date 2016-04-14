@@ -43,14 +43,4 @@ public final class BootstrapLauncher {
 		
 	}
 	
-	@Deprecated
-	public String[] getArgs() {
-		return args;
-	}
-	
-	@Deprecated
-	public BaseConsole getBaseConsole() {
-		return baseConsole;
-	}
-	
 }

@@ -1,4 +1,3 @@
-@file:Suppress("unused", "UNUSED_PARAMETER")
 package com.n9mtq4.exmcl.updater
 
 import com.n9mtq4.exmcl.api.BUILD_NUMBER
@@ -18,7 +17,6 @@ import java.util.HashMap
  *
  * @author Will "n9Mtq4" Bresnahan
  */
-@Suppress("unused", "UNUSED_PARAMETER")
 class UpdateFinder : GenericListener {
 	
 	companion object {
@@ -36,6 +34,8 @@ class UpdateFinder : GenericListener {
 	fun listenForTabReady(e: SafeForTabCreationEvent, baseConsole: BaseConsole) {
 		
 		checkForUpdate(e.initiatingBaseConsole)
+		
+		baseConsole.disableListenerAttribute(this)
 		
 	}
 	
