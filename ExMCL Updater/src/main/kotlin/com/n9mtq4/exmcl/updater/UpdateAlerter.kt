@@ -3,6 +3,7 @@ package com.n9mtq4.exmcl.updater
 
 import com.n9mtq4.exmcl.api.hooks.events.SwingUserInterfaceEvent
 import com.n9mtq4.exmcl.api.updater.UpdateAvailable
+import com.n9mtq4.kotlin.extlib.pstAndUnit
 import com.n9mtq4.logwindow.BaseConsole
 import com.n9mtq4.logwindow.annotation.ListensFor
 import com.n9mtq4.logwindow.listener.GenericListener
@@ -34,11 +35,9 @@ class UpdateAlerter : GenericListener {
 	@Suppress("unused", "UNUSED_PARAMETER")
 	@ListensFor
 	fun listenForUpdateEvent(e: UpdateAvailable, baseConsole: BaseConsole) = SwingUtilities.invokeLater {
-		try {
+		pstAndUnit {
 			val updatePanel = UpdatePanel(launcherPanel, e)
 			updatePanel.addThisCard()
-		}catch (e: Exception) {
-			e.printStackTrace()
 		}
 	}
 	

@@ -31,17 +31,11 @@ class FModsTable(var modData: ModData, val forgeTab: ForgeTab) : JTable() {
 		
 	}
 	
-	fun fireModDataSync() {
-		forgeModel.fireModDataSync()
-	}
+	fun fireModDataSync() = forgeModel.fireModDataSync()
 	
-	fun refreshModel() {
-		forgeModel.refresh()
-	}
+	fun refreshModel() = forgeModel.refresh()
 	
-	fun refreshTab() {
-		forgeTab.refresh()
-	}
+	fun refreshTab() = forgeTab.refresh()
 	
 	private fun initFileDrop() {
 		

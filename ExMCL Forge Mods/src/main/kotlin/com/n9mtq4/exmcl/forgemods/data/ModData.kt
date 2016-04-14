@@ -2,6 +2,7 @@ package com.n9mtq4.exmcl.forgemods.data
 
 import com.n9mtq4.exmcl.forgemods.utils.readSerializable
 import com.n9mtq4.exmcl.forgemods.utils.writeSerializable
+import com.n9mtq4.kotlin.extlib.syntax.def
 import java.io.File
 import java.io.IOException
 import java.io.Serializable
@@ -36,11 +37,11 @@ class ModData(val profiles: ArrayList<ModProfile>, var selectedProfileIndex: Int
 			}
 		}
 		
-		private fun createNewModData(): ModData {
+		private fun createNewModData() = def {
 			val modData = ModData()
 			val defaultProfile = ModProfile("Default")
 			modData.addProfile(defaultProfile)
-			return modData
+			modData
 		}
 		
 	}

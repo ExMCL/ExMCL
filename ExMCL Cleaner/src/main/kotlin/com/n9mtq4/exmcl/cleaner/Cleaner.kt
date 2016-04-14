@@ -2,6 +2,7 @@
 package com.n9mtq4.exmcl.cleaner
 
 import com.n9mtq4.exmcl.api.cleaner.AddToDelete
+import com.n9mtq4.kotlin.extlib.pstAndUnit
 import com.n9mtq4.logwindow.BaseConsole
 import com.n9mtq4.logwindow.annotation.ListensFor
 import com.n9mtq4.logwindow.events.EnableEvent
@@ -48,9 +49,12 @@ class Cleaner : GenericListener, RemovalListener, EnableListener {
 	
 	private fun deleteFiles(files: ArrayList<File>) {
 		
-		files.forEach { 
+		files.forEach {
 			
-			try {
+//			just in case
+//			when dealing loops, it is good to prevent one bad apple from
+//			spoiling the rest
+			pstAndUnit {
 				
 				if (!it.exists()) return@forEach
 				
@@ -62,11 +66,6 @@ class Cleaner : GenericListener, RemovalListener, EnableListener {
 					println("Set the ${it.absolutePath} to delete when the program exits.")
 				}
 				
-			}catch (e: Exception) {
-//				just in case
-//				when dealing loops, it is good to prevent one bad apple from
-//				spoiling the rest
-				e.printStackTrace()
 			}
 			
 		}

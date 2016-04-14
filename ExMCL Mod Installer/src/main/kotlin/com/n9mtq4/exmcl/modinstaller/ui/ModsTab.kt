@@ -3,6 +3,7 @@ package com.n9mtq4.exmcl.modinstaller.ui
 import com.n9mtq4.exmcl.modinstaller.GameStartHook
 import com.n9mtq4.exmcl.modinstaller.data.ModData
 import com.n9mtq4.exmcl.modinstaller.utils.browseForMods
+import com.n9mtq4.kotlin.extlib.pstAndUnit
 import com.n9mtq4.logwindow.BaseConsole
 import net.minecraft.launcher.Launcher
 import net.minecraft.launcher.profile.ProfileManager
@@ -11,7 +12,6 @@ import java.awt.Dimension
 import java.awt.GridLayout
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
-import java.io.IOException
 import javax.swing.JButton
 import javax.swing.JLabel
 import javax.swing.JList
@@ -76,7 +76,7 @@ class ModsTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) : J
 		this.removeMod = JButton("Remove Mod")
 		this.up = JButton("Up").apply { toolTipText = "Mods nearer the top are loaded before\nmods nearer the bottom." }
 		this.down = JButton("Down").apply { toolTipText = "Mods nearer the top are loaded before\nmods nearer the bottom." }
-		buttonPanel.apply {
+		with(buttonPanel) {
 			add(addMod)
 			add(removeMod)
 			add(up)
@@ -89,7 +89,7 @@ class ModsTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) : J
 		
 //		set up split pane
 		this.sideSplitPane = JSplitPane(VERTICAL_SPLIT)
-		sideSplitPane.apply {
+		with(sideSplitPane) {
 			topComponent = listScroll
 			bottomComponent = buttonPanel
 			resizeWeight = 1.0
@@ -110,11 +110,9 @@ class ModsTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) : J
 		table.fillsViewportHeight = true
 		sideSplitPane.setDividerLocation(.9)
 		
-		try {
+		pstAndUnit {
 			modData.save()
 			refresh()
-		} catch (e: IOException) {
-			e.printStackTrace()
 		}
 		baseConsole.addListenerAttribute(GameStartHook(minecraftLauncher, modData))
 		
@@ -166,12 +164,10 @@ class ModsTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) : J
 	}
 	
 	private fun addMod() {
-		try {
+		pstAndUnit {
 			val mods = browseForMods(this)
 			mods.forEach { modData.getSelectedProfile().addMod(it) }
 			table.refreshModel()
-		}catch (e: Exception) {
-			e.printStackTrace()
 		}
 	}
 	

@@ -31,17 +31,11 @@ class ModsTable(var modData: ModData, val modsTab: ModsTab) : JTable() {
 		
 	}
 	
-	fun fireModDataSync() {
-		tableModel.fireModDataSync()
-	}
+	fun fireModDataSync() = tableModel.fireModDataSync()
 	
-	fun refreshModel() {
-		tableModel.refresh()
-	}
+	fun refreshModel() = tableModel.refresh()
 	
-	fun refreshTab() {
-		modsTab.refresh()
-	}
+	fun refreshTab() = modsTab.refresh()
 	
 	private fun initFileDrop() {
 		

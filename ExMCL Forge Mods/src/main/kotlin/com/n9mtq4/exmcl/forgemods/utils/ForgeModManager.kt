@@ -3,6 +3,7 @@ package com.n9mtq4.exmcl.forgemods.utils
 import com.n9mtq4.exmcl.forgemods.data.ModData
 import com.n9mtq4.exmcl.forgemods.data.ModProfile
 import com.n9mtq4.exmcl.forgemods.ui.ForgeTab
+import com.n9mtq4.kotlin.extlib.pstAndUnit
 import net.minecraft.launcher.Launcher
 import java.io.File
 import java.io.IOException
@@ -44,10 +45,13 @@ fun cleanup(launcher: Launcher) {
 	if (!modDir.exists()) return
 	
 	val mods = modDir.listFiles() ?: return
-	mods.filter { !it.isDirectory }.filter { it.name.endsWith(".jar") || it.name.endsWith(".zip") }.forEach { 
-		println("Deleted: ${it.absolutePath}")
-		it.delete() 
-	}
+	mods.
+			filter { !it.isDirectory }.
+			filter { it.name.endsWith(".jar") || it.name.endsWith(".zip") }.
+			forEach { 
+				println("Deleted: ${it.absolutePath}")
+				it.delete() 
+			}
 	
 }
 
@@ -74,14 +78,12 @@ fun firstRunCleanup(launcher: Launcher, modData: ModData, forgeTab: ForgeTab) {
 	val exmclModsDir = File(workingDir, "mods_exmcl/")
 	
 	//	copy the children and delete the original
-	filesInModsDir.filter { !it.isDirectory }.filter { it.name.endsWith(".jar") || it.name.endsWith(".zip") }.forEach { 
-		try {
+	filesInModsDir.filter { !it.isDirectory }.filter { it.name.endsWith(".jar") || it.name.endsWith(".zip") }.forEach {
+//		DON'T BUBBLE AND BREAK EVERYTHING
+		pstAndUnit {
 			val newFile = File(exmclModsDir, it.name)
 			copyFile(it, newFile)
 			it.delete()
-		}catch (e: IOException) {
-//			DON'T BUBBLE AND BREAK EVERYTHING
-			e.printStackTrace()
 		}
 	}
 	
@@ -95,9 +97,10 @@ fun firstRunCleanup(launcher: Launcher, modData: ModData, forgeTab: ForgeTab) {
 	val filesInExmclMods = exmclModsDir.listFiles() ?: return // get all mods copied, if there are none, return
 	
 //	go through and add all the mods
-	filesInExmclMods.filter { !it.isDirectory }.filter { it.name.endsWith(".jar") || it.name.endsWith(".zip") }.forEach { 
-		defaultProfile.addMod(it)
-	}
+	filesInExmclMods.
+			filter { !it.isDirectory }.
+			filter { it.name.endsWith(".jar") || it.name.endsWith(".zip") }.
+			forEach { defaultProfile.addMod(it) }
 	
 //	refresh the forge tab
 	forgeTab.refresh()

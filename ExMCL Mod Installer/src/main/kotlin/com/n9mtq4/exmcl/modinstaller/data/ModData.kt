@@ -2,6 +2,7 @@ package com.n9mtq4.exmcl.modinstaller.data
 
 import com.n9mtq4.exmcl.modinstaller.utils.readSerializable
 import com.n9mtq4.exmcl.modinstaller.utils.writeSerializable
+import com.n9mtq4.kotlin.extlib.syntax.def
 import net.minecraft.launcher.profile.ProfileManager
 import java.io.File
 import java.io.IOException
@@ -38,11 +39,11 @@ class ModData(val profiles: ArrayList<ModProfile>, var selectedProfileIndex: Int
 			}
 		}
 		
-		private fun createNewModData(): ModData {
+		private fun createNewModData() = def {
 			val modData = ModData()
 			val defaultProfile = ModProfile("Default")
 			modData.addProfile(defaultProfile)
-			return modData
+			modData
 		}
 		
 	}

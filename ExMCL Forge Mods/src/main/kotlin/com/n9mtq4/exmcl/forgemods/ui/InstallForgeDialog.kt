@@ -1,6 +1,10 @@
 package com.n9mtq4.exmcl.forgemods.ui
 
 import com.n9mtq4.exmcl.forgemods.utils.downloadFile
+import com.n9mtq4.kotlin.extlib.ignoreAndUnit
+import com.n9mtq4.kotlin.extlib.pstAndGiven
+import com.n9mtq4.kotlin.extlib.pstAndUnit
+import com.n9mtq4.kotlin.extlib.syntax.def
 import com.n9mtq4.logwindow.utils.StringParser
 import org.jsoup.Jsoup
 import java.awt.BorderLayout
@@ -47,23 +51,25 @@ class InstallForgeDialog(val forgeTab: ForgeTab) {
 		frame.add(scroll, BorderLayout.CENTER)
 		frame.add(select, BorderLayout.SOUTH)
 		
-		frame.apply { 
+		frame.apply {
 			pack()
 			isVisible = true
 			setLocationRelativeTo(forgeTab)
 			rootPane.defaultButton = select
 		}
 		
-		select.addActionListener({ event -> 
-			JOptionPane.showMessageDialog(frame, "After installing forge, a launcher restart\nis required.", "Info", JOptionPane.INFORMATION_MESSAGE)
-			val f = download()
-			run(f)
-			frame.dispose()
+		select.addActionListener({ event ->
+			pstAndUnit {
+				JOptionPane.showMessageDialog(frame, "After installing forge, a launcher restart\nis required.", "Info", JOptionPane.INFORMATION_MESSAGE)
+				val f = download()
+				run(f)
+				frame.dispose()
+			}
 		})
 		
 	}
 	
-	private fun download(): File {
+	private fun download() = def {
 		
 		val row = table.selectedRow
 		val forgeVersion = table.getValueAt(row, 1) as String
@@ -74,7 +80,7 @@ class InstallForgeDialog(val forgeTab: ForgeTab) {
 		tmpDir.mkdirs()
 		val file = File(tmpDir, "forge_$forgeVersion.jar")
 		downloadFile(url, file)
-		return file
+		file
 		
 	}
 	
@@ -87,7 +93,7 @@ class InstallForgeDialog(val forgeTab: ForgeTab) {
 		val re = Runtime.getRuntime()
 		try {
 			re.exec("java -jar ${file.absolutePath}")
-		}catch (e: IOException) {
+		} catch (e: IOException) {
 			e.printStackTrace()
 			forgeTab.baseConsole.printStackTrace(e)
 			JOptionPane.showMessageDialog(forgeTab, "Error launching forge installer", "Error", JOptionPane.ERROR_MESSAGE);
@@ -95,62 +101,54 @@ class InstallForgeDialog(val forgeTab: ForgeTab) {
 		
 	}
 	
-	private fun getListOfForges(): Array<out Array<out Any>> {
+	private fun getListOfForges() = pstAndGiven(arrayOf(arrayOf("Error Downloading Forge List", "Please try again"))) {
 		
 		val versions = ArrayList<Array<out Any>>()
 		
-		try {
+		val index = Jsoup.connect(FORGE_FILES_URL).get()
+		val mcVersions = index.select(MCVERSION_SELECTOR)
+		val linksIndex = index.select(LINK_SELECTOR)
+		
+		linksIndex.forEach {
+			val adLink = it.attr("href")
+			val link = adLink.split(URL_SPLIT)[1]
 			
-			val index = Jsoup.connect(FORGE_FILES_URL).get()
-			val mcVersions = index.select(MCVERSION_SELECTOR)
-			val linksIndex = index.select(LINK_SELECTOR)
+			val parser = StringParser(link)
+			var chop = parser.getBetween(BETWEEN_START, BETWEEN_END)
+			chop = chop.split("/")[0]
+			val tokens = chop.split("-")
 			
-			linksIndex.forEach { 
-				val adLink = it.attr("href")
-				val link = adLink.split(URL_SPLIT)[1]
-				
-				val parser = StringParser(link)
-				var chop = parser.getBetween(BETWEEN_START, BETWEEN_END)
-				chop = chop.split("/")[0]
-				val tokens = chop.split("-")
-				
-				versions.add(arrayOf(tokens[0], tokens[1], link))
-			}
+			versions.add(arrayOf(tokens[0], tokens[1], link))
+		}
+		
+		mcVersions.forEach {
 			
-			mcVersions.forEach { 
+//			prevent a bad formatting on an older version to mess with things
+//			This is expected behavior and there are not downsides
+			ignoreAndUnit {
 				
-				try {
+				val doc = Jsoup.connect(it.attr("href")).get()
+				val links = doc.select(LINK_SELECTOR)
+				
+				links.forEach {
+					val adLink = it.attr("href")
+					val link = adLink.split(URL_SPLIT)[1]
 					
-					val doc = Jsoup.connect(it.attr("href")).get()
-					val links = doc.select(LINK_SELECTOR)
+					val parser = StringParser(link)
+					var chop = parser.getBetween(BETWEEN_START, BETWEEN_END)
+					chop = chop.split("/")[0]
+					val tokens = chop.split("-")
 					
-					links.forEach {
-						val adLink = it.attr("href")
-						val link = adLink.split(URL_SPLIT)[1]
-						
-						val parser = StringParser(link)
-						var chop = parser.getBetween(BETWEEN_START, BETWEEN_END)
-						chop = chop.split("/")[0]
-						val tokens = chop.split("-")
-						
-						versions.add(arrayOf(tokens[0], tokens[1], link))
-					}
-					
-				}catch (ignored: Exception) {
-//					prevent a bad formatting on an older version to mess with things
-//					This is expected behavior and there are not downsides
-//					e.printStackTrace()
+					versions.add(arrayOf(tokens[0], tokens[1], link))
 				}
 				
 			}
 			
-			return versions.toTypedArray()
-			
-		}catch (e: Exception) {
-			e.printStackTrace()
-			return arrayOf(arrayOf("Error Downloading Forge List", "Please try again"))
 		}
+		
+		versions.toTypedArray()
 		
 	}
 	
 }
+

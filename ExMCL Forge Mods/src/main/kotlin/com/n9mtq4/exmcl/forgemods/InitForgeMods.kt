@@ -6,6 +6,7 @@ import com.n9mtq4.exmcl.api.hooks.events.MinecraftLauncherEvent
 import com.n9mtq4.exmcl.api.tabs.events.CreateTabEvent
 import com.n9mtq4.exmcl.api.tabs.events.SafeForTabCreationEvent
 import com.n9mtq4.exmcl.forgemods.ui.ForgeTab
+import com.n9mtq4.kotlin.extlib.pstAndUnit
 import com.n9mtq4.logwindow.BaseConsole
 import com.n9mtq4.logwindow.annotation.Async
 import com.n9mtq4.logwindow.annotation.ListensFor
@@ -52,11 +53,9 @@ class InitForgeMods : GenericListener, EnableListener {
 	fun listenForTabSafe(e: SafeForTabCreationEvent, baseConsole: BaseConsole) {
 		
 		SwingUtilities.invokeLater { 
-			try {
+			pstAndUnit {
 				val forgeTab = ForgeTab(minecraftLauncher, baseConsole)
 				baseConsole.pushEvent(CreateTabEvent("Forge Mods", forgeTab, baseConsole))
-			}catch (e: Exception) {
-				e.printStackTrace()
 			}
 		}
 		

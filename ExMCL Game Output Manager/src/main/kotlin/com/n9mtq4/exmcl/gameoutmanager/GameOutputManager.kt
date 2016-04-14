@@ -6,6 +6,7 @@ import com.n9mtq4.exmcl.api.hooks.events.PreDefinedSwingHookEvent
 import com.n9mtq4.exmcl.api.hooks.events.swinguserinterface.PostSUIShowGameOutputTab
 import com.n9mtq4.exmcl.api.tabs.events.LowLevelCreateTabEvent
 import com.n9mtq4.exmcl.api.tabs.events.SafeForLowLevelTabCreationEvent
+import com.n9mtq4.kotlin.extlib.pstAndUnit
 import com.n9mtq4.logwindow.BaseConsole
 import com.n9mtq4.logwindow.annotation.ListensFor
 import com.n9mtq4.logwindow.events.EnableEvent
@@ -68,10 +69,8 @@ class GameOutputManager : EnableListener, GenericListener {
 	}
 	
 	private fun addGameOutputTabs() = SwingUtilities.invokeLater {
-		try {
+		pstAndUnit {
 			parent.pushEvent(LowLevelCreateTabEvent("Game Output", gameOutputTabs, parent))
-		}catch (e: Exception) {
-			e.printStackTrace()
 		}
 	}
 	

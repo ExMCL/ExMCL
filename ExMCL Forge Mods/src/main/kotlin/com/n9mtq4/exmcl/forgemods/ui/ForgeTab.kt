@@ -5,13 +5,13 @@ import com.n9mtq4.exmcl.forgemods.data.ModData
 import com.n9mtq4.exmcl.forgemods.data.ModProfile
 import com.n9mtq4.exmcl.forgemods.utils.browseForMods
 import com.n9mtq4.exmcl.forgemods.utils.firstRunCleanup
+import com.n9mtq4.kotlin.extlib.pstAndUnit
 import com.n9mtq4.logwindow.BaseConsole
 import net.minecraft.launcher.Launcher
 import java.awt.Dimension
 import java.awt.GridLayout
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
-import java.io.IOException
 import javax.swing.JButton
 import javax.swing.JLabel
 import javax.swing.JList
@@ -74,7 +74,7 @@ class ForgeTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) :
 		this.dupProfile = JButton("Duplicate Profile")
 		this.addMod = JButton("Add Mod").apply { toolTipText = "Add mods the the current profile.\nYou can also drag and drop mods into the table." }
 		this.removeMod = JButton("Remove Mod")
-		buttonPanel.apply {
+		with(buttonPanel) {
 			add(installForge)
 			add(addProfile)
 			add(removeProfile)
@@ -91,7 +91,7 @@ class ForgeTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) :
 		
 //		set up split pane
 		this.sideSplitPane = JSplitPane(VERTICAL_SPLIT)
-		sideSplitPane.apply {
+		with(sideSplitPane) {
 			topComponent = listScroll
 			bottomComponent = buttonPanel
 			resizeWeight = 1.0
@@ -112,12 +112,10 @@ class ForgeTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) :
 		table.fillsViewportHeight = true
 		sideSplitPane.setDividerLocation(.9)
 		
-		try {
+		pstAndUnit {
 			firstRunCleanup(minecraftLauncher, modData, this)
 			modData.save()
 			refresh()
-		} catch (e: IOException) {
-			e.printStackTrace()
 		}
 		baseConsole.addListenerAttribute(GameStartHook(minecraftLauncher, modData))
 		

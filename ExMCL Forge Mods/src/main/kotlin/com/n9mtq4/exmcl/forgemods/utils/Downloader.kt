@@ -1,5 +1,6 @@
 package com.n9mtq4.exmcl.forgemods.utils
 
+import com.n9mtq4.kotlin.extlib.pstAndGiven
 import java.io.File
 import java.io.FileOutputStream
 import java.net.URL
@@ -18,23 +19,16 @@ import java.nio.channels.Channels
  * @param file the file
  * @return if the download was successful
  * */
-internal fun downloadFile(url: String, file: File): Boolean {
+internal fun downloadFile(url: String, file: File) = pstAndGiven(false) {
 	
-	try {
-		
-		val website = URL(url)
-		val rbc = Channels.newChannel(website.openStream())
-		val fos = FileOutputStream(file)
-		
-		fos.channel.transferFrom(rbc, 0, Long.MAX_VALUE)
-		fos.close()
-		rbc.close()
-		
-		return true
-		
-	}catch (e: Exception) {
-		e.printStackTrace()
-		return false
-	}
+	val website = URL(url)
+	val rbc = Channels.newChannel(website.openStream())
+	val fos = FileOutputStream(file)
+	
+	fos.channel.transferFrom(rbc, 0, Long.MAX_VALUE)
+	fos.close()
+	rbc.close()
+	
+	true
 	
 }
