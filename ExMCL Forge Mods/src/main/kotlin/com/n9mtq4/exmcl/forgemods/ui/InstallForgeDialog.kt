@@ -51,21 +51,21 @@ class InstallForgeDialog(val forgeTab: ForgeTab) {
 		frame.add(scroll, BorderLayout.CENTER)
 		frame.add(select, BorderLayout.SOUTH)
 		
-		frame.apply {
+		frame.run {
 			pack()
 			isVisible = true
 			setLocationRelativeTo(forgeTab)
 			rootPane.defaultButton = select
 		}
 		
-		select.addActionListener({ event ->
+		select.addActionListener { event ->
 			pstAndUnit {
 				JOptionPane.showMessageDialog(frame, "After installing forge, a launcher restart\nis required.", "Info", JOptionPane.INFORMATION_MESSAGE)
 				val f = download()
 				run(f)
 				frame.dispose()
 			}
-		})
+		}
 		
 	}
 	
@@ -119,6 +119,7 @@ class InstallForgeDialog(val forgeTab: ForgeTab) {
 			val tokens = chop.split("-")
 			
 			versions.add(arrayOf(tokens[0], tokens[1], link))
+			
 		}
 		
 		mcVersions.forEach {

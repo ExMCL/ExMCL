@@ -51,12 +51,12 @@ class FModsTableModel(val modData: ModData, val forgeTab: ForgeTab, val table: F
 	}
 	
 	private fun resizeColumns() {
-		with(table.getColumnModel().getColumn(0)) {
+		table.getColumnModel().getColumn(0).run {
 			minWidth = ENABLED_COLUMN_WIDTH
 			maxWidth = ENABLED_COLUMN_WIDTH
 			preferredWidth = ENABLED_COLUMN_WIDTH
 		}
-		with(table.getColumnModel().getColumn(1)) {
+		table.getColumnModel().getColumn(1).run {
 			minWidth = table.width - ENABLED_COLUMN_WIDTH
 			maxWidth = table.width - ENABLED_COLUMN_WIDTH
 			preferredWidth = table.width - ENABLED_COLUMN_WIDTH

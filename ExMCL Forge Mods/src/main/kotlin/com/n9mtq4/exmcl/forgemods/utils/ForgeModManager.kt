@@ -50,7 +50,7 @@ fun cleanup(launcher: Launcher) {
 			filter { it.name.endsWith(".jar") || it.name.endsWith(".zip") }.
 			forEach { 
 				println("Deleted: ${it.absolutePath}")
-				it.delete() 
+				it.delete()
 			}
 	
 }

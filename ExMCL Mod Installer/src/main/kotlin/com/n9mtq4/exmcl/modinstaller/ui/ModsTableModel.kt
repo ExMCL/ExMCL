@@ -51,12 +51,12 @@ class ModsTableModel(val modData: ModData, val modsTab: ModsTab, val table: Mods
 	
 	private fun resizeColumns() {
 		try {
-			table.getColumnModel().getColumn(0).apply {
+			table.getColumnModel().getColumn(0).run {
 				minWidth = ENABLED_COLUMN_WIDTH
 				maxWidth = ENABLED_COLUMN_WIDTH
 				preferredWidth = ENABLED_COLUMN_WIDTH
 			}
-			table.getColumnModel().getColumn(1).apply {
+			table.getColumnModel().getColumn(1).run {
 				minWidth = table.width - ENABLED_COLUMN_WIDTH
 				maxWidth = table.width - ENABLED_COLUMN_WIDTH
 				preferredWidth = table.width - ENABLED_COLUMN_WIDTH

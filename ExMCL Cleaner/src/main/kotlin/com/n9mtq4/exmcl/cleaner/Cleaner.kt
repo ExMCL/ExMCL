@@ -43,9 +43,7 @@ class Cleaner : GenericListener, RemovalListener, EnableListener {
 		if (!toDelete.contains(file)) toDelete.add(file)
 	}
 	
-	private fun clean() {
-		deleteFiles(toDelete)
-	}
+	private fun clean() = deleteFiles(toDelete)
 	
 	private fun deleteFiles(files: ArrayList<File>) {
 		

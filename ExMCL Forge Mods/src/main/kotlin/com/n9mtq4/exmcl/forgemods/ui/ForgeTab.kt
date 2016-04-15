@@ -74,7 +74,7 @@ class ForgeTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) :
 		this.dupProfile = JButton("Duplicate Profile")
 		this.addMod = JButton("Add Mod").apply { toolTipText = "Add mods the the current profile.\nYou can also drag and drop mods into the table." }
 		this.removeMod = JButton("Remove Mod")
-		with(buttonPanel) {
+		buttonPanel.run {
 			add(installForge)
 			add(addProfile)
 			add(removeProfile)
@@ -91,7 +91,7 @@ class ForgeTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) :
 		
 //		set up split pane
 		this.sideSplitPane = JSplitPane(VERTICAL_SPLIT)
-		with(sideSplitPane) {
+		sideSplitPane.run {
 			topComponent = listScroll
 			bottomComponent = buttonPanel
 			resizeWeight = 1.0

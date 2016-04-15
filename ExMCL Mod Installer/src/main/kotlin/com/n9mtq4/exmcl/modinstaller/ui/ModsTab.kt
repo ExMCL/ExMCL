@@ -76,7 +76,7 @@ class ModsTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) : J
 		this.removeMod = JButton("Remove Mod")
 		this.up = JButton("Up").apply { toolTipText = "Mods nearer the top are loaded before\nmods nearer the bottom." }
 		this.down = JButton("Down").apply { toolTipText = "Mods nearer the top are loaded before\nmods nearer the bottom." }
-		with(buttonPanel) {
+		buttonPanel.run {
 			add(addMod)
 			add(removeMod)
 			add(up)
@@ -89,7 +89,7 @@ class ModsTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) : J
 		
 //		set up split pane
 		this.sideSplitPane = JSplitPane(VERTICAL_SPLIT)
-		with(sideSplitPane) {
+		sideSplitPane.run {
 			topComponent = listScroll
 			bottomComponent = buttonPanel
 			resizeWeight = 1.0
