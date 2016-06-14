@@ -54,6 +54,24 @@ cp -R build/libs/. ../../runmehere/libs/
 echo FileDrop done!
 cd ..
 
+echo Building Gson GraphAdapterBuilder
+git clone https://github.com/ExMCL/gson-graph.git
+cd gson-graph
+chmod +x ./gradlew # just to make sure
+bash ./gradlew build
+cp -R build/libs/. ../../runmehere/libs/
+echo Gson GraphAdapterBuilder done!
+cd ..
+
+echo Building Small-Json-Serialization
+git clone https://github.com/n9Mtq4/Small-Json-Serialization.git
+cd Small-Json-Serialization
+chmod +x ./gradlew # just to make sure
+bash ./gradlew build
+cp -R build/libs/*-Nolibs* ../../runmehere/libs/
+echo Small-Json-Serialization done!
+cd ..
+
 echo Building Minecraft Launcher Unpacker
 git clone https://github.com/ExMCL/MinecraftLauncherUnpacker.git
 cd MinecraftLauncherUnpacker

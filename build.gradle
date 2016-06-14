@@ -30,7 +30,7 @@ task generateVersion {
     writer.println("/*AUTO GENERATED FILE*/")
     writer.println("@file:JvmName(\"Version\")")
     writer.println("package com.n9mtq4.exmcl.api")
-    writer.println("val BUILD_NUMBER = $artifactBuildNumber")
+    writer.println("const val BUILD_NUMBER = $artifactBuildNumber")
     writer.close()
     System.out.println("Generated Version File")
 }
