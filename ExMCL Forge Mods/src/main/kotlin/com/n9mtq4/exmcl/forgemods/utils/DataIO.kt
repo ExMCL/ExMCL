@@ -22,22 +22,35 @@
  * SOFTWARE.
  */
 
-package com.n9mtq4.exmcl.forgemods.data
+package com.n9mtq4.exmcl.forgemods.utils
 
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.n9mtq4.exmcl.forgemods.data.ModData
+import com.n9mtq4.jsonserialzation.CompressStream
+import com.n9mtq4.kotlin.extlib.syntax.def
 import java.io.File
-import java.util.ArrayList
 
 /**
- * Created by will on 2/14/16 at 10:07 PM.
+ * Created by will on 6/14/16 at 8:07 PM.
  *
  * @author Will "n9Mtq4" Bresnahan
  */
-data class ModProfile(var profileName: String, var modList: ArrayList<ModEntry>) {
-	
-	constructor(profileName: String) : this(profileName, ArrayList<ModEntry>())
-	
-	fun addMod(file: File, enabled: Boolean) = modList.add(ModEntry(file, enabled))
-	fun addMod(file: File) = addMod(file, true)
-	
-	fun removeMod(index: Int) = modList.removeAt(index)
+
+internal val gsonStructure: Gson by lazy { createJsonStructure().create() }
+
+private fun createJsonStructure() = def {
+	val gsonBuilder = GsonBuilder()
+	gsonBuilder
+}
+
+fun ModData.toJson() = gsonStructure.toJson(this)
+fun ModData.writeToFile(file: File) {
+	val json = toJson()
+	CompressStream.compressStringToFile(json, file)
+}
+
+fun readForgeDataFromFile(file: File): ModData {
+	val json = CompressStream.readCompressedStringFromFile(file)
+	return gsonStructure.fromJson(json, ModData::class.java)
 }

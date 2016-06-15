@@ -25,7 +25,6 @@
 package com.n9mtq4.exmcl.modinstaller.data
 
 import java.io.File
-import java.io.Serializable
 import java.util.ArrayList
 
 /**
@@ -33,11 +32,7 @@ import java.util.ArrayList
  *
  * @author Will "n9Mtq4" Bresnahan
  */
-data class ModProfile(var profileName: String, var modList: ArrayList<ModEntry>) : Serializable {
-	
-	companion object {
-		private val serialVersionUID = 2512763657900345972L;
-	}
+data class ModProfile(var profileName: String, var modList: ArrayList<ModEntry>) {
 	
 	constructor(profileName: String) : this(profileName, ArrayList<ModEntry>())
 	

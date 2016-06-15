@@ -24,12 +24,11 @@
 
 package com.n9mtq4.exmcl.forgemods.data
 
-import com.n9mtq4.exmcl.forgemods.utils.readSerializable
-import com.n9mtq4.exmcl.forgemods.utils.writeSerializable
+import com.n9mtq4.exmcl.forgemods.utils.readForgeDataFromFile
+import com.n9mtq4.exmcl.forgemods.utils.writeToFile
 import com.n9mtq4.kotlin.extlib.syntax.def
 import java.io.File
 import java.io.IOException
-import java.io.Serializable
 import java.util.ArrayList
 import javax.swing.JOptionPane
 
@@ -38,11 +37,10 @@ import javax.swing.JOptionPane
  *
  * @author Will "n9Mtq4" Bresnahan
  */
-class ModData(val profiles: ArrayList<ModProfile>, var selectedProfileIndex: Int) : Serializable {
+class ModData(val profiles: ArrayList<ModProfile>, var selectedProfileIndex: Int) {
 	
 	companion object {
-		private val serialVersionUID = 6369787388893016352L;
-		private const val MOD_LOCATION = "data/forgemods.dat"
+		private const val MOD_LOCATION = "data/forgemods.json.lzma"
 	}
 	
 	object Loader {
@@ -51,12 +49,12 @@ class ModData(val profiles: ArrayList<ModProfile>, var selectedProfileIndex: Int
 			val file = File(MOD_LOCATION)
 			if (!file.exists()) return createNewModData()
 			try {
-				val modData: ModData = readSerializable(file)
+				val modData: ModData = readForgeDataFromFile(file)
 				return modData
 			}catch (e: Exception) {
 				e.printStackTrace()
 				JOptionPane.showMessageDialog(null, "There was an error loading the ModData.\n" +
-						"We are generating a new one.", "Error", JOptionPane.ERROR_MESSAGE);
+						"We are generating a new one.", "Error", JOptionPane.ERROR_MESSAGE)
 				return createNewModData()
 			}
 		}
@@ -78,7 +76,7 @@ class ModData(val profiles: ArrayList<ModProfile>, var selectedProfileIndex: Int
 	@Throws(IOException::class)
 	private fun save(file: File) {
 		file.parentFile.mkdirs()
-		writeSerializable(this, file)
+		writeToFile(file)
 	}
 	
 	fun getSelectedProfile() = profiles[selectedProfileIndex]
