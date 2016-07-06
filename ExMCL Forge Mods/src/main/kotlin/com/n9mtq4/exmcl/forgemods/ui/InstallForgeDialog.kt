@@ -25,9 +25,10 @@
 package com.n9mtq4.exmcl.forgemods.ui
 
 import com.n9mtq4.exmcl.forgemods.utils.downloadFile
-import com.n9mtq4.kotlin.extlib.ignoreAndUnit
+import com.n9mtq4.exmcl.forgemods.utils.msg
+import com.n9mtq4.kotlin.extlib.ignore
+import com.n9mtq4.kotlin.extlib.pst
 import com.n9mtq4.kotlin.extlib.pstAndGiven
-import com.n9mtq4.kotlin.extlib.pstAndUnit
 import com.n9mtq4.kotlin.extlib.syntax.def
 import com.n9mtq4.logwindow.utils.StringParser
 import org.jsoup.Jsoup
@@ -47,10 +48,10 @@ import javax.swing.JTable
  * @author Will "n9Mtq4" Bresnahan
  */
 
-private const val MCVERSION_SELECTOR = "body > div.contents > div.wrapper > section:nth-child(1) > div.versions-wrapper > div > ul > li > div > ul > li > a";
-private const val LINK_SELECTOR = "#downloadsTable > tbody > tr > td:nth-child(3) > ul > li:nth-child(2) > a:nth-child(1)";
-private const val FORGE_FILES_URL = "http://files.minecraftforge.net/";
-private const val URL_SPLIT = "&url=";
+private const val MCVERSION_SELECTOR = "body > div.contents > div.wrapper > section:nth-child(1) > div.versions-wrapper > div > ul > li > div > ul > li > a"
+private const val LINK_SELECTOR = "#downloadsTable > tbody > tr > td:nth-child(3) > ul > li:nth-child(2) > a:nth-child(1)"
+private const val FORGE_FILES_URL = "http://files.minecraftforge.net/"
+private const val URL_SPLIT = "&url="
 private const val BETWEEN_START = "/maven/net/minecraftforge/forge/"
 private const val BETWEEN_END = "-installer.jar"
 
@@ -83,7 +84,7 @@ class InstallForgeDialog(val forgeTab: ForgeTab) {
 		}
 		
 		select.addActionListener { event ->
-			pstAndUnit {
+			pst {
 				JOptionPane.showMessageDialog(frame, "After installing forge, a launcher restart\nis required.", "Info", JOptionPane.INFORMATION_MESSAGE)
 				val f = download()
 				run(f)
@@ -120,7 +121,7 @@ class InstallForgeDialog(val forgeTab: ForgeTab) {
 		} catch (e: IOException) {
 			e.printStackTrace()
 			forgeTab.baseConsole.printStackTrace(e)
-			JOptionPane.showMessageDialog(forgeTab, "Error launching forge installer", "Error", JOptionPane.ERROR_MESSAGE);
+			msg(forgeTab, "Error launching forge installer", "Error", JOptionPane.ERROR_MESSAGE)
 		}
 		
 	}
@@ -150,9 +151,10 @@ class InstallForgeDialog(val forgeTab: ForgeTab) {
 			
 //			prevent a bad formatting on an older version to mess with things
 //			This is expected behavior and there are not downsides
-			ignoreAndUnit {
+			ignore {
 				
-				val doc = Jsoup.connect(it.attr("href")).get()
+				val versionHref = it.attr("href")
+				val doc = Jsoup.connect(formatUrl(FORGE_FILES_URL, versionHref)).get()
 				val links = doc.select(LINK_SELECTOR)
 				
 				links.forEach {
@@ -173,6 +175,18 @@ class InstallForgeDialog(val forgeTab: ForgeTab) {
 		
 		versions.toTypedArray()
 		
+	}
+	
+	/**
+	 * Forge changed their links from absolute to relative, 
+	 * so we now need to account for that :(
+	 * */
+	private fun formatUrl(prefix: String, suffix: String): String {
+//		a url should start with http
+		if (!suffix.startsWith("http", ignoreCase = true)) {
+			return prefix + suffix
+		}
+		return suffix
 	}
 	
 }
