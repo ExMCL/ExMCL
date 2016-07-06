@@ -30,6 +30,7 @@ import com.n9mtq4.exmcl.forgemods.data.ModProfile
 import com.n9mtq4.exmcl.forgemods.utils.browseForMods
 import com.n9mtq4.exmcl.forgemods.utils.firstRunCleanup
 import com.n9mtq4.exmcl.forgemods.utils.msg
+import com.n9mtq4.kotlin.extlib.pst
 import com.n9mtq4.kotlin.extlib.pstAndUnit
 import com.n9mtq4.logwindow.BaseConsole
 import net.minecraft.launcher.Launcher
@@ -138,7 +139,7 @@ class ForgeTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) :
 		table.fillsViewportHeight = true
 		sideSplitPane.setDividerLocation(.9)
 		
-		pstAndUnit {
+		pst {
 			firstRunCleanup(minecraftLauncher, modData, this)
 			refresh() // mod data is also saved
 		}

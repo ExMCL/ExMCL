@@ -27,6 +27,8 @@ package com.n9mtq4.exmcl.modinstaller.ui
 import com.n9mtq4.exmcl.modinstaller.GameStartHook
 import com.n9mtq4.exmcl.modinstaller.data.ModData
 import com.n9mtq4.exmcl.modinstaller.utils.browseForMods
+import com.n9mtq4.exmcl.modinstaller.utils.msg
+import com.n9mtq4.kotlin.extlib.pst
 import com.n9mtq4.kotlin.extlib.pstAndUnit
 import com.n9mtq4.logwindow.BaseConsole
 import net.minecraft.launcher.Launcher
@@ -36,6 +38,7 @@ import java.awt.Dimension
 import java.awt.GridLayout
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
+import java.io.IOException
 import javax.swing.JButton
 import javax.swing.JLabel
 import javax.swing.JList
@@ -134,8 +137,7 @@ class ModsTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) : J
 		table.fillsViewportHeight = true
 		sideSplitPane.setDividerLocation(.9)
 		
-		pstAndUnit {
-			modData.save()
+		pst {
 			refresh()
 		}
 		baseConsole.addListenerAttribute(GameStartHook(minecraftLauncher, modData))
@@ -144,7 +146,8 @@ class ModsTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) : J
 	
 	fun refresh() {
 		refreshList()
-		table.refreshModel()
+		table.refresh(sync = false)
+		syncWithFile()
 	}
 	
 	fun refreshList() {
@@ -154,7 +157,16 @@ class ModsTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) : J
 		list.setSelectedValue(profileNameToSet, true)
 //		list.selectedIndex = modData.selectedProfileIndex
 		modData.selectedProfileIndex = list.selectedIndex
-		table.fireModDataSync()
+	}
+	
+	internal fun syncWithFile() {
+		try {
+			modData.save()
+			println("Saved jar mod data")
+		}catch (e: IOException) {
+			e.printStackTrace()
+			msg(parent = table, msg = "Unable to save the Jar Mod Data", title = "Error", msgType = JOptionPane.ERROR_MESSAGE)
+		}
 	}
 	
 	override fun actionPerformed(e: ActionEvent) {
@@ -176,7 +188,7 @@ class ModsTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) : J
 		
 		if (list.selectedIndex < 0) return
 		modData.selectedProfileIndex = list.selectedIndex
-		table.refreshModel()
+		table.refresh() // only the table
 		
 	}
 	
@@ -191,7 +203,7 @@ class ModsTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) : J
 		pstAndUnit {
 			val mods = browseForMods(this)
 			mods.forEach { modData.getSelectedProfile().addMod(it) }
-			table.refreshModel()
+			refresh()
 		}
 	}
 	
@@ -202,7 +214,7 @@ class ModsTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) : J
 			return
 		}
 		modData.getSelectedProfile().removeMod(row)
-		table.refreshModel()
+		refresh()
 		if (row - 1 > 0) table.setRowSelectionInterval(row - 1, row - 1) // select next mod
 	}
 	
@@ -218,7 +230,7 @@ class ModsTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) : J
 		val currentMod = ml[row] // tmp copy
 		ml.removeAt(row) // remove
 		ml.add(desiredPos, currentMod) // re-add
-		table.refreshModel() // refresh
+		refresh() // refresh
 		table.setRowSelectionInterval(desiredPos, desiredPos) // select moved mod
 	}
 	

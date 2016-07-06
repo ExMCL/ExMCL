@@ -22,18 +22,22 @@
  * SOFTWARE.
  */
 
-package com.n9mtq4.exmcl.modinstaller.data
+package com.n9mtq4.exmcl.modinstaller.utils
 
-import java.io.File
+import java.awt.Component
+import javax.swing.JOptionPane
+import javax.swing.SwingUtilities
 
 /**
- * Created by will on 2/14/16 at 10:05 PM.
+ * Created by will on 7/6/16 at 3:15 AM.
  *
  * @author Will "n9Mtq4" Bresnahan
  */
-data class ModEntry(var file: File, var enabled: Boolean) {
-	
-	val name: String
-		get() = file.name
-	
-}
+
+/**
+ * Invoke Later.
+ * Shorthand for SwingUtilities.invokeLater
+ * */
+inline fun il(crossinline body: () -> Unit) = SwingUtilities.invokeLater { body() }
+
+fun msg(parent: Component? = null, msg: String, title: String, msgType: Int = JOptionPane.INFORMATION_MESSAGE) = JOptionPane.showMessageDialog(parent, msg, title, msgType)
