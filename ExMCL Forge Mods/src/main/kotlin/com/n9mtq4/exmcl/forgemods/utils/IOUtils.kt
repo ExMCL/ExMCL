@@ -31,6 +31,8 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.nio.channels.FileChannel
 import javax.swing.JFileChooser
+import javax.swing.JOptionPane
+import javax.swing.SwingUtilities
 import javax.swing.filechooser.FileNameExtensionFilter
 
 /**
@@ -81,3 +83,12 @@ internal fun copyFile(sourceFile: File, destFile: File) {
 		destination?.close()
 	}
 }
+
+
+/**
+ * Invoke Later.
+ * Shorthand for SwingUtilities.invokeLater
+ * */
+inline fun il(crossinline body: () -> Unit) = SwingUtilities.invokeLater { body() }
+
+fun msg(parent: Component? = null, msg: String, title: String, msgType: Int = JOptionPane.INFORMATION_MESSAGE) = JOptionPane.showMessageDialog(parent, msg, title, msgType)

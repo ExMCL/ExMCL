@@ -49,13 +49,12 @@ fun copyToMods(launcher: Launcher, modProfile: ModProfile) {
 	modProfile.modList.filter { it.enabled }.forEach { 
 		try {
 			
-			copyFile(it.file, File(modDir, it.getName()))
+			copyFile(it.file, File(modDir, it.name))
 			println("Copied ${it.file.absolutePath}")
 			
 		}catch (e: IOException) {
 			e.printStackTrace()
-			JOptionPane.showMessageDialog(null, "Error setting up mod " + it.getName() + "!\n" +
-					"Did you move/delete it?", "Error", JOptionPane.ERROR_MESSAGE)
+			msg(msg = "Error setting up mod ${it.name}!\nDid you move/delete it?", title = "Error", msgType = JOptionPane.ERROR_MESSAGE)
 		}
 	}
 	

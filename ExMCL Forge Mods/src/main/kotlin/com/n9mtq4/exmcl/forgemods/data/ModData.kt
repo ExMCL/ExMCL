@@ -24,6 +24,7 @@
 
 package com.n9mtq4.exmcl.forgemods.data
 
+import com.n9mtq4.exmcl.forgemods.utils.msg
 import com.n9mtq4.exmcl.forgemods.utils.readForgeDataFromFile
 import com.n9mtq4.exmcl.forgemods.utils.writeToFile
 import com.n9mtq4.kotlin.extlib.syntax.def
@@ -53,8 +54,7 @@ class ModData(val profiles: ArrayList<ModProfile>, var selectedProfileIndex: Int
 				return modData
 			}catch (e: Exception) {
 				e.printStackTrace()
-				JOptionPane.showMessageDialog(null, "There was an error loading the ModData.\n" +
-						"We are generating a new one.", "Error", JOptionPane.ERROR_MESSAGE)
+				msg(msg = "There was an error loading the ModData\nWe are generating a new one.", title = "Error", msgType = JOptionPane.ERROR_MESSAGE)
 				return createNewModData()
 			}
 		}

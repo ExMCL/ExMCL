@@ -209,6 +209,7 @@ class MinecraftPatcher(val minecraftLauncher: Launcher, val modProfile: ModProfi
 	}
 	
 	private fun modifyJson() {
+//		TODO: change to use gson, so we only have 1 json library in this project
 		val oldJsonFile = open(File(newVersionDir, "$oldVersion.json"), "r")
 		val oldJsonText = oldJsonFile.readText()
 		oldJsonFile.close()

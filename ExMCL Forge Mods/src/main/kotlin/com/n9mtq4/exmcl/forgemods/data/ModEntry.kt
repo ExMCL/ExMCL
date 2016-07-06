@@ -33,6 +33,7 @@ import java.io.File
  */
 data class ModEntry(var file: File, var enabled: Boolean) {
 	
-	fun getName() = file.name
+	val name: String
+		get() = file.name
 	
 }
