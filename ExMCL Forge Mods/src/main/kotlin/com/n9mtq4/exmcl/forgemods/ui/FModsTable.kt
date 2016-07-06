@@ -25,48 +25,119 @@
 package com.n9mtq4.exmcl.forgemods.ui
 
 import com.n9mtq4.exmcl.forgemods.data.ModData
+import com.n9mtq4.exmcl.forgemods.utils.il
 import com.n9mtq4.exmcl.forgemods.utils.isMod
 import com.n9mtq4.filedrop.FileDrop
+import com.n9mtq4.kotlin.extlib.ignore
+import java.awt.event.ComponentEvent
+import java.awt.event.ComponentListener
 import java.io.File
 import javax.swing.JTable
 import javax.swing.ListSelectionModel
+import javax.swing.event.ChangeEvent
+import javax.swing.event.ListSelectionEvent
+import javax.swing.event.TableColumnModelEvent
+import javax.swing.event.TableColumnModelListener
+import javax.swing.table.DefaultTableModel
 
 /**
- * Created by will on 11/4/15 at 5:55 PM.
+ * Created by will on 6/25/16 at 7:31 PM.
  *
  * @author Will "n9Mtq4" Bresnahan
  */
 class FModsTable(var modData: ModData, val forgeTab: ForgeTab) : JTable() {
 	
-	val forgeModel: FModsTableModel
+	companion object {
+		private val TABLE_HEADERS = arrayOf("Enabled", "Mod File Location")
+		private val ENABLED_COLUMN_WIDTH = 60
+	}
+	
+	private val tableModel = ForgeTableModel()
+	private val columnResizer = ColumnResizer()
 	
 	init {
-		
-		this.forgeModel = FModsTableModel(modData, forgeTab, this)
-		
-		model = forgeModel
-		
-		forgeModel.fireSet()
+		model = tableModel
 		
 		tableHeader.reorderingAllowed = false
+		tableHeader.resizingAllowed = false
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION)
 		
+		columnResizer.resizeColumns()
+		addComponentListener(columnResizer)
+		columnModel.addColumnModelListener(columnResizer)
+		
 		initFileDrop()
+	}
+	
+	internal fun refresh(select: IntArray? = selectedRows, sync: Boolean = true) { 
+		tableModel.fireTableDataChanged()
+		il {
+			clearSelection()
+			select?.forEach { ignore { selectionModel.addSelectionInterval(it, it) } }
+		}
+		if (sync) forgeTab.syncWithFile()
+	}
+	
+	private fun initFileDrop() = FileDrop(this, FileDrop.Listener { files: Array<File> ->
+		files.filter { it.isMod() }.forEach { modData.getSelectedProfile().addMod(it) }
+		refresh()
+	})
+	
+	private inner class ForgeTableModel : DefaultTableModel() {
+		
+		override fun getRowCount() = modData.getSelectedProfile().modList.size
+		override fun getColumnCount() = TABLE_HEADERS.size
+		override fun getColumnName(column: Int) = TABLE_HEADERS[column]
+		
+		override fun isCellEditable(row: Int, column: Int) = column == 0
+		@Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
+		override fun getColumnClass(columnIndex: Int): Class<out Any> = if (columnIndex == 0) java.lang.Boolean::class.java else String::class.java
+		
+		override fun getValueAt(row: Int, column: Int): Any {
+			val mod = modData.getSelectedProfile().modList[row]
+			return when(column) {
+				0 -> mod.enabled
+				1 -> mod.name
+				else -> throw IndexOutOfBoundsException("Invalid mod at column $column")
+			}
+		}
+		
+		override fun setValueAt(aValue: Any, row: Int, column: Int) {
+			val mod = modData.getSelectedProfile().modList[row]
+			when (column) {
+				0 -> mod.enabled = aValue as Boolean
+			}
+			forgeTab.syncWithFile()
+		}
 		
 	}
 	
-	fun fireModDataSync() = forgeModel.fireModDataSync()
-	
-	fun refreshModel() = forgeModel.refresh()
-	
-	fun refreshTab() = forgeTab.refresh()
-	
-	private fun initFileDrop() {
+	private inner class ColumnResizer : TableColumnModelListener, ComponentListener {
 		
-		FileDrop(this, FileDrop.Listener { files: Array<File> ->
-			files.filter { it.isMod() }.forEach { modData.profiles[modData.selectedProfileIndex].addMod(it) }
-			refreshModel()
-		})
+		override fun componentResized(e: ComponentEvent?) = resizeColumns()
+		override fun columnMarginChanged(e: ChangeEvent?) = resizeColumns()
+		
+		override fun columnSelectionChanged(e: ListSelectionEvent?) {}
+		override fun columnMoved(e: TableColumnModelEvent?) {}
+		override fun columnAdded(e: TableColumnModelEvent?) {}
+		override fun columnRemoved(e: TableColumnModelEvent?) {}
+		override fun componentMoved(e: ComponentEvent?) {}
+		override fun componentShown(e: ComponentEvent?) {}
+		override fun componentHidden(e: ComponentEvent?) {}
+		
+		fun resizeColumns() {
+			columnModel.getColumn(0).run {
+				minWidth = ENABLED_COLUMN_WIDTH
+				maxWidth = ENABLED_COLUMN_WIDTH
+				preferredWidth = ENABLED_COLUMN_WIDTH
+			}
+			columnModel.getColumn(1).run {
+				val width = this@FModsTable.width // without this line it defaults to column width. then the column vanishes. Spent a MONTH debugging it.
+				minWidth = width - ENABLED_COLUMN_WIDTH
+				maxWidth = width - ENABLED_COLUMN_WIDTH
+				preferredWidth = width - ENABLED_COLUMN_WIDTH
+			}
+		}
 		
 	}
 	

@@ -29,6 +29,7 @@ import com.n9mtq4.exmcl.forgemods.data.ModData
 import com.n9mtq4.exmcl.forgemods.data.ModProfile
 import com.n9mtq4.exmcl.forgemods.utils.browseForMods
 import com.n9mtq4.exmcl.forgemods.utils.firstRunCleanup
+import com.n9mtq4.exmcl.forgemods.utils.msg
 import com.n9mtq4.kotlin.extlib.pstAndUnit
 import com.n9mtq4.logwindow.BaseConsole
 import net.minecraft.launcher.Launcher
@@ -36,6 +37,7 @@ import java.awt.Dimension
 import java.awt.GridLayout
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
+import java.io.IOException
 import javax.swing.JButton
 import javax.swing.JLabel
 import javax.swing.JList
@@ -127,7 +129,7 @@ class ForgeTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) :
 		
 		setLeftComponent(sideSplitPane)
 		setRightComponent(tableScroll)
-		isOneTouchExpandable = false;
+		isOneTouchExpandable = false
 		setDividerLocation(.2)
 		
 		sideSplitPane.minimumSize = MINIMUM_SIZE
@@ -138,8 +140,7 @@ class ForgeTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) :
 		
 		pstAndUnit {
 			firstRunCleanup(minecraftLauncher, modData, this)
-			modData.save()
-			refresh()
+			refresh() // mod data is also saved
 		}
 		baseConsole.addListenerAttribute(GameStartHook(minecraftLauncher, modData))
 		
@@ -147,14 +148,23 @@ class ForgeTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) :
 	
 	fun refresh() {
 		refreshList()
-		table.refreshModel()
+		table.refresh() // it is synced in refresh list instead
+		syncWithFile()
 	}
 	
 	fun refreshList() {
-//		list.setListData(modData.getProfileNames())
 		list.setListData(modData.getProfileNames().toTypedArray())
 		list.selectedIndex = modData.selectedProfileIndex
-		table.fireModDataSync()
+	}
+	
+	internal fun syncWithFile() {
+		try {
+			modData.save()
+			println("Saved forge mod data")
+		}catch (e: IOException) {
+			e.printStackTrace()
+			msg(parent = table, msg = "Unable to save the Forge Mod Data", title = "Error", msgType = JOptionPane.ERROR_MESSAGE)
+		}
 	}
 	
 	override fun actionPerformed(e: ActionEvent) {
@@ -199,14 +209,14 @@ class ForgeTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) :
 	private fun dupProfile() {
 		val profileName: String? = JOptionPane.showInputDialog(this, "What should the profile be called?")
 		if (profileName == null ||profileName.isNullOrBlank()) return
-		modData.addProfile(modData.getSelectedProfile().copy(profileName))
+		modData.addProfile(modData.getSelectedProfile().copy(profileName)) // TODO: need to deep clone this
 		refreshList()
 	}
 	
 	private fun addMod() {
 		val mods = browseForMods(this)
 		mods.forEach { modData.getSelectedProfile().addMod(it) }
-		table.refreshModel()
+		table.refresh()
 	}
 	
 	private fun removeMod() {
@@ -216,14 +226,14 @@ class ForgeTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) :
 			return
 		}
 		modData.getSelectedProfile().removeMod(row)
-		table.refreshModel()
+		table.refresh()
 	}
 	
 	override fun valueChanged(e: ListSelectionEvent) {
 		
 		if (list.selectedIndex < 0) return
 		modData.selectedProfileIndex = list.selectedIndex
-		table.refreshModel()
+		table.refresh() // only refresh the table
 		
 	}
 	
