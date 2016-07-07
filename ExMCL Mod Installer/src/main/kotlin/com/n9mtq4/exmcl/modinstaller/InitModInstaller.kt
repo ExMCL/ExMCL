@@ -29,13 +29,13 @@ import com.n9mtq4.exmcl.api.hooks.events.MinecraftLauncherEvent
 import com.n9mtq4.exmcl.api.tabs.events.CreateTabEvent
 import com.n9mtq4.exmcl.api.tabs.events.SafeForTabCreationEvent
 import com.n9mtq4.exmcl.modinstaller.ui.ModsTab
-import com.n9mtq4.kotlin.extlib.pstAndUnit
+import com.n9mtq4.exmcl.modinstaller.utils.il
+import com.n9mtq4.kotlin.extlib.pst
 import com.n9mtq4.logwindow.BaseConsole
 import com.n9mtq4.logwindow.annotation.Async
 import com.n9mtq4.logwindow.annotation.ListensFor
 import com.n9mtq4.logwindow.listener.GenericListener
 import net.minecraft.launcher.Launcher
-import javax.swing.SwingUtilities
 
 /**
  * Created by will on 2/17/16 at 5:22 PM.
@@ -59,8 +59,8 @@ class InitModInstaller : GenericListener {
 	@ListensFor
 	fun listenForTabSafe(e: SafeForTabCreationEvent, baseConsole: BaseConsole) {
 		
-		SwingUtilities.invokeLater {
-			pstAndUnit {
+		il {
+			pst {
 				val modsTab = ModsTab(minecraftLauncher, baseConsole)
 				baseConsole.pushEvent(CreateTabEvent("Jar Mods", modsTab, baseConsole))
 			}

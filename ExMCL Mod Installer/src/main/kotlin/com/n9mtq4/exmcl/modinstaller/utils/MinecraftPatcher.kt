@@ -77,7 +77,7 @@ class MinecraftPatcher(val minecraftLauncher: Launcher, val modProfile: ModProfi
 		val tmp = File(newVersionDir, "tmp")
 		tmp.mkdirs()
 //		step 0 callback
-		progressCallback.invoke(0, totalJobs, "Extracting")
+		progressCallback(0, totalJobs, "Extracting")
 //		extract the old jar to the tmp directory
 		val oldInNewPlace = File(newVersionDir, "$oldVersion.jar")
 		val jarDir = File(tmp, "ejar")
@@ -86,18 +86,18 @@ class MinecraftPatcher(val minecraftLauncher: Launcher, val modProfile: ModProfi
 		modProfile.modList.filter { it.enabled }.map { it.file }.forEachIndexed { i, it ->
 //			val toExtractTo = File(jarDir, it.name)
 //			mod progress callback
-			progressCallback.invoke(i + 1, totalJobs, it.name) // plus one cause we completed extracting minecraft jar
+			progressCallback(i + 1, totalJobs, it.name) // plus one cause we completed extracting minecraft jar
 			unzip(it, jarDir)
 		}
 //		delete META-INF
 		File(jarDir, "META-INF").deleteRecursively()
 //		step modJobs + 2 callback
-		progressCallback.invoke(modJobs + 2, totalJobs, "Zipping")
+		progressCallback(modJobs + 2, totalJobs, "Zipping")
 //		zip up the ejar
 		val newJar = File(tmp, "new.jar")
 		zip(buildFileTree(jarDir).filterNot { it.name.startsWith(".") }.toTypedArray(), newJar, jarDir)
 //		step modJobs + 2 callback
-		progressCallback.invoke(modJobs + 3, totalJobs, "Moving")
+		progressCallback(modJobs + 3, totalJobs, "Moving")
 //		copy the zipped jar back to the profile
 		newJar.copyTo(newVersionJarFile)
 //		rename the profile in the json file

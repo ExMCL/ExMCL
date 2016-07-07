@@ -16,6 +16,7 @@ dependencies {
 
 gradle.taskGraph.afterTask { Task task, TaskState state ->
 //    if the build succeeded
+//    delete('../runmehere/pre-plugins/' + project.getName() + '.jar')
     if (!state.failure && task.name.equalsIgnoreCase('build')) {
 //        copy the jar into the distro directory
         copy {

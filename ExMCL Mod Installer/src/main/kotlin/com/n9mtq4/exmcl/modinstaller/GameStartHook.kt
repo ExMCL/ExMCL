@@ -67,6 +67,7 @@ class GameStartHook(val minecraftLauncher: Launcher, val modData: ModData) : Gen
 						minecraftLauncher.userInterface.setDownloadProgress(DownloadProgress(step.toLong(), total.toLong(), "Patching mods into Minecraft: $task"))
 					}
 				}catch (e1: Exception) {
+					e1.printStackTrace()
 					JOptionPane.showMessageDialog(e.actionEvent.source as Component, "${e1.cause}\n${e1.message}", "Error Patching", JOptionPane.ERROR_MESSAGE)
 				}
 				println("Patched")
@@ -88,6 +89,7 @@ class GameStartHook(val minecraftLauncher: Launcher, val modData: ModData) : Gen
 			try {
 				mcPatcher.patch() { i, i1, task -> /*do nothing*/ }
 			}catch (e1: Exception) {
+				e1.printStackTrace()
 				JOptionPane.showMessageDialog(e.actionEvent.source as Component, "${e1.cause}\n${e1.message}", "Error Patching", JOptionPane.ERROR_MESSAGE)
 			}
 			println("Patched")

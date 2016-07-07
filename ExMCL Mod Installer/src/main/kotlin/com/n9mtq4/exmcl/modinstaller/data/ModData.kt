@@ -24,6 +24,7 @@
 
 package com.n9mtq4.exmcl.modinstaller.data
 
+import com.n9mtq4.exmcl.modinstaller.utils.msg
 import com.n9mtq4.exmcl.modinstaller.utils.readModDataFromFile
 import com.n9mtq4.exmcl.modinstaller.utils.writeToFile
 import com.n9mtq4.kotlin.extlib.syntax.def
@@ -55,7 +56,7 @@ class ModData(val profiles: ArrayList<ModProfile>, var selectedProfileIndex: Int
 				return modData
 			}catch (e: Exception) {
 				e.printStackTrace()
-				JOptionPane.showMessageDialog(null, "There was an error loading the ModData.\n" +
+				msg(null, "There was an error loading the ModData.\n" +
 						"We are generating a new one.", "Error", JOptionPane.ERROR_MESSAGE)
 				return createNewModData()
 			}
