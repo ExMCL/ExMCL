@@ -28,6 +28,7 @@ import com.n9mtq4.exmcl.api.BUILD_NUMBER
 import com.n9mtq4.exmcl.api.tabs.events.SafeForTabCreationEvent
 import com.n9mtq4.exmcl.api.updater.UpdateAvailable
 import com.n9mtq4.kotlin.extlib.ignore
+import com.n9mtq4.kotlin.extlib.io.errPrintln
 import com.n9mtq4.kotlin.extlib.io.open
 import com.n9mtq4.logwindow.BaseConsole
 import com.n9mtq4.logwindow.annotation.Async
@@ -36,7 +37,6 @@ import com.n9mtq4.logwindow.listener.GenericListener
 import org.json.simple.JSONArray
 import org.json.simple.parser.JSONParser
 import org.jsoup.Jsoup
-import java.io.File
 import java.util.HashMap
 
 /**
@@ -47,13 +47,13 @@ import java.util.HashMap
 class UpdateFinder : GenericListener {
 	
 	companion object {
-		val IGNORE_UPDATE_FILE = File("data/ignoreupdate.txt")
-		
-		/**
-		 * this is a developer feature to force the update message to appear.
-		 * it should never be true in a release
-		 * */
-		private const val FORCE_UPDATE = false
+		/*
+		* These flags are a development feature that allows us to
+		* test the updating ability without actually making a new update.
+		* Both of these should be false in an actual release
+		* */
+		private const val FORCE_UPDATE = true
+		private const val IGNORE_SKIP = false
 	}
 	
 	/**
@@ -91,22 +91,22 @@ class UpdateFinder : GenericListener {
 			val tokens = tagName.split("-")
 			val targetBuildNumber = tokens[tokens.size - 1].toInt() // get the build number
 			
-//			ignore ability
-			if (IGNORE_UPDATE_FILE.exists()) {
+//			ignore this update if the IGNORE_UPDATE_FILE has the targetBuildNumber in it
+			if (IGNORE_UPDATE_FILE.exists() && !IGNORE_SKIP) {
 				ignore {
 					val f = open(IGNORE_UPDATE_FILE, "r")
 					val versionIgnoreRaw = f.readText()!!
 					f.close()
 					val versionIgnore = versionIgnoreRaw.trim().toInt()
-					if (versionIgnore == targetBuildNumber && !FORCE_UPDATE) return
-					else IGNORE_UPDATE_FILE.deleteOnExit()
+					if (versionIgnore == targetBuildNumber) return
+					else IGNORE_UPDATE_FILE.deleteOnExit() // the ignore update file is for an older version; we can remove it
 				}
 			}
 			
-			if (FORCE_UPDATE || BUILD_NUMBER < targetBuildNumber) baseConsole.pushEvent(UpdateAvailable(baseConsole, latestVersion, targetBuildNumber))
+			if (BUILD_NUMBER < targetBuildNumber || FORCE_UPDATE) baseConsole.pushEvent(UpdateAvailable(baseConsole, latestVersion, targetBuildNumber))
 			
 		}catch (e: Exception) {
-			System.err.println("Failed to get update status")
+			errPrintln("Failed to get update status")
 			e.printStackTrace()
 		}
 		

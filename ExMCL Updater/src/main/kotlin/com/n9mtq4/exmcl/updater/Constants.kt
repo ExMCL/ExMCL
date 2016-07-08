@@ -24,6 +24,8 @@
 
 package com.n9mtq4.exmcl.updater
 
+import java.io.File
+
 /**
  * Created by will on 2/16/16 at 2:42 PM.
  *
@@ -31,3 +33,4 @@ package com.n9mtq4.exmcl.updater
  */
 const val API_UPDATE_URL = "https://api.github.com/repos/ExMCL/ExMCL/releases"
 const val UPDATE_URL = "https://github.com/ExMCL/ExMCL/releases/latest"
+val IGNORE_UPDATE_FILE = File("data/ignoreupdate.txt")

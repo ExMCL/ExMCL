@@ -29,6 +29,7 @@ import com.n9mtq4.exmcl.api.card.LauncherCard
 import com.n9mtq4.exmcl.api.updater.UpdateAvailable
 import com.n9mtq4.kotlin.extlib.io.open
 import com.n9mtq4.kotlin.extlib.pst
+import com.n9mtq4.kotlin.extlib.pstAndGiven
 import net.minecraft.launcher.ui.LauncherPanel
 import java.awt.BorderLayout
 import java.awt.Dimension
@@ -54,9 +55,14 @@ class UpdatePanel(launcherPanel: LauncherPanel, val updateAvailable: UpdateAvail
 	
 	init {
 		
+//		the build number is guarantied to succeed, while for some reason the tag_name might not
+		val updateVersion = pstAndGiven(updateAvailable.targetBuildNumber.toString()) {
+			updateAvailable.updateInfo["tag_name"]
+		}
+		
 		this.update = JButton("Update")
 		this.later = JButton("Later")
-		this.ignore = JButton("Skip version ${updateAvailable.targetBuildNumber}")
+		this.ignore = JButton("Skip version $updateVersion")
 		this.buttonPanel = JPanel(GridLayout(1, 3))
 		buttonPanel.add(update)
 		buttonPanel.add(later)
@@ -79,7 +85,7 @@ class UpdatePanel(launcherPanel: LauncherPanel, val updateAvailable: UpdateAvail
 		later.addActionListener { removeThisCard() }
 		ignore.addActionListener { 
 			pst {
-				val f = open(UpdateFinder.IGNORE_UPDATE_FILE, "w")
+				val f = open(IGNORE_UPDATE_FILE, "w")
 				f.writeln(updateAvailable.targetBuildNumber.toString())
 				f.close()
 			}
