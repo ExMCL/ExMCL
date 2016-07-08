@@ -27,6 +27,8 @@ package com.n9mtq4.exmcl.updater
 import com.n9mtq4.exmcl.api.BUILD_NUMBER
 import com.n9mtq4.exmcl.api.tabs.events.SafeForTabCreationEvent
 import com.n9mtq4.exmcl.api.updater.UpdateAvailable
+import com.n9mtq4.kotlin.extlib.ignore
+import com.n9mtq4.kotlin.extlib.io.open
 import com.n9mtq4.logwindow.BaseConsole
 import com.n9mtq4.logwindow.annotation.Async
 import com.n9mtq4.logwindow.annotation.ListensFor
@@ -34,6 +36,7 @@ import com.n9mtq4.logwindow.listener.GenericListener
 import org.json.simple.JSONArray
 import org.json.simple.parser.JSONParser
 import org.jsoup.Jsoup
+import java.io.File
 import java.util.HashMap
 
 /**
@@ -44,6 +47,12 @@ import java.util.HashMap
 class UpdateFinder : GenericListener {
 	
 	companion object {
+		val IGNORE_UPDATE_FILE = File("data/ignoreupdate.txt")
+		
+		/**
+		 * this is a developer feature to force the update message to appear.
+		 * it should never be true in a release
+		 * */
 		private const val FORCE_UPDATE = false
 	}
 	
@@ -81,7 +90,18 @@ class UpdateFinder : GenericListener {
 			val tagName = latestVersion["tag_name"] as String
 			val tokens = tagName.split("-")
 			val targetBuildNumber = tokens[tokens.size - 1].toInt() // get the build number
-//			val targetBuildNumber = Integer.MAX_VALUE // testing value
+			
+//			ignore ability
+			if (IGNORE_UPDATE_FILE.exists()) {
+				ignore {
+					val f = open(IGNORE_UPDATE_FILE, "r")
+					val versionIgnoreRaw = f.readText()!!
+					f.close()
+					val versionIgnore = versionIgnoreRaw.trim().toInt()
+					if (versionIgnore == targetBuildNumber && !FORCE_UPDATE) return
+					else IGNORE_UPDATE_FILE.deleteOnExit()
+				}
+			}
 			
 			if (FORCE_UPDATE || BUILD_NUMBER < targetBuildNumber) baseConsole.pushEvent(UpdateAvailable(baseConsole, latestVersion, targetBuildNumber))
 			

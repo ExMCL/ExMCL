@@ -27,6 +27,8 @@ package com.n9mtq4.exmcl.updater
 import com.mojang.launcher.OperatingSystem
 import com.n9mtq4.exmcl.api.card.LauncherCard
 import com.n9mtq4.exmcl.api.updater.UpdateAvailable
+import com.n9mtq4.kotlin.extlib.io.open
+import com.n9mtq4.kotlin.extlib.pst
 import net.minecraft.launcher.ui.LauncherPanel
 import java.awt.BorderLayout
 import java.awt.Dimension
@@ -46,15 +48,18 @@ import javax.swing.JTextArea
 class UpdatePanel(launcherPanel: LauncherPanel, val updateAvailable: UpdateAvailable) : LauncherCard(launcherPanel, BorderLayout()) {
 	
 	private val update: JButton
+	private val later: JButton
 	private val ignore: JButton
 	private val buttonPanel: JPanel
 	
 	init {
 		
 		this.update = JButton("Update")
-		this.ignore = JButton("Ignore")
-		this.buttonPanel = JPanel(GridLayout(1, 2))
+		this.later = JButton("Later")
+		this.ignore = JButton("Skip version ${updateAvailable.targetBuildNumber}")
+		this.buttonPanel = JPanel(GridLayout(1, 3))
 		buttonPanel.add(update)
+		buttonPanel.add(later)
 		buttonPanel.add(ignore)
 		
 		val body = JTextArea()
@@ -71,7 +76,15 @@ class UpdatePanel(launcherPanel: LauncherPanel, val updateAvailable: UpdateAvail
 		add(buttonPanel, BorderLayout.SOUTH)
 		
 		update.addActionListener { OperatingSystem.openLink(URI.create(UPDATE_URL)) }
-		ignore.addActionListener { removeThisCard() }
+		later.addActionListener { removeThisCard() }
+		ignore.addActionListener { 
+			pst {
+				val f = open(UpdateFinder.IGNORE_UPDATE_FILE, "w")
+				f.writeln(updateAvailable.targetBuildNumber.toString())
+				f.close()
+			}
+			removeThisCard()
+		}
 		
 		val panelSize = launcherPanel.preferredSize
 		val width = (panelSize.width * .75).toInt()
