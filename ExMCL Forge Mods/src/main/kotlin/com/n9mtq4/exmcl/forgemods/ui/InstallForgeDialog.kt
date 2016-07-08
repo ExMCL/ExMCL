@@ -117,7 +117,7 @@ class InstallForgeDialog(val forgeTab: ForgeTab) {
 		
 		val re = Runtime.getRuntime()
 		try {
-			re.exec("java -jar ${file.absolutePath}")
+			re.exec("java -jar ${file.path}")
 		} catch (e: IOException) {
 			e.printStackTrace()
 			forgeTab.baseConsole.printStackTrace(e)
