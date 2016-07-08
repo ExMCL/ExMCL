@@ -1,4 +1,4 @@
 /*AUTO GENERATED FILE*/
 @file:JvmName("Version")
 package com.n9mtq4.exmcl.api
-const val BUILD_NUMBER = 468
+const val BUILD_NUMBER = 472

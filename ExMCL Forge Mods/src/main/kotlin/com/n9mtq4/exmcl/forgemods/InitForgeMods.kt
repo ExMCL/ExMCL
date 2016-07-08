@@ -58,7 +58,7 @@ class InitForgeMods : GenericListener, EnableListener {
 		// adds forge's log junk to be deleted
 		val workingDir: File = File(System.getProperty("user.dir"))
 		val children: Array<File> = workingDir.listFiles()
-		children.filter { it.name.contains("forge_") && it.name.endsWith(".jar.log") }.
+		children.filter { (it.name.contains("forge_") && it.name.endsWith(".jar.log")) || it.name.equals("installer.log", ignoreCase = true) }.
 				forEach { enableEvent.baseConsole.pushEvent(AddToDelete(it, enableEvent.baseConsole)) }
 		
 	}
