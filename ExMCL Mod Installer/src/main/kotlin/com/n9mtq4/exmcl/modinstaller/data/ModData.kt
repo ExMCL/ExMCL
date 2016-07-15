@@ -53,6 +53,7 @@ class ModData(val profiles: ArrayList<ModProfile>, var selectedProfileIndex: Int
 			if (!file.exists()) return createNewModData()
 			try {
 				val modData: ModData = readModDataFromFile(file)
+				if (modData.selectedProfileIndex == -1) modData.selectedProfileIndex = 0 //hotfix
 				return modData
 			}catch (e: Exception) {
 				e.printStackTrace()
@@ -66,6 +67,7 @@ class ModData(val profiles: ArrayList<ModProfile>, var selectedProfileIndex: Int
 			val modData = ModData()
 			val defaultProfile = ModProfile("Default")
 			modData.addProfile(defaultProfile)
+			modData.selectedProfileIndex = 0
 			modData
 		}
 		
