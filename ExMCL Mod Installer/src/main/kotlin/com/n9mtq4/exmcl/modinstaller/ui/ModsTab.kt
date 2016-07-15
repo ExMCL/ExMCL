@@ -100,7 +100,7 @@ class ModsTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) : J
 		
 //		buttons
 		this.addMod = JButton("Add Mod").apply { toolTipText = "Add mods the the current profile.\nYou can also drag and drop mods into the table." }
-		this.removeMod = JButton("Remove Mod")
+		this.removeMod = JButton("Remove Mod").apply { toolTipText = "Remove the selected mod." }
 		this.up = JButton("Up").apply { toolTipText = "Mods nearer the top are loaded before\nmods nearer the bottom." }
 		this.down = JButton("Down").apply { toolTipText = "Mods nearer the top are loaded before\nmods nearer the bottom." }
 		buttonPanel.run {

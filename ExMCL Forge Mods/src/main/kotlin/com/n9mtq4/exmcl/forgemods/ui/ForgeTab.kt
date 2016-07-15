@@ -31,7 +31,6 @@ import com.n9mtq4.exmcl.forgemods.utils.browseForMods
 import com.n9mtq4.exmcl.forgemods.utils.firstRunCleanup
 import com.n9mtq4.exmcl.forgemods.utils.msg
 import com.n9mtq4.kotlin.extlib.pst
-import com.n9mtq4.kotlin.extlib.pstAndUnit
 import com.n9mtq4.logwindow.BaseConsole
 import net.minecraft.launcher.Launcher
 import java.awt.Dimension
@@ -95,12 +94,12 @@ class ForgeTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) :
 		this.table = FModsTable(modData, this)
 		
 //		buttons
-		this.installForge = JButton("Install Forge")
-		this.addProfile = JButton("New Profile")
-		this.removeProfile = JButton("Delete Profile")
-		this.dupProfile = JButton("Duplicate Profile")
+		this.installForge = JButton("Install Forge").apply { toolTipText = "Install forge. Provides a list that you can pick from." }
+		this.addProfile = JButton("New Profile").apply { toolTipText = "Makes a new profile." }
+		this.removeProfile = JButton("Delete Profile").apply { toolTipText = "Deletes the selected profile." }
+		this.dupProfile = JButton("Duplicate Profile").apply { toolTipText = "Duplicates the selected profile." }
 		this.addMod = JButton("Add Mod").apply { toolTipText = "Add mods the the current profile.\nYou can also drag and drop mods into the table." }
-		this.removeMod = JButton("Remove Mod")
+		this.removeMod = JButton("Remove Mod").apply { toolTipText = "Removes the selected mod." }
 		buttonPanel.run {
 			add(installForge)
 			add(addProfile)
@@ -187,7 +186,7 @@ class ForgeTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) :
 	
 	private fun newProfile() {
 		val profileName: String? = JOptionPane.showInputDialog(this, "What should the profile be called?")
-		if (profileName == null ||profileName.isNullOrBlank()) return
+		if (profileName == null || profileName.isNullOrBlank()) return
 		val profile = ModProfile(profileName)
 		modData.addProfile(profile)
 		refreshList()
