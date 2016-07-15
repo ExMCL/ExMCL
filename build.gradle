@@ -1,6 +1,7 @@
 group 'ExMCL'
 
 apply plugin: 'java'
+apply plugin: 'kotlin'
 
 sourceCompatibility = 1.5
 
@@ -8,11 +9,51 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
 }
 
-/*http://www.tikalk.com/devops/increment-version-numbers-in-gradle/*/
+subprojects {
+    
+    group 'ExMCL'
+    version 'unspecified'
+    
+    apply plugin: 'java'
+    apply plugin: 'kotlin'
+    
+    sourceCompatibility = 1.6
+    
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    repositories {
+        mavenCentral()
+    }
+    
+    dependencies {
+        testCompile group: 'junit', name: 'junit', version: '4.12' // I mean, might as well give them junit
+        compile fileTree(dir: '../runmehere/libs/', include: ['*.jar', "*.zip"])
+        compile fileTree(dir: '../providedlibs/', include: ['*.jar', "*.zip"])
+        compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    }
+    
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+    
+}
+
+/**
+ * Increment the build number every time we build this project. Useful for
+ * plugins to tell what version they are on and for updating.
+ * http://www.tikalk.com/devops/increment-version-numbers-in-gradle/
+ * */
 task buildnumberplusone {
     Properties props = new Properties()
     File propsFile = new File('gradle.properties')
@@ -24,6 +65,10 @@ task buildnumberplusone {
     System.out.println("Build Number: $artifactBuildNumber")
 }
 
+/**
+ * take the build number that we incremented and gernerate a Version file
+ * that will be compiled.
+ * */
 task generateVersion {
     File outputFile = new File("ExMCL API/src/main/kotlin/com/n9mtq4/exmcl/api/Version.kt")
     PrintWriter writer = new PrintWriter(outputFile)
@@ -35,5 +80,8 @@ task generateVersion {
     System.out.println("Generated Version File")
 }
 
+/*
+ * Of course run them
+ * */
 build.dependsOn buildnumberplusone
 build.dependsOn generateVersion
