@@ -7,10 +7,16 @@ sourceCompatibility = 1.6
 
 repositories {
     mavenCentral()
+    maven {
+        url "http://dl.bintray.com/kotlin/kotlin-eap-1.1"
+    }
 }
 
 buildscript {
     repositories {
+        maven {
+            url "http://dl.bintray.com/kotlin/kotlin-eap-1.1"
+        }
         mavenCentral()
     }
     dependencies {
@@ -47,8 +53,11 @@ subprojects {
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
-
+    
     repositories {
+        maven {
+            url "http://dl.bintray.com/kotlin/kotlin-eap-1.1"
+        }
         mavenCentral()
     }
     
