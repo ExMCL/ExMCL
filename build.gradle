@@ -101,6 +101,7 @@ task generateVersion {
     writer.println("@file:JvmName(\"Version\")")
     writer.println("package com.n9mtq4.exmcl.api")
     writer.println("const val BUILD_NUMBER = $artifactBuildNumber")
+    writer.println("const val TIME_STAMP = ${System.currentTimeMillis()}L")
     writer.close()
     System.out.println("Generated Version File")
 }
