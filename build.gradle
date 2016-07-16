@@ -82,7 +82,7 @@ task buildnumberplusone {
 }
 
 /**
- * take the build number that we incremented and gernerate a Version file
+ * take the build number that we incremented and generate a Version file
  * that will be compiled.
  * */
 task generateVersion {
