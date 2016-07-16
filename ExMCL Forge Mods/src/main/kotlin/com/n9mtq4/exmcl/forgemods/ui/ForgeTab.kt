@@ -148,7 +148,7 @@ class ForgeTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) :
 	
 	fun refresh() {
 		refreshList()
-		table.refresh() // it is synced in refresh list instead
+		table.refresh(sync = false) // it is synced in refresh list instead
 		syncWithFile()
 	}
 	
