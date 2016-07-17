@@ -44,7 +44,9 @@ import java.util.ArrayList
  */
 class Cleaner : GenericListener, RemovalListener, EnableListener {
 	
-	private val toDelete: ArrayList<File> = ArrayList();
+	private typealias FileList = ArrayList<File>
+	
+	private val toDelete: FileList = ArrayList()
 	
 	override fun onEnable(e: EnableEvent) {
 		val workingDir: File = File(System.getProperty("user.dir"))
@@ -69,7 +71,7 @@ class Cleaner : GenericListener, RemovalListener, EnableListener {
 	
 	private fun clean() = deleteFiles(toDelete)
 	
-	private fun deleteFiles(files: ArrayList<File>) {
+	private fun deleteFiles(files: FileList) {
 		
 		files.forEach {
 			

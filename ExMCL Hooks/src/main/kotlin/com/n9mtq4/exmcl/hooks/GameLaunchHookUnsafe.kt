@@ -48,7 +48,6 @@ import javax.swing.JButton
  * we removed from before.
  * 
  * NOTE: THIS LISTENER IS FAR LESS COMPLEX WITH LogWindowFramework-5.1
- * 
  */
 class GameLaunchHookUnsafe : ActionListener, GenericListener {
 	

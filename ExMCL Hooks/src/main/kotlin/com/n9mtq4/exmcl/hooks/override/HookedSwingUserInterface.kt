@@ -71,6 +71,7 @@ import javax.swing.JFrame
  * Wont necessarily be forwards compatible, so this is dangerous.
  */
 class HookedSwingUserInterface(parent: SwingUserInterface, private val baseConsole: BaseConsole) : SwingUserInterface(ReflectionHelper.getObject<Any>("minecraftLauncher", parent) as Launcher, parent.frame) {
+	
 	private val thisWrapper: ReflectionWrapper<Any>
 	private val parentWrapper: ReflectionWrapper<Any>
 	

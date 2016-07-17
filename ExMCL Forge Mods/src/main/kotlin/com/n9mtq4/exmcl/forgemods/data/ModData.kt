@@ -38,7 +38,9 @@ import javax.swing.JOptionPane
  *
  * @author Will "n9Mtq4" Bresnahan
  */
-class ModData(val profiles: ArrayList<ModProfile>, var selectedProfileIndex: Int) {
+class ModData(val profiles: ProfileList, var selectedProfileIndex: Int) {
+	
+	private typealias ProfileList = ArrayList<ModProfile>
 	
 	companion object {
 		private const val MOD_LOCATION = "data/forgemods.json.lzma"
@@ -68,7 +70,7 @@ class ModData(val profiles: ArrayList<ModProfile>, var selectedProfileIndex: Int
 		
 	}
 	
-	constructor(): this(ArrayList<ModProfile>(), 0)
+	constructor(): this(ProfileList(), 0)
 	
 	@Throws(IOException::class)
 	fun save() = save(File(MOD_LOCATION))

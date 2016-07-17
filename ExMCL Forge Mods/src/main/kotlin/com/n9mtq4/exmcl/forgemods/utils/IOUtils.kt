@@ -63,7 +63,6 @@ fun browseForMods(component: Component): Array<File> {
  * http://stackoverflow.com/a/115086
  * Auto-converted from java
  */
-@SuppressWarnings("Duplicates")
 @Throws(IOException::class)
 internal fun copyFile(sourceFile: File, destFile: File) {
 	if (!destFile.exists()) {

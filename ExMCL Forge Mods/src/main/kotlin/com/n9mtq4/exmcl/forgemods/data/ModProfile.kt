@@ -32,9 +32,11 @@ import java.util.ArrayList
  *
  * @author Will "n9Mtq4" Bresnahan
  */
-data class ModProfile(var profileName: String, var modList: ArrayList<ModEntry>) {
+data class ModProfile(var profileName: String, var modList: ModList) {
 	
-	constructor(profileName: String) : this(profileName, ArrayList<ModEntry>())
+	private typealias ModList = ArrayList<ModEntry>
+	
+	constructor(profileName: String) : this(profileName, ModList())
 	
 	fun addMod(file: File, enabled: Boolean) = modList.add(ModEntry(file, enabled))
 	fun addMod(file: File) = addMod(file, true)
