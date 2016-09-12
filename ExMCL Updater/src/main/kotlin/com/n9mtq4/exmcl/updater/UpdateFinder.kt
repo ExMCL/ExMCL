@@ -51,7 +51,7 @@ class UpdateFinder : GenericListener {
 		* test the updating ability without actually making a new update.
 		* Both of these should be false in an actual release
 		* */
-		private const val FORCE_UPDATE = true
+		private const val FORCE_UPDATE = false
 		private const val IGNORE_SKIP = false
 	}
 	
