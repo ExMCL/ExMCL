@@ -84,12 +84,16 @@ class GameOutputManager : EnableListener, GenericListener {
 		}
 		for (i in 0..launcherTabPanel.tabCount - 1) {
 			val tab = launcherTabPanel.getComponentAt(i)
-			if (tab is GameOutputTab) addNewTab(launcherTabPanel.getTitleAt(i), tab)
+			if (tab is GameOutputTab) addNewTab(i, launcherTabPanel.getTitleAt(i), tab)
 		}
 	}
 	
-	private fun addNewTab(title: String, component: Component) {
-		gameOutputTabs.add(cropTabName(title), component)
+	private fun addNewTab(index: Int, title: String, component: Component) {
+		SwingUtilities.invokeLater {
+			launcherTabPanel.removeTabAt(index)
+			gameOutputTabs.add(cropTabName(title), component)
+			gameOutputTabs.selectedComponent = component // select the game output. this is the default behavior of vanilla launcher
+		}
 	}
 	
 	private fun addGameOutputTabs() = SwingUtilities.invokeLater {
