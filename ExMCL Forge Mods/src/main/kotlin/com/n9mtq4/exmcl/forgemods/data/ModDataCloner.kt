@@ -25,21 +25,30 @@
 package com.n9mtq4.exmcl.forgemods.data
 
 import java.io.File
-import java.util.ArrayList
 
 /**
- * Created by will on 2/14/16 at 10:07 PM.
+ * Created by will on 9/13/2016 at 6:55 PM.
  *
  * @author Will "n9Mtq4" Bresnahan
  */
-data class ModProfile(var profileName: String, var modList: ModList) {
+
+internal fun ModProfile.deepCopy(profileName: String = this.profileName, modList: ModProfile.ModList = this.modList): ModProfile {
 	
-	internal typealias ModList = ArrayList<ModEntry>
+	val clonedModList = modList.map { it.deepCopy() }
+	val newModList = arrayListOf<ModEntry>()
 	
-	constructor(profileName: String) : this(profileName, ModList())
+	clonedModList.toCollection(newModList)
 	
-	fun addMod(file: File, enabled: Boolean) = modList.add(ModEntry(file, enabled))
-	fun addMod(file: File) = addMod(file, true)
+	val profile = ModProfile(profileName, newModList)
 	
-	fun removeMod(index: Int) = modList.removeAt(index)
+	return profile
+	
+}
+
+private fun ModEntry.deepCopy(file: File = this.file, enabled: Boolean = this.enabled): ModEntry {
+	
+	val clonedModEntry = ModEntry(File(file.path), enabled) // file may not need to be cloned
+	
+	return clonedModEntry
+	
 }

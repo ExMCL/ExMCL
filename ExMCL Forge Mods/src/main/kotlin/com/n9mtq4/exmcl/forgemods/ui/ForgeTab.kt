@@ -27,6 +27,7 @@ package com.n9mtq4.exmcl.forgemods.ui
 import com.n9mtq4.exmcl.forgemods.GameStartHook
 import com.n9mtq4.exmcl.forgemods.data.ModData
 import com.n9mtq4.exmcl.forgemods.data.ModProfile
+import com.n9mtq4.exmcl.forgemods.data.deepCopy
 import com.n9mtq4.exmcl.forgemods.utils.browseForMods
 import com.n9mtq4.exmcl.forgemods.utils.firstRunCleanup
 import com.n9mtq4.exmcl.forgemods.utils.msg
@@ -209,7 +210,7 @@ class ForgeTab(val minecraftLauncher: Launcher, val baseConsole: BaseConsole) :
 	private fun dupProfile() {
 		val profileName: String? = JOptionPane.showInputDialog(this, "What should the profile be called?")
 		if (profileName == null ||profileName.isNullOrBlank()) return
-		modData.addProfile(modData.getSelectedProfile().copy(profileName)) // TODO: need to deep clone this
+		modData.addProfile(modData.getSelectedProfile().deepCopy(profileName))
 		refreshList()
 	}
 	
