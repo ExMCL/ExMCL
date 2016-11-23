@@ -86,8 +86,11 @@ class ModData(val profiles: ProfileList, var selectedProfileIndex: Int) {
 		writeToFile(file)
 	}
 	
-	fun containsProfileByName(name: String) = profiles.filter { it.profileName == name }.size > 0
-	fun getSelectedProfile() = profiles[selectedProfileIndex]
+	fun containsProfileByName(name: String) = profiles.filter { it.profileName == name }.isNotEmpty()
+	fun getSelectedProfile() = def {
+		if (selectedProfileIndex == -1) selectedProfileIndex = 0
+		profiles[selectedProfileIndex]
+	}
 	fun addProfile(profile: ModProfile) = profiles.add(profile)
 	fun getProfileByName(name: String) = profiles.find { it.profileName == name }
 	fun getProfileNames() = profiles.map { it.profileName }
