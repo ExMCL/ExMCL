@@ -81,7 +81,7 @@ class ConsolePrintListener : GenericListener, ObjectListener {
 		
 		if (str.text.startsWith("cPrint ", ignoreCase = true)) {
 			cPrint(str.getWordsStartingFrom(1).replace("\\n", "\n"))
-		}else if (str.text.startsWith("cPrintln", ignoreCase = true)) {
+		}else if (str.text.startsWith("cPrintln ", ignoreCase = true)) {
 			cPrint(str.getWordsStartingFrom(1).replace("\\n", "\n") + "\n")
 		}
 		
