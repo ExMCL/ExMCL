@@ -79,7 +79,7 @@ class ModsTable(var modData: ModData, val modsTab: ModsTab) : JTable() {
 	}
 	
 	private fun initFileDrop() = FileDrop(this, FileDrop.Listener { files: Array<File> ->
-		files.filter { it.isMod() }.forEach { modData.getSelectedProfile().addMod(it) }
+		files.filter(File::isMod).forEach { modData.getSelectedProfile().addMod(it) }
 		refresh()
 	})
 	

@@ -49,7 +49,7 @@ class GameStartHook(val minecraftLauncher: Launcher, val modData: ModData) : Gen
 	@ListensFor
 	fun listenForGameLaunch(e: GameLaunchEvent, baseConsole: BaseConsole) {
 		
-		if (modData.getSelectedProfile().modList.filter { it.enabled }.size == 0) return // don't patch when there are no mods
+		if (modData.getSelectedProfile().modList.filter { it.enabled }.isEmpty()) return // don't patch when there are no mods
 		
 		val mcPatcher = MinecraftPatcher(minecraftLauncher, modData.getSelectedProfile())
 		
@@ -63,7 +63,7 @@ class GameStartHook(val minecraftLauncher: Launcher, val modData: ModData) : Gen
 				
 				println("Patching")
 				try {
-					mcPatcher.patch() { step, total, task ->
+					mcPatcher.patch { step, total, task ->
 						minecraftLauncher.userInterface.setDownloadProgress(DownloadProgress(step.toLong(), total.toLong(), "Patching mods into Minecraft: $task"))
 					}
 				}catch (e1: Exception) {
