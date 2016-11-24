@@ -40,7 +40,6 @@ import java.util.ArrayList
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
-import javax.swing.JOptionPane
 
 /**
  * Created by will on 2/28/16 at 3:26 PM.
@@ -242,22 +241,11 @@ class MinecraftPatcher(val minecraftLauncher: Launcher, val modProfile: ModProfi
 		
 	}
 	
-//	private fun findVersion() = minecraftLauncher.profileManager.selectedProfile.lastVersionId ?: getLatestVersion()
-	private fun findVersion() = askForVersion()
-	private fun getLatestVersion() = askForVersion() //TODO: we can't get the latest version yet :(
-	private fun askForVersion(): String {
-		val allVersions = getAllVersions()
-		val version = JOptionPane.showInputDialog(null, 
-				"What version of minecraft should we patch the mods into?", 
-				"Version?", 
-				JOptionPane.QUESTION_MESSAGE, 
-				null, 
-				allVersions.toTypedArray(), 
-				allVersions[0]) //TODO: possibility of index out of bounds if there are no versions
-		
-		return (version ?: allVersions[0]) as String
-		
-	}
-	private fun getAllVersions() = File(workingDir, "versions/").listFiles().map { it.name }.filterNot { it.startsWith(".") }
+	/**
+	 * Logic for finding version comes from net.minecraft.launcher.game.GameLaunchDispatcher.play()
+	 * at line ~80 and ~105
+	 * */
+	private fun findVersion() = minecraftLauncher.profileManager.selectedProfile.lastVersionId ?: 
+		minecraftLauncher.launcher.versionManager.getVersions(minecraftLauncher.profileManager.selectedProfile.versionFilter)[0].localVersion.id
 	
 }
