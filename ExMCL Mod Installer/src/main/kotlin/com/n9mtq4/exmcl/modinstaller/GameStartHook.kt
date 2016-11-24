@@ -87,7 +87,7 @@ class GameStartHook(val minecraftLauncher: Launcher, val modData: ModData) : Gen
 			
 			println("Patching")
 			try {
-				mcPatcher.patch() { i, i1, task -> /*do nothing*/ }
+				mcPatcher.patch { i, i1, task -> /*do nothing*/ }
 			}catch (e1: Exception) {
 				e1.printStackTrace()
 				JOptionPane.showMessageDialog(e.actionEvent.source as Component, "${e1.cause}\n${e1.message}", "Error Patching", JOptionPane.ERROR_MESSAGE)

@@ -107,11 +107,12 @@ class MinecraftPatcher(val minecraftLauncher: Launcher, val modProfile: ModProfi
 //		delete any other files
 		File(newVersionDir, "$oldVersion.jar").delete()
 		File(newVersionDir, "$oldVersion.json").delete()
-//		set the profile to use this version
+//		set the game to launch the patched mc version
+		minecraftLauncher.launcher.versionManager.refreshVersions()
 		val pm = minecraftLauncher.profileManager
 		pm.selectedProfile.lastVersionId = newVersion
 		pm.saveProfiles()
-		pm.fireRefreshEvent()
+		pm.loadProfiles()
 	}
 	
 	/**
