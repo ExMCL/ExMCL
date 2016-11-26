@@ -63,6 +63,13 @@ class MinecraftPatcher(val minecraftLauncher: Launcher, val modProfile: ModProfi
 	
 	@Throws(Exception::class)
 	fun patch(progressCallback: (Int, Int, String) -> Unit) {
+//		make sure that we can patch it first
+		if (!oldVersionDir.exists()) {
+			msg(null, "Jar mods can't be installed because minecraft isn't downloaded.\n" +
+					"You will need to relaunch the game a second time for mods to get\n" +
+					"installed.", "Jar Mod Patcher")
+			return
+		}
 //		clean up from past runs
 		if (newVersionDir.exists()) newVersionDir.deleteRecursively()
 //		calculate total jobs
