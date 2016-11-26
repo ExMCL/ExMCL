@@ -1,0 +1,3 @@
+com.n9mtq4.exmcl.branding.IconChanger
+com.n9mtq4.exmcl.branding.FrameTitleChanger
+com.n9mtq4.exmcl.branding.InfoPrinter

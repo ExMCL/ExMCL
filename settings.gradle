@@ -10,4 +10,5 @@ include 'ExMCL Forge Mods'
 include 'ExMCL Updater'
 include 'ExMCL Mod Installer'
 include 'ExMCL Console Printer'
+include 'ExMCL Branding'
 

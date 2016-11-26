@@ -60,7 +60,7 @@ public final class ExMCLBootstrap extends Bootstrap {
 	@Override
 	public void startLauncher(File launcherJar) {
 		println("Starting launcher.");
-		println("The Extendable Minecraft Launcher | http://exmcl.github.io");
+		println("The Extendable Minecraft Launcher | http://exmcl.github.io"); //TODO: maybe remove this
 		try {
 			
 //			Load the jar file
