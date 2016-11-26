@@ -59,12 +59,10 @@ class InitModInstaller : GenericListener {
 	@ListensFor
 	fun listenForTabSafe(e: SafeForTabCreationEvent, baseConsole: BaseConsole) {
 		
-		il {
-			pst {
-				val modsTab = ModsTab(minecraftLauncher, baseConsole)
-				baseConsole.pushEvent(CreateTabEvent("Jar Mods", modsTab, baseConsole))
-			}
-		}
+		il { pst {
+			val modsTab = ModsTab(minecraftLauncher, baseConsole)
+			baseConsole.pushEvent(CreateTabEvent("Jar Mods", modsTab, baseConsole))
+		} }
 		
 		baseConsole.disableListenerAttribute(this)
 		

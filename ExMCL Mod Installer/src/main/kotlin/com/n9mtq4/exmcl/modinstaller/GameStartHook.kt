@@ -28,6 +28,7 @@ import com.mojang.launcher.updater.DownloadProgress
 import com.n9mtq4.exmcl.api.hooks.events.DefaultGameLaunchEvent
 import com.n9mtq4.exmcl.api.hooks.events.GameLaunchEvent
 import com.n9mtq4.exmcl.modinstaller.data.ModData
+import com.n9mtq4.exmcl.modinstaller.data.ModEntry
 import com.n9mtq4.exmcl.modinstaller.ui.PatchingWindow
 import com.n9mtq4.exmcl.modinstaller.utils.MinecraftPatcher
 import com.n9mtq4.logwindow.BaseConsole
@@ -49,7 +50,7 @@ class GameStartHook(val minecraftLauncher: Launcher, val modData: ModData) : Gen
 	@ListensFor
 	fun listenForGameLaunch(e: GameLaunchEvent, baseConsole: BaseConsole) {
 		
-		if (modData.getSelectedProfile().modList.filter { it.enabled }.isEmpty()) return // don't patch when there are no mods
+		if (modData.getSelectedProfile().modList.filter(ModEntry::enabled).isEmpty()) return // don't patch when there are no mods
 		
 		val mcPatcher = MinecraftPatcher(minecraftLauncher, modData.getSelectedProfile())
 		
@@ -87,7 +88,7 @@ class GameStartHook(val minecraftLauncher: Launcher, val modData: ModData) : Gen
 			
 			println("Patching")
 			try {
-				mcPatcher.patch { i, i1, task -> /*do nothing*/ }
+				mcPatcher.patch { _, _, _ -> /*do nothing*/ }
 			}catch (e1: Exception) {
 				e1.printStackTrace()
 				JOptionPane.showMessageDialog(e.actionEvent.source as Component, "${e1.cause}\n${e1.message}", "Error Patching", JOptionPane.ERROR_MESSAGE)

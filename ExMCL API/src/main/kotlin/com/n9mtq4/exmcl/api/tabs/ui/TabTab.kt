@@ -24,7 +24,7 @@
 
 package com.n9mtq4.exmcl.api.tabs.ui
 
-import com.n9mtq4.kotlin.extlib.pstAndUnit
+import com.n9mtq4.kotlin.extlib.pst
 import javax.swing.JTabbedPane
 import javax.swing.UIManager
 
@@ -37,9 +37,7 @@ class TabTab : JTabbedPane() {
 	
 	init {
 		
-		pstAndUnit {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		}
+		pst { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()) }
 		
 		tabLayoutPolicy = JTabbedPane.WRAP_TAB_LAYOUT
 		

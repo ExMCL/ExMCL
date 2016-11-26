@@ -64,7 +64,6 @@ class SwingUserInterfaceHook : ObjectListener {
 	}
 	
 	companion object {
-		
 		private val HOOK_INTERFACE = true
 	}
 	

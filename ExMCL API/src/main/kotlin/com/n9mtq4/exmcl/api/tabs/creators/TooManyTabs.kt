@@ -45,7 +45,7 @@ import java.util.ArrayList
 class TooManyTabs : EnableListener, GenericListener, TabCreator {
 	
 	private lateinit var tabTab: TabTab
-	private var tabPanel: Any? = null
+//	private var tabPanel: Any? = null
 	private var tabSafe = false
 	private val unAddedTabs: ArrayList<CreateTabEvent> = ArrayList()
 	

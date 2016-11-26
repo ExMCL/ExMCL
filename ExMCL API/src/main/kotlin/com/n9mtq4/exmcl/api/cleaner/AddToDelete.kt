@@ -34,7 +34,6 @@ import java.io.File
  *
  * @author Will "n9Mtq4" Bresnahan
  */
-@Suppress("unused", "UNUSED_PARAMETER")
 class AddToDelete(val file: File, initiatingBaseConsole: BaseConsole?) : DefaultGenericEvent(initiatingBaseConsole) {
 	override fun toString() = "${this.javaClass.name}{file=${file.absolutePath}}"
 }

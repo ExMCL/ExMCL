@@ -54,7 +54,7 @@ class Cleaner : GenericListener, RemovalListener, EnableListener {
 		children.filter { it.name.contains("hs", true) && it.name.endsWith(".log", true) }.forEach { addToDelete(it) }
 	}
 	
-	@Suppress("unused", "UNUSED_PARAMETER")
+	@Suppress("unused")
 	@ListensFor(AddToDelete::class)
 	fun listenForAddToDelete(event: AddToDelete, baseConsole: BaseConsole) {
 		
@@ -73,20 +73,18 @@ class Cleaner : GenericListener, RemovalListener, EnableListener {
 	
 	private fun deleteFiles(files: FileList) {
 		
-		files.forEach {
+		files.filter(File::exists).forEach {
 			
 //			just in case
 //			when dealing loops, it is good to prevent one bad apple from
 //			spoiling the rest
 			pstAndUnit {
 				
-				if (!it.exists()) return@forEach
-				
 				val success = it.deleteRecursively()
 				println("${if (success) "Deleted" else "Failed to delete"} the file: ${it.absolutePath}")
 				
 				if (!success) {
-					it.walkBottomUp().forEach { it.deleteOnExit() }
+					it.walkBottomUp().forEach(File::deleteOnExit)
 					println("Set the ${it.absolutePath} to delete when the program exits.")
 				}
 				
